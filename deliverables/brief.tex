@@ -1,6 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{cite}
 \usepackage[margin=1in]{geometry}
 
@@ -26,6 +26,10 @@
 \vspace*{0.5cm}
 
 Microblogging services such as Twitter\footnote{\url{http://www.twitter.com}} have become very popular in recent years. One of the key characterists of such services is the use of `hashtags' --- topical/categorical annotations provided by the authors of the posts~(tweets) themselves. These hashtags have been proven to be useful and information-rich in previous microblogging research projects; from using them to crowd-source real-time event detection~\cite{Sakaki:2010}, to using them to train sentiment classifiers~\cite{Davidov:2010}. However due to their nature, there is a vast and diverse collection of hashtags for users to choose from, resulting in the information provided by hashtags not being as accurate or as complete as it could be.
+
+For my project, I will create a system that aims to support and enrich the information provided by hashtags. I will use the latest machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable new hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtags when writing their tweets, and therefore refine the information they provide. Furthermore, I will create an extension of this system that will provide a context-aware tweet search facility. This will enable a user to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
+
+Finally, I will test the success and importance of my research by implementing a recent research experiment that depends upon hashtags (such as those conducted by Davidov et al.~\cite{Davidov:2010} or Sakaki et al.~\cite{Sakaki:2010}). I will compare the results of the experiment both with and without my enhanced system, and provide validation for the project.
 
 \bibliographystyle{abbrv}
 {\footnotesize \bibliography{bibliography}}
