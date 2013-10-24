@@ -1,3 +1,6 @@
+# virtualenv ignores
+env/
+
 # Latex ignores
 *.acn
 *.acr
