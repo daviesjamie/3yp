@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from twython import TwythonStreamer
 import csv
 import sys
@@ -13,7 +11,7 @@ class MyStreamer(TwythonStreamer):
     def initialise(self, filename, numTweets):
         self.output = open(filename, 'ab+')
         self.wr = csv.writer(self.output, dialect='excel')
-        self.wr.writerow(['id','lang','userid','username','timestamp','text','retweeted','source','sensitive','geo'])
+        self.wr.writerow(['id','userID', 'lang', 'text', 'timestamp'])
 
         self.numTweets = numTweets
         self.tweetCount = 0
@@ -38,7 +36,9 @@ class MyStreamer(TwythonStreamer):
             else:
                 print self.tweetCount
 
+outfile = sys.argv[1] if len(sys.argv) > 1 else 'tweets.csv'
+
 stream = MyStreamer(APP_KEY, APP_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-stream.initialise('tweets.csv', 1000)
+stream.initialise(outfile, 1000)
 stream.statuses.sample()
 
