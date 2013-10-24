@@ -37,8 +37,9 @@ class MyStreamer(TwythonStreamer):
                 print self.tweetCount
 
 outfile = sys.argv[1] if len(sys.argv) > 1 else 'tweets.csv'
+numTweets = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
 
 stream = MyStreamer(APP_KEY, APP_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
-stream.initialise(outfile, 1000)
+stream.initialise(outfile, numTweets)
 stream.statuses.sample()
 
