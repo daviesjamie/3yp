@@ -1,0 +1,7 @@
+argparse==1.2.1
+distribute==0.6.24
+oauthlib==0.6.0
+requests==2.0.0
+requests-oauthlib==0.3.2
+twython==3.1.0
+wsgiref==0.1.2
