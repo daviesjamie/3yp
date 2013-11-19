@@ -37,6 +37,7 @@ class MyStreamer(TwythonStreamer):
             tweet.append(data['user']['time_zone'])
 
             self.wr.writerow(tweet)
+            self.output.flush()
             self.tweetCount += 1
 
             if self.tweetCount > self.numTweets:
