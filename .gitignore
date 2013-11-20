@@ -2,6 +2,10 @@
 .venv
 env/
 
+# Data ignores
+data/*
+!data/example-tweet-data.txt
+
 # Latex ignores
 *.aux
 *.bbl
