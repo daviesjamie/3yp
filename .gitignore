@@ -5,6 +5,8 @@ env/
 # Data ignores
 data/*
 !data/example-tweet-data.txt
+!data/count_hashtags.txt
+!data/hashtags.txt
 
 # Latex ignores
 *.aux
