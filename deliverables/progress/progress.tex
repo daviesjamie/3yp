@@ -35,42 +35,81 @@ Dr. Nick Gibbins\\[0.5cm]
 %\href{mailto:nmg@ecs.soton.ac.uk}{\nolinkurl{nmg@ecs.soton.ac.uk}}\\[0.5cm]
 
 \emph{Examiner:}\\
-Dr. Otto Octavius\\
-%\href{mailto:ogo@ecs.soton.ac.uk}{\nolinkurl{ogo@ecs.soton.ac.uk}}\\
+Dr. Klaus-Peter Zauner\\
+%\href{mailto:kpz@ecs.soton.ac.uk}{\nolinkurl{kpz@ecs.soton.ac.uk}}\\
 
 
 \vfill
 \end{titlepage}
 
-\setcounter{secnumdepth}{0}
-\section{Abstract}
-One of the key characteristics of Twitter and other microblogging platforms is the use of `hashtags' --- topical/categorical annotations provided by the authors of the posts (tweets) themselves. Hashtags are any combination of letters and digits preceded by a hash (\#) symbol allowing users to use whichever hashtags they like when publishing their tweets, including creating their own new hashtags. Whilst this flexible system gives users the freedom to express themselves, it unfortunately also results in data from the hashtags being fragmented and inaccurate due to the vast and diverse possibilities of hashtags.
+\section*{Abstract}
+One of the key characteristics of Twitter and other microblogging platforms is the use of `hashtags' --- topical/categorical annotations provided by the authors of the posts (tweets) themselves. This flexible system was designed for the effective organisation and searching of tweets, but with Twitter facing an ever-increasing number of users and tweets it is hard for users to keep track of the vast number of hashtags in popular use. This results in data from the hashtags being fragmented and inaccurate due to the users making poor or uninformed hashtag choices.
 
-If users are presented with a choice of relevant hashtags when writing a tweet, they are more likely to publish tweets with accurate tag data. This project aims to create an intelligent hashtag suggestion tool to raise the information gain from hashtags. However, whilst such a system could improve the quality of the hashtag data for future tweets, tweets that have already been published will remain untouched by the system. Thus, the system will be extended to also retrofit hashtags to published tweets --- allowing for tweets to appear in search results for a particular hashtag even if they don't actually contain the hashtag in question.
+If users are presented with a choice of relevant hashtags when writing a tweet, they are more likely to publish tweets with accurate tag data. This project aims to create an intelligent hashtag recommendation tool to raise the information gain from hashtags. However, whilst such a system could improve the quality of the hashtag data for future tweets, tweets that have already been published will remain untouched by the system. Thus, the system will be extended to also retrofit hashtags to published tweets --- allowing for tweets to appear in search results for a particular hashtag even if they don't actually contain the hashtag in question.
 \pagebreak
 
 \tableofcontents
 \pagebreak
 
-\setcounter{secnumdepth}{1}
 \section{Project Goals}
-12pt text for main body.
+This project will create a system that aims to support and enrich the information provided by hashtags. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
+
+However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
+
+\subsection{Requirements}
+There are two main requirements the system in this project is aiming to fulfill. It must:
+\begin{enumerate}
+    \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
+    \item Allow users to search for a hashtag and view related tweets, including those that don't contain that hashtag.
+\end{enumerate}
+
+These points can be further expanded into a series of functional and non-functional requirements, concluded from the background research.
+
+\subsubsection{Functional Requirements}
+\begin{itemize}
+    \item The system must allow the user to log in and publish tweets to their Twitter account.
+    \item The system must provide hashtag recommendations as the user is creating a tweet.
+    \item The system must perform a hashtag search through a large dataset of tweets and return all relevant tweets, including those that do not contain the search query.
+    \item The system must use information from a large dataset of tweets to generate a model representing each hashtag.
+    \item The system must be able to compare tweets against its representational hashtag models.
+    \item \emph{Optional:} The system must be able to update its classification models using information from the live Twitter stream.
+    \item \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet.
+\end{itemize}
+
+\subsubsection{Non-Functional Requirements}
+\begin{itemize}
+    \item The system must be accessible via a web interface.
+    \item The system must be responsive and easy to use.
+    \item The system must be able to perform searches quickly.
+    \item The system must be able to make hashtag recommendations quickly.
+    \item The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments.
+    \item \emph{Optional:} The system must be accessible via mobile web browsers.
+\end{itemize}
+
+\subsection{Research Questions}
+This system will provide a new way to gain further insight into how people use hashtags on Twitter, and in doing so, answer the following questions:
+\begin{itemize}
+    \item Are certain types of tweet/hashtag easier to classify than others?
+    \item Is it possible to make relevant hashtag suggestions using just the tweet text itself, or is other metadata needed to make the recommendations useful?
+\end{itemize}
 \pagebreak
 
-\section{Background and report of literature search}
+\section{Background and Literature Review}
 12pt text for main body.
+\subsection{Recommendation Systems}
+
+\subsection{Hashtag Recommendation Research}
+
+\subsection{Research Utilising Hashtag Data}
 \pagebreak
 
 \section{Report on Technical Progress}
 12pt text for main body.
 \pagebreak
 
-\section{Plan of remaining work}
+\section{Plan of Remaining Work}
 12pt text for main body.
 \pagebreak
-
-\setcounter{secnumdepth}{0}
-\section{References}
 
 \end{document}
 
