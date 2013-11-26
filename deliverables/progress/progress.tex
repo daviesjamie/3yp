@@ -1,10 +1,48 @@
 \documentclass[12pt,a4paper]{article}
 
-\usepackage{cite}
 \usepackage{parskip}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=1.5in]{geometry}
 \usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BIBLATEX SETTINGS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[
+backend=bibtex,
+firstinits=true,    % Render first and middle names as initials
+maxcitenames=2,     % Use maximum 2 names in \cite before et al.
+maxbibnames=2,      % Use maximum 2 names in references before et al.
+style=authoryear,
+dashed=false,       % Re-print recurring author names in bibliography
+url=false,          % Disable urls,
+doi=false,          %   dois,
+isbn=false          %   and isbn numbers.
+]{biblatex}
+
+% Use single quotes around titles:
+\usepackage[british]{babel}
+\usepackage{csquotes}
+
+% Add a blank line between references
+\setlength{\bibitemsep}{\baselineskip}
+
+% Don't use reference months
+\AtEveryBibitem{\clearfield{month}}
+\AtEveryCitekey{\clearfield{month}}
+
+% All author's names should be Last, First
+\DeclareNameAlias{author}{last-first}
+
+% Insert a comma between author and year in text citations
+\renewcommand*{\nameyeardelim}{\addcomma\addspace}
+
+% Remove 'in:' preceding article title
+\renewbibmacro{in:}{}
+
+\addbibresource{../bibliography.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
@@ -52,7 +90,7 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 \pagebreak
 
 \section{Project Goals}
-This project will create a system that aims to support and enrich the information provided by hashtags. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
+This project will create a system that aims to support and enrich the information provided by hashtags on Twitter\footnote{\url{www.twitter.com}}. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
 
 However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
 
@@ -95,10 +133,23 @@ This system will provide a new way to gain further insight into how people use h
 \pagebreak
 
 \section{Background and Literature Review}
-12pt text for main body.
+Some text to give an introduction to the different areas of research.
+
 \subsection{Recommendation Systems}
+Traditional recommendation systems are in place all over the web today. From music discovery services (such as Last.fm\footnote{\url{www.last.fm}}) to suggested purchases on retail sites (like that in place at Amazon\footnote{\url{www.amazon.co.uk}}, these systems are all personalised recommendation engines that take an individual user's preferences and use them to provide suggestions tailored to that user.
+
+\subsubsection{Collaborative Filtering}
+Most personalised recommendation systems employ a set of techniques known as collaborative filtering. These techniques were first coined by \textcite{Goldberg:1992}, where a system named \emph{Tapestry} was created that allowed people to attach annotations to documents, and then use that information to filter the documents for other users. 
+
+One common implementation of collaborative filtering is the so-called ``user-to-user'' approach. ``User-to-user'' collaborative filtering works by taking the preferences of a user $A$, and finding a small subset of other users in the system that have similar preferences. For each user $B$ in the subset any items that $B$ has adopted that $A$ hasn't are added to a ranked list of suggestions. $A$ is now more likely to adopt items in the list than the items of another random person \parencite{Schafer:2001}.
+
+\subsubsection{Content-Based Recommendation}
+Another approach to provide relevant recommendations to a user is the use of content-based recommendation systems. This is a type of system that recommends items relevant to other items by comparing the details and descriptions of the items themselves. This can be extended to suggest items for a user by comparing their preferences with the descriptions of the items \parencite{Pazzani:2007}.
+
+\subsubsection{Relevance Feedback}
 
 \subsection{Hashtag Recommendation Research}
+
 
 \subsection{Research Utilising Hashtag Data}
 \pagebreak
@@ -110,6 +161,10 @@ This system will provide a new way to gain further insight into how people use h
 \section{Plan of Remaining Work}
 12pt text for main body.
 \pagebreak
+
+\setcounter{secnumdepth}{0}
+\section{References}
+\printbibliography[heading=none]
 
 \end{document}
 
