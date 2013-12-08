@@ -17,3 +17,5 @@ data/*
 *.toc
 *blx.bib
 *.run.xml
+*.fdb_latexmk
+*.fls
