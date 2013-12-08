@@ -13,12 +13,9 @@
 backend=bibtex,
 firstinits=true,    % Render first and middle names as initials
 maxcitenames=2,     % Use maximum 2 names in \cite before et al.
-maxbibnames=2,      % Use maximum 2 names in references before et al.
+maxbibnames=99,      % Use maximum 2 names in references before et al.
 style=authoryear,
 dashed=false,       % Re-print recurring author names in bibliography
-url=false,          % Disable urls,
-doi=false,          %   dois,
-isbn=false          %   and isbn numbers.
 ]{biblatex}
 
 % Use single quotes around titles:
@@ -96,7 +93,7 @@ This project will create a system that aims to support and enrich the informatio
 However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
 
 \subsection{Requirements}
-There are two main requirements the system in this project is aiming to fulfill. It must:
+There are two main requirements the system in this project is aiming to fulfil. It must:
 \begin{enumerate}
     \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
     \item Allow users to search for a hashtag and view related tweets, including those that don't contain that hashtag.
@@ -125,8 +122,8 @@ These points can be further expanded into a series of functional and non-functio
     \item \emph{Optional:} The system must be accessible via mobile web browsers.
 \end{itemize}
 
-\subsection{Research Questions}
-This system will provide a new way to gain further insight into how people use hashtags on Twitter, and in doing so, answer the following questions:
+\subsubsection{Interesting Questions}
+Through the creation of the system, new insights and understanding of how people use Twitter will come to light. This provides the possibility to attempt to answer optional interesting questions, such as
 \begin{itemize}
     \item Are certain types of tweet/hashtag easier to classify than others?
     \item Is it possible to make relevant hashtag suggestions using just the tweet text itself, or is other metadata needed to make the recommendations useful?
@@ -148,7 +145,7 @@ One common implementation of collaborative filtering is the so-called ``user-to-
 Another approach to provide relevant recommendations to a user is the use of content-based recommendation systems. This is a type of system that recommends items relevant to other items by comparing the details and descriptions of the items themselves. This can be extended to suggest items for a user by comparing their preferences with the descriptions of the items \parencite{Pazzani:2007}.
 
 \subsubsection{Relevance Feedback}
-Relevance feedback is a process that was originally designed for information retrieval, and works on the assumption that a user can not always correctly encapsulate int a query what it is they are searching for. It works by allowing a user to create an initial query to which an initial set of results is returned. Out of these initial results, the user can then mark certain results as relevant or irrelevant, and this information is then submitted and used to refine the original query and return more relevant results to the user \parencite{Salton:1997}.
+Relevance feedback is a process that was originally designed for information retrieval, and works on the assumption that a user can not always correctly encapsulate into a query what it is they are searching for. It works by allowing a user to create an initial query to which an initial set of results is returned. Out of these initial results, the user can then mark certain results as relevant or irrelevant, and this information is then submitted and used to refine the original query and return more relevant results to the user \parencite{Salton:1997}.
 
 Instead of limiting recommendation systems to the accuracy of their classifiers, a common approach is incorporate relevance feedback techniques. \textcite{Utiyama:2006} showed that it is possible to combine collaborative filtering, content-based filtering and relevance feedback techniques into one system to provide better recommendations.
 
@@ -180,7 +177,7 @@ Observers of social media have realised that hashtags play a dual role within th
 Twitter is a thriving metropolis of users expressing themselves on a daily (and often more frequent) basis, and has grown exponentially in size since its inception in 2006. Due to this, the data that it contains has caught the attention of researchers throughout computer science and even other disciplines. Whilst the concept of recommending hashtags is relatively unexplored, there have been many other classification experiments run with Twitter data.
 
 \subsubsection{Categorising Tweets}
-\textcite{Sriram:2010} proposed an approach to classify tweets into 5 general categories: \emph{news}, \emph{opinions}, \emph{deals}, \emph{events} and \emph{private messages}. This was achieved by using a small set of specific features from each tweet, instead of using the traditional ``Bag-Of-Words'' (BOW) text classification method. The BOW approach is centered around counting occurences of words in the text, but in the case of Twitter and its 140 character limit, it is very rare that words are actually repeated in a tweet.
+\textcite{Sriram:2010} proposed an approach to classify tweets into 5 general categories: \emph{news}, \emph{opinions}, \emph{deals}, \emph{events} and \emph{private messages}. This was achieved by using a small set of specific features from each tweet, instead of using the traditional ``Bag-Of-Words'' (BOW) text classification method. The BOW approach is centred around counting occurrences of words in the text, but in the case of Twitter and its 140 character limit, it is very rare that words are actually repeated in a tweet.
 
 \subsubsection{Categorising Users}
 Another approach to deciphering the vast quantity of data on Twitter is to classify the users themselves. Twitter has become a powerful platform for people posting content about events, and as such it would be useful to automatically establish \emph{who} is participating in these events. By taking a number of features from each user account and passing them through a K-Nearest Neighbours (KNN) algorithm, \textcite{DeChoudhury:2012} developed a system that would classify a user's behaviour into one of three categories: organisations, journalists/media bloggers and ordinary individuals.

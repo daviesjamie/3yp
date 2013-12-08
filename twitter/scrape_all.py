@@ -11,7 +11,7 @@ class MyStreamer(TwythonStreamer):
     def initialise(self, filename, numTweets):
         self.output = open(filename, 'ab+')
         self.wr = csv.writer(self.output, dialect='excel')
-        self.wr.writerow(['id','userID', 'lang', 'text', 'timestamp'])
+        self.wr.writerow(['id','userID', 'lang', 'timestamp', 'text' ])
 
         self.numTweets = numTweets
         self.tweetCount = 0
@@ -23,8 +23,8 @@ class MyStreamer(TwythonStreamer):
             tweet.append(data['id'])
             tweet.append(data['user']['id'])
             tweet.append(data['lang'])
-            tweet.append(data['text'].encode('utf-8'))
             tweet.append(data['created_at'])
+            tweet.append(data['text'].encode('utf-8').replace("\n", "\\n"))
             
             self.wr.writerow(tweet)
             self.tweetCount += 1
