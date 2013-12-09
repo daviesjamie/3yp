@@ -1,5 +1,6 @@
 \documentclass[12pt,a4paper]{article}
 
+\usepackage{float}
 \usepackage{pdflscape}
 \usepackage{parskip}
 \usepackage[hyphens]{url}
@@ -87,65 +88,22 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 \pagebreak
 
 \tableofcontents
+
 \pagebreak
 
-\section{Project Goals}
-This project will create a system that aims to support and enrich the information provided by hashtags on Twitter\footnote{\url{www.twitter.com}}. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
+\section{Introduction}
+Some introduction text.
 
-However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
-
-\subsection{Requirements}
-There are two main requirements the system in this project is aiming to fulfil. It must:
-\begin{itemize}
-    \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
-    \item Allow users to search for a hashtag and view related tweets, including those that don't contain that hashtag.
-\end{itemize}
-
-These points can be further expanded into a series of functional and non-functional requirements, concluded from the background research.
-
-\subsubsection{Functional Requirements}
-\begin{enumerate}
-    \item \label{func:publish} The system must allow the user to log in and publish tweets to their Twitter account.
-    \item \label{func:suggest} The system must provide hashtag recommendations as the user is creating a tweet.
-    \item \label{func:search} The system must perform a hashtag search through a large dataset of tweets and return all relevant tweets, including those that do not contain the search query.
-    \item \label{func:genmodel} The system must use information from a large dataset of tweets to generate a model representing each hashtag.
-    \item \label{func:compmodels} The system must be able to compare tweets against its representational hashtag models.
-    \item \label{func:stream} \emph{Optional:} The system must be able to update its classification models using information from the live Twitter stream.
-    \item \label{func:probabilities} \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet.
-\end{enumerate}
-
-\subsubsection{Non-Functional Requirements}
-\begin{enumerate}
-    \item \label{nfunc:web} The system must be accessible via a web interface.
-    \item \label{nfunc:easy} The system must be responsive and easy to use.
-    \item \label{nfunc:qsearch} The system must be able to perform searches quickly.
-    \item \label{nfunc:qsuggest} The system must be able to make hashtag recommendations quickly.
-    \item \label{nfunc:graphs} The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments.
-    \item \label{nfunc:mobile} \emph{Optional:} The system must be accessible via mobile web browsers.
-\end{enumerate}
-
-\subsection{Further Insights}
 Through the creation of the system, new insights and understanding of how people use Twitter could come to light. This provides the possibility to attempt to answer optional interesting questions, such as
 \begin{itemize}
     \item Are certain types of tweet/hashtag easier to classify than others?
     \item Is it possible to make relevant hashtag suggestions using just the tweet text itself, or is other metadata needed to make the recommendations useful?
 \end{itemize}
-\pagebreak
 
-\section{Project Risks}
-Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. Listed below are some of the issues that may occur during the project.
+\subsection{Project Goals}
+This project will create a system that aims to support and enrich the information provided by hashtags on Twitter\footnote{\url{www.twitter.com}}. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
 
-\subsection{Health Issues}
-It is possible that throughout the duration of the project serious illness or health problems may arise, meaning no work can be done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation was to arise, then the only solution would be to catch up on the work missed after recovering from the problem. However to reduce the impact of the illness, the project schedule will be followed closely, and therefore minimising the amount of work to catch-up on.
-
-\subsection{Technical Issues}
-The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur.
-
-\subsection{Scheduling Issues}
-Throughout the duration of the project, other University modules will be taking place and setting their own courseworks, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart will be updated frequently to monitor the progress and ensure the project stays on track.
-
-\subsection{Unrealistic Goals}
-Through the long-term planning and foresight required to plan a large-scale project, it is possible that the goals and functionality of the project may be more difficult to achieve than originally thought. In this case, the functionality of the project will be simplified to ensure that a core subset of the goals and features can still be achieved, in coordination with the project supervisor.
+However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
 
 \pagebreak
 
@@ -209,8 +167,37 @@ Another approach to deciphering the vast quantity of data on Twitter is to class
 
 \pagebreak
 
-\section{Report on Technical Progress}
+\section{Design}
 Aside from background reading and research, the work completed towards the project so far has been heavily grounded in data collection and analysis.
+
+\subsection{Requirements}
+There are two main requirements the system in this project is aiming to fulfil. It must:
+\begin{itemize}
+    \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
+    \item Allow users to search for a hashtag and view related tweets, including those that don't contain that hashtag.
+\end{itemize}
+
+\subsubsection{Functional Requirements}
+\begin{enumerate}
+    \item \label{func:publish} The system must allow the user to log in and publish tweets to their Twitter account.
+    \item \label{func:suggest} The system must provide hashtag recommendations as the user is creating a tweet.
+    \item \label{func:search} The system must perform a hashtag search through a large dataset of tweets and return all relevant tweets, including those that do not contain the search query.
+    \item \label{func:genmodel} The system must use information from a large dataset of tweets to generate a model representing each hashtag.
+    \item \label{func:compmodels} The system must be able to compare tweets against its representational hashtag models.
+    \item \label{func:stream} \emph{Optional:} The system must be able to update its classification models using information from the live Twitter stream.
+    \item \label{func:probabilities} \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet.
+\end{enumerate}
+
+\subsubsection{Non-Functional Requirements}
+\begin{enumerate}
+    \item \label{nfunc:web} The system must be accessible via a web interface.
+    \item \label{nfunc:easy} The system must be responsive and easy to use.
+    \item \label{nfunc:qsearch} The system must be able to perform searches quickly.
+    \item \label{nfunc:qsuggest} The system must be able to make hashtag recommendations quickly.
+    \item \label{nfunc:graphs} The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments.
+    \item \label{nfunc:mobile} \emph{Optional:} The system must be accessible via mobile web browsers.
+\end{enumerate}
+
 
 \subsection{Scraping Tweets}
 Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter. To scrape data for the initial tests and analysis, tweets were collecting from the Twitter sample public stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
@@ -233,23 +220,42 @@ After collecting the data, several small scripts were written to evaluate the tw
 
 \pagebreak
 
-\section{Future Work}
-\subsection{Constructing the Classifier}
-\subsection{Gathering Large Datasets}
-\subsection{Testing the Classifier with Large Datasets}
-\subsection{Creating the Web Interface}
+\section{Project Management}
+\subsection{Risk Analysis}
+Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. Listed below are some of the issues that may occur during the project.
+
+\subsubsection{Health Issues}
+It is possible that throughout the duration of the project serious illness or health problems may arise, meaning no work can be done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation was to arise, then the only solution would be to catch up on the work missed after recovering from the problem. However to reduce the impact of the illness, the project schedule will be followed closely, and therefore minimising the amount of work to catch-up on.
+
+\subsubsection{Technical Issues}
+The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur.
+
+\subsubsection{Scheduling Issues}
+Throughout the duration of the project, other University modules will be taking place and setting their own courseworks, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart will be updated frequently to monitor the progress and ensure the project stays on track.
+
+\subsubsection{Unrealistic Goals}
+Through the long-term planning and foresight required to plan a large-scale project, it is possible that the goals and functionality of the project may be more difficult to achieve than originally thought. In this case, the functionality of the project will be simplified to ensure that a core subset of the goals and features can still be achieved, in coordination with the project supervisor.
+
+\subsection{Project Planning}
+\begin{itemize}
+    \item Talk about agile development, testing and programming at the same time
+    \item Talk about conflicting deadlines/exams, no work scheduled for Easter
+    \item Lighter workload in Semester 1 due to high volume of coursework (IA, Graphics, Management, Scripting)
+    \item Easter is just bug fixing and report stuff, due to revision for summer exams.
+\end{itemize}
 
 \pagebreak
 
-\newgeometry{margin=1in}
 \begin{landscape}
-    \begin{figure}
+    \appendix
+    \section{Project Gantt Chart}
+    This is a Gantt chart showing the scheduled progression through the different aspects of the project.
+
+    \begin{figure}[H]
         \centering
         \includegraphics[height=0.85\textwidth]{gantt.png}
-        \caption{A Gantt chart showing the planned progression through the project.}
     \end{figure}
 \end{landscape}
-\restoregeometry
 
 \setcounter{secnumdepth}{0}
 \section{References}
