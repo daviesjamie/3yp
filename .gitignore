@@ -19,3 +19,4 @@ data/*
 *.run.xml
 *.fdb_latexmk
 *.fls
+*.tdo

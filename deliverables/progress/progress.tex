@@ -1,5 +1,6 @@
 \documentclass[12pt,a4paper]{article}
 
+\usepackage{todonotes}
 \usepackage{float}
 \usepackage{pdflscape}
 \usepackage{parskip}
@@ -46,6 +47,8 @@ dashed=false,       % Re-print recurring author names in bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\listoftodos[Todo]
+\pagebreak
 
 \begin{titlepage}
 \center
@@ -173,7 +176,7 @@ Another approach to deciphering the vast quantity of data on Twitter is to class
 
 \pagebreak
 
-\section{Design}
+\section{Analysis \& Design}
 Using knowledge gained from the background research in \autoref{sec:litreview}, the project goals described in \autoref{sec:goals} will be expanded in this section to provide an explanation of the design of the system.
 
 \subsection{Requirements}
@@ -204,10 +207,22 @@ There are two main requirements the system in this project is aiming to fulfil. 
     \item \label{nfunc:mobile} \emph{Optional:} The system must be accessible via mobile web browsers.
 \end{enumerate}
 
-\subsection{Scraping Tweets}
+\subsection{Available Tools \& Technology}
+
+To conform with the project requirements (specifically non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}), the core of the system needs to be able to run server-side. This limits the choice of programming language to a handful of possibilities, including: Javascript + Node.js\footnote{\url{http://nodejs.org/}}, PHP, Python and Java.
+
+Python has been chosen as the language of choice for the project. This is due to a number of factors:
+\begin{itemize}
+    \item Django\footnote{\url{www.djangoproject.com/}} offers a simple and flexible way of following the tradition MVC (Model-View-Controller) programming paradigm, as well as providing a pleasant interface to handling web requests.
+    \item Frameworks such as Twisted\footnote{\url{www.twistedmatrix.com}} make it easy to implement custom network applications in a scalable and efficient manner.
+    \item It has a strong developer community behind it, resulting in a large collection of available third-party libraries.
+    \item Through packages such as NumPy\footnote{\url{www.numpy.org/}}, Python has excellent support for scientific computing.
+\end{itemize}
+        
+\subsubsection{Collecting Twitter Data}
 Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter. To scrape data for the initial tests and analysis, tweets were collecting from the Twitter sample public stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
 
-By using the excellent Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
+By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
 \begin{itemize}
     \item The tweet ID
     \item The timestamp of when the tweet was created
@@ -220,8 +235,13 @@ By using the excellent Twython\footnote{\url{https://github.com/ryanmcgrath/twyt
     \item The actual text of the tweet
 \end{itemize}
 
-\subsection{Analysing the Data}
-After collecting the data, several small scripts were written to evaluate the tweets and gather some insight into the range and quality of information available across Twitter.
+\todo[inline]{Write about UserScraper approach}
+
+\subsection{Preliminary Data Analysis}
+\todo[inline]{Talk about work I've done already}
+
+\subsection{Future Work}
+\todo[inline]{Talk about work I still need to do}
 
 \pagebreak
 
@@ -236,17 +256,22 @@ It is possible that throughout the duration of the project serious illness or he
 The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur.
 
 \subsubsection{Scheduling Issues}
-Throughout the duration of the project, other University modules will be taking place and setting their own courseworks, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart will be updated frequently to monitor the progress and ensure the project stays on track.
+Throughout the duration of the project, other University modules will be taking place and setting their own coursework, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart will be updated frequently to monitor the progress and ensure the project stays on track.
 
 \subsubsection{Unrealistic Goals}
 Through the long-term planning and foresight required to plan a large-scale project, it is possible that the goals and functionality of the project may be more difficult to achieve than originally thought. In this case, the functionality of the project will be simplified to ensure that a core subset of the goals and features can still be achieved, in coordination with the project supervisor.
 
 \subsection{Project Planning}
+
+The planned work involved in the completion of this project has been carefully scheduled to maximise time, and to ensure that the components of the system are created in a logical order. The full detailed plan of the project is recorded in the project Gantt chart (\autoref{appendix:gantt}).
+
+The project will be developed using an Agile software development model, meaning that the development will be iterative and incremental, with testing running throughout the duration of the implementation phases. This approach allows the requirements, functionality and final implementation of the system to evolve over time, in response to the results of the testing.
+
+This project is running in parallel with other University modules and their respective coursework and exams. To ensure that these modules do not suffer as a result of the project, several precautions have been worked into the schedule:
 \begin{itemize}
-    \item Talk about agile development, testing and programming at the same time
-    \item Talk about conflicting deadlines/exams, no work scheduled for Easter
-    \item Lighter workload in Semester 1 due to high volume of coursework (IA, Graphics, Management, Scripting)
-    \item Easter is just bug fixing and report stuff, due to revision for summer exams.
+    \item The project as a whole has a lighter workload throughout the first semester, due to all other modules in that semester having a particularly high coursework load.
+    \item There is no work scheduled for the Christmas holiday or for the weeks directly after, due to the final exams and courseworks for other modules taking priority. This also provides a `buffer' period to catch-up on the project schedule if necessary.
+    \item There is a light workload scheduled for the Easter holiday, allowing for any over-runs the project schedule may have. This also provides time for revision and preparation for the exams at the end of the second semester.
 \end{itemize}
 
 \pagebreak
@@ -254,6 +279,7 @@ Through the long-term planning and foresight required to plan a large-scale proj
 \begin{landscape}
     \appendix
     \section{Project Gantt Chart}
+    \label{appendix:gantt}
     This is a Gantt chart showing the scheduled progression through the different aspects of the project.
 
     \begin{figure}[H]
@@ -264,7 +290,6 @@ Through the long-term planning and foresight required to plan a large-scale proj
 
 \setcounter{secnumdepth}{0}
 \section{References}
-\printbibliography[heading=none]
+{\footnotesize \printbibliography[heading=none]}
 
 \end{document}
-
