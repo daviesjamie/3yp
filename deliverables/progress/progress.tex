@@ -92,7 +92,17 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 \pagebreak
 
 \section{Introduction}
-Some introduction text.
+Collaborative tagging (sometimes referred to as social tagging) systems are designed to allow users to navigate, organise and manage online resources. The central idea behind these systems is the concept of an annotation: the action of a user applying a personalised tag to a resource. On a large scale, many of these annotations can be taken together to form a complex network of users, resources and tags --- commonly referred to as a \emph{folksonomy} \parencite{Xu:2008}.
+
+One of the most popular applications of a folksonomy is Twitter\footnote{\url{www.twitter.com}}. `Hashtags,' which are simply any combination of letters or digits preceded by a hash character (\#), afford users the ability to create free-form tags to describe the content of their posts (tweets). Tweets can be categorized with several hashtags, thereby creating networks of tweets and users and making it easy to find other related tweets, users and hashtags. This renders hashtags as a powerful tool in aiding the search and navigation of the billions of tweets contained within Twitter.
+
+Despite its numerous benefits, the hashtag system presents new challenges to overcome before they can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy confuse users and fragment the true meaning behind the synonymous hashtags.
+
+\subsection{Project Goals}
+\label{sec:goals}
+This project will create a system that aims to support and enrich the information provided by hashtags on Twitter. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
+
+However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
 
 Through the creation of the system, new insights and understanding of how people use Twitter could come to light. This provides the possibility to attempt to answer optional interesting questions, such as
 \begin{itemize}
@@ -100,14 +110,10 @@ Through the creation of the system, new insights and understanding of how people
     \item Is it possible to make relevant hashtag suggestions using just the tweet text itself, or is other metadata needed to make the recommendations useful?
 \end{itemize}
 
-\subsection{Project Goals}
-This project will create a system that aims to support and enrich the information provided by hashtags on Twitter\footnote{\url{www.twitter.com}}. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
-
-However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
-
 \pagebreak
 
 \section{Background and Literature Review}
+\label{sec:litreview}
 The main design goals behind hashtags are to categorise tweets and allow them to show up more easily in searches\footnote{\url{https://support.twitter.com/articles/49309-using-hashtags-on-twitter}}. Whilst the task that this project is aiming to complete is novel and fairly unexplored, it is well connected with other experiments, systems and projects within the research community.
 
 \subsection{Recommendation Systems}
@@ -168,7 +174,7 @@ Another approach to deciphering the vast quantity of data on Twitter is to class
 \pagebreak
 
 \section{Design}
-Aside from background reading and research, the work completed towards the project so far has been heavily grounded in data collection and analysis.
+Using knowledge gained from the background research in \autoref{sec:litreview}, the project goals described in \autoref{sec:goals} will be expanded in this section to provide an explanation of the design of the system.
 
 \subsection{Requirements}
 There are two main requirements the system in this project is aiming to fulfil. It must:
@@ -197,7 +203,6 @@ There are two main requirements the system in this project is aiming to fulfil. 
     \item \label{nfunc:graphs} The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments.
     \item \label{nfunc:mobile} \emph{Optional:} The system must be accessible via mobile web browsers.
 \end{enumerate}
-
 
 \subsection{Scraping Tweets}
 Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter. To scrape data for the initial tests and analysis, tweets were collecting from the Twitter sample public stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
