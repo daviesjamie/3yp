@@ -151,9 +151,6 @@ The current hashtag system on Twitter (\autoref{fig:twittersuggest}) uses a non-
     \caption{Twitter's current hashtag suggestion system.\label{fig:twittersuggest}}
 \end{figure}
 
-\subsubsection{Using Tweet Content to Suggest Hashtag Probabilities}
-\textcite{Mazzia:2011} used an application of a naive Bayes model to suggest hashtags by using just the content of the tweet as input. The Bayes model allows the system to calculate the probabilities of the tweet using different hashtags. This gave them suggestion correctness rates of up to 72\%, using various cross-validation data sets. They remark that a much larger training set would be required for real-world use, however.
-
 \subsubsection{Comparing Tweets To Other Tweets}
 By assuming that the primary purpose of hashtags is to categorise tweets and improve searching (as Twitter envisioned), \textcite{Zangerle:2011} created a system that recommends hashtags for a tweet by taking tweets from other tweets that are textually similar to the query. The similarity between tweets is calculated with the TF-IDF (term frequency -- inverse document frequency) model. The hashtags are then extracted from the similar tweets, ranked according to how similar the tweets were to the original query, and returned as a list of suggestions to the user. A number of different ranking algorithms were tested, but this was found to be the most successful.
 
