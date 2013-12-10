@@ -11,7 +11,6 @@
 
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
-\usepackage{todonotes}
 
 % Stretch table cell height
 \renewcommand{\arraystretch}{1.5}
@@ -53,9 +52,6 @@ dashed=false,       % Re-print recurring author names in bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\listoftodos[Todo]
-\pagebreak
-
 \begin{titlepage}
 \center
 \vspace*{3cm}
@@ -93,7 +89,7 @@ Dr. Klaus-Peter Zauner\\
 \section*{Abstract}
 One of the key characteristics of Twitter and other microblogging platforms is the use of `hashtags' --- topical/categorical annotations provided by the authors of the posts (tweets) themselves. This flexible system was designed for the effective organisation and searching of tweets, but with Twitter facing an ever-increasing number of users and tweets it is hard for users to keep track of the vast number of hashtags in popular use. This results in data from the hashtags being fragmented and inaccurate due to the users making poor or uninformed hashtag choices.
 
-If users are presented with a choice of relevant hashtags when writing a tweet, they are more likely to publish tweets with accurate tag data. This project aims to create an intelligent hashtag recommendation tool to raise the information gain from hashtags. However, whilst such a system could improve the quality of the hashtag data for future tweets, tweets that have already been published will remain untouched by the system. Thus, the system will be extended to also retrofit hashtags to published tweets --- allowing for tweets to appear in search results for a particular hashtag even if they don't actually contain the hashtag in question.
+If users are presented with a choice of relevant hashtags when writing a tweet, they are more likely to publish tweets with accurate tag data. This project aims to create an intelligent hashtag recommendation tool to improve the quality of the information we can gain from hashtags. However, whilst such a system could improve future tweets, tweets that have already been published will remain untouched by the system. Thus, the system will be extended to also retrofit hashtags to published tweets --- allowing for tweets to appear in search results for a particular hashtag even if they don't actually contain the hashtag in question.
 \pagebreak
 
 \tableofcontents
@@ -103,15 +99,15 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 \section{Introduction}
 Collaborative tagging (sometimes referred to as social tagging) systems are designed to allow users to navigate, organise and manage online resources. The central idea behind these systems is the concept of an annotation: the action of a user applying a personalised tag to a resource. On a large scale, many of these annotations can be taken together to form a complex network of users, resources and tags --- commonly referred to as a \emph{folksonomy} \parencite{Xu:2008}.
 
-One of the most popular applications of a folksonomy is Twitter\footnote{\url{www.twitter.com}}. `Hashtags,' which are simply any combination of letters or digits preceded by a hash character (\#), afford users the ability to create free-form tags to describe the content of their posts (tweets). Tweets can be categorized with several hashtags, thereby creating networks of tweets and users and making it easy to find other related tweets, users and hashtags. This renders hashtags as a powerful tool in aiding the search and navigation of the billions of tweets contained within Twitter.
+One of the most popular applications of a folksonomy is Twitter\footnote{\url{www.twitter.com}}. `Hashtags,' which are simply any combination of letters or digits preceded by a hash character (\#), afford users the ability to create free-form tags to describe the content of their posts (tweets). Tweets can be categorized with several hashtags, thereby creating networks of tweets and users, and making it easy to find other related tweets, users and hashtags. This renders hashtags as a powerful tool in aiding the search and navigation of the billions of tweets contained within Twitter.
 
-Despite its numerous benefits, the hashtag system presents new challenges to overcome before they can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy confuse users and fragment the true meaning behind the synonymous hashtags.
+Despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
 
 \subsection{Project Goals}
 \label{sec:goals}
 This project will create a system that aims to support and enrich the information provided by hashtags on Twitter. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
 
-However, as suggesting better hashtags will only improve the information gain from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
+However, as suggesting better hashtags will only improve the information gained from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
 
 Through the creation of the system, new insights and understanding of how people use Twitter could come to light. This provides the possibility to attempt to answer optional interesting questions, such as
 \begin{itemize}
@@ -149,7 +145,7 @@ Instead of limiting recommendation systems to the accuracy of their classifiers,
 Even though providing hashtag recommendations and suggestions is still a new and largely unexplored field, there have been several efforts to improve the hashtag experience for Twitter users.
 
 \subsubsection{Current Twitter Hashtag Implementation}
-The current hashtag system on Twitter (\autoref{fig:twittersuggest}) uses a non-personalised auto-complete tool to provide suggestions to the user. Whenever a hash symbol (\#) is typed in the tweet composer, the system simply suggests hashtags starting with the letters that the user has typed so far. These suggestions are chosen from a tiny subset of hashtags, taken from a mixture of the currently trending\footnote{Trending hashtags are those with the highest rise in usage within a given time period.} and from the user's history. Whilst better than not having suggestions at all, this system is only truly useful in a specific use case: when the user knows the starting letters of a trending hashtag they want to use, or are trying to recall a hashtag from they have previously used. This system does not help the user choose the correct hashtag for their tweet.
+The current hashtag system on Twitter (\autoref{fig:twittersuggest}) uses a non-personalised auto-complete tool to provide suggestions to the user. Whenever a hash symbol (\#) is typed in the tweet composer, the system simply suggests hashtags starting with the letters that the user has typed so far. These suggestions are chosen from a tiny subset of hashtags, taken from a mixture of those currently trending\footnote{Trending hashtags are those with the highest rise in usage within a given time period.} and from the user's history. Whilst better than not having suggestions at all, this system is only truly useful in one of two specific use cases: when the user knows the starting letters of a trending hashtag they want to use, or are trying to recall a hashtag that they have previously used. This system does not help the user choose the correct hashtag for the content of their tweet.
 
 \begin{figure}
     \centering
@@ -161,21 +157,21 @@ The current hashtag system on Twitter (\autoref{fig:twittersuggest}) uses a non-
 By assuming that the primary purpose of hashtags is to categorise tweets and improve searching (as Twitter envisioned), \textcite{Zangerle:2011} created a system that recommends hashtags for a tweet by taking tweets from other tweets that are textually similar to the query. The similarity between tweets is calculated with the TF-IDF (term frequency -- inverse document frequency) model. The hashtags are then extracted from the similar tweets, ranked according to how similar the tweets were to the original query, and returned as a list of suggestions to the user. A number of different ranking algorithms were tested, but this was found to be the most successful.
 
 \subsubsection{Creating Personalised Recommendations}
-After studying the advantages of providing personalised recommendations in retail situations on a per-user basis, \textcite{Kywe:2012} realised that a similar approach towards hashtags could prove fruitful. Hashtag use varies from user to user, with some users using the latest trending hashtags, other uses only using a specific set or type of tag, and with some users barely using them at all. They proposed a personalised hashtag recommendation system that considers both user preferences and the query tweet content: the system creates a ranked list of hashtags from both the most similar users and most similar tweets. This gave promising results, although it was noted that this may not be the best recommendation system for all types of tweets and hashtags.
+After studying the advantages of providing personalised recommendations in retail situations on a per-user basis, \textcite{Kywe:2012} realised that a similar approach towards hashtags could prove fruitful. Hashtag use varies from user to user, with some users using the latest trending hashtags, other users only using a specific set or type of tag, and with some users barely using them at all. They proposed a personalised hashtag recommendation system that considers both user preferences and the query tweet content: the system creates a ranked list of hashtags from both the most similar users and most similar tweets. This gave promising results, although it was noted that this may not be the best recommendation system for all types of tweets and hashtags.
 
 \textcite{Shepitsen:2008} used a hierarchical agglomerative clustering algorithm to profile users and provide personalised recommendations in collaborative tagging systems. They found that clusters of tags can be effectively used to ascertain a user's interests, which could then be used in a traditional content-based recommendation approach. This technique worked well, particularly for dense folksonomies such as Last.fm.
 
 \subsubsection{Overcoming Hashtag Duality}
-Observers of social media have realised that hashtags play a dual role within the online microblogging communities, such as Twitter. On one hand, hashtags fulfil the design goals that Twitter created them to accomplish (bookmarking and improving search); on the other hand, however, they serve as a badge of community membership, connecting users together. \textcite{Yang:2012} took this duality into account when attempting to create a hashtag recommendation system by training a SVM (support vector machine) classifier with a variety of features taken from the tweet metadata to overcome the duality and suggest relevant hashtags.
+Observers of social media have realised that hashtags play a dual role within the online microblogging communities, such as Twitter. On one hand, hashtags fulfil the design goals that Twitter created them to accomplish (bookmarking and improving search); on the other hand, however, they serve as a badge of community membership: connecting users together. \textcite{Yang:2012} took this duality into account when attempting to create a hashtag recommendation system by training a SVM (support vector machine) classifier with a variety of features taken from the tweet metadata to overcome the duality and suggest relevant hashtags.
 
 \subsection{Broader Classification in Twitter}
-Twitter is a thriving\footnote{\url{www.bloomberg.com/news/2013-10-15/twitter-revenue-more-than-doubles-in-third-quarter.html}} metropolis of users expressing themselves on a daily (and often more frequent) basis, and has grown exponentially in size since its inception in 2006. Due to this, the data that it contains has caught the attention of researchers throughout computer science and even other disciplines. Whilst the concept of recommending hashtags is relatively unexplored, there have been many other classification experiments run with Twitter data.
+Twitter is a thriving metropolis of users expressing themselves on a daily (and often more frequent) basis, and has grown exponentially\footnote{\url{www.bloomberg.com/news/2013-10-15/twitter-revenue-more-than-doubles-in-third-quarter.html}} in size since its inception in 2006. Due to this, the data that it contains has caught the attention of researchers throughout computer science and even other disciplines. Whilst the concept of recommending hashtags is relatively unexplored, there have been many other classification experiments run with Twitter data.
 
 \subsubsection{Categorising Tweets}
-\textcite{Sriram:2010} proposed an approach to classify tweets into 5 general categories: \emph{news}, \emph{opinions}, \emph{deals}, \emph{events} and \emph{private messages}. This was achieved by using a small set of specific features from each tweet, instead of using the traditional ``Bag-Of-Words'' (BOW) text classification method. The BOW approach is centred around counting occurrences of words in the text, but in the case of Twitter and its 140 character limit, it is very rare that words are actually repeated in a tweet.
+\textcite{Sriram:2010} proposed an approach to classify tweets into 5 general categories: \emph{news}, \emph{opinions}, \emph{deals}, \emph{events} and \emph{private messages}. This was achieved by training a classifier using a small set of specific features from each tweet, instead of using the traditional ``Bag-Of-Words'' (BOW) text classification method. The BOW approach is centred around counting occurrences of words in the text, but in the case of Twitter and its 140 character limit, it is very rare that words are actually repeated in a tweet.
 
 \subsubsection{Categorising Users}
-Another approach to deciphering the vast quantity of data on Twitter is to classify the users themselves. Twitter has become a powerful platform for people posting content about events, and as such it would be useful to automatically establish \emph{who} is participating in these events. By taking a number of features from each user account and passing them through a K-Nearest Neighbours (KNN) algorithm, \textcite{DeChoudhury:2012} developed a system that would classify a user's behaviour into one of three categories: organisations, journalists/media bloggers and ordinary individuals.
+Another approach to deciphering the vast quantity of data on Twitter is to classify the users themselves. Twitter has become a powerful platform for people posting content about events, and as such it would be useful to automatically establish \emph{who} is participating in these events. By taking a number of features from each user account and passing them through a K-Nearest Neighbours (KNN) algorithm, \textcite{DeChoudhury:2012} developed a system that would classify a user's behaviour into one of three categories: \emph{organisations},\emph{journalists/media bloggers} and \emph{ordinary individuals}.
 
 \pagebreak
 
@@ -212,7 +208,7 @@ There are two main requirements the system in this project is aiming to fulfil. 
 
 \subsection{Available Tools \& Technology}
 
-To conform with the project requirements (specifically non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}), the core of the system needs to be able to run server-side. This limits the choice of programming language to a handful of possibilities, including: Javascript + Node.js\footnote{\url{http://nodejs.org/}}, PHP, Python and Java.
+To conform with the project requirements (specifically non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}), the core of the system be executable in a server-side environment. This limits the choice of programming language to a handful of possibilities, including: Javascript + Node.js\footnote{\url{http://nodejs.org/}}, PHP, Python and Java.
 
 Python has been chosen as the language of choice for the project. This is due to a number of factors:
 \begin{itemize}
@@ -227,7 +223,7 @@ Twitter offers two APIs with which to access users' tweets: a REST API\footnote{
 
 To scrape a data corpus of random tweets, tweets can be collected from the Twitter public sample stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
 
-Another approach would be to scrape a data corpus of all tweets belong to a set of users. This could be achieved by directly querying the Twitter API for all tweets belonging to each user, one at a time. However, free access to the Twitter API is limited, and this would very quickly consume the quota of the free API access. Instead, another approach could be to create a new user account on Twitter and have that account follow each user that is in the set of users to scrape. The Twitter API can then be used to scrape the personal timeline of the new user account, thus avoiding the query quotas.
+Another approach would be to scrape a data corpus of all tweets belonging to a set of users. This could be achieved by directly querying the Twitter API for all tweets belonging to each user, one at a time. However, free access to the Twitter API is limited, and this would very quickly consume the allowed query quota. Instead, another approach could be to create a new user account on Twitter and have that account follow each user that is in the set of users to scrape. The Twitter API can then be used to scrape the personal timeline of the new user account, thus avoiding the query quotas.
 
 \subsection{Preliminary Data Analysis}
 By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 random tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
@@ -243,9 +239,9 @@ By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} libr
     \item The actual text of the tweet
 \end{itemize}
 
-Through the use of some simple Python scripts and manual inspection, several interesting observations have been made. The more detailed list of the top hashtags in the dataset is available in \autoref{appendix:hashtags}.
+Through the use of some simple Python scripts and manual inspection, several interesting observations have been made. A more detailed list of the top hashtags in the dataset is available in \autoref{appendix:hashtags}.
 
-The most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags and their number of occurrences --- despite them all having exactly the same meaning.
+The most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags taken from the dataset and their number of occurrences. Despite them all having exactly the same meaning, the use of the tags is wide-spread --- providing proof of the problem that this project is aiming to tackle.
 
 \begin{table}[H]
     \centering
@@ -268,7 +264,7 @@ The most overwhelming observation is the quantity of redundant hashtags in use t
     \label{tbl:redundancy}
 \end{table}
 
-Another interesting observation is that the times that different hashtags are used varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Figure \autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Figure \autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
+Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Figure \autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Figure \autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
 
 \emph{Note:} The drop-offs in the first and last 6 hours on either side of the graphs are due to the way that the data has been accumulated over time. As the scraping script was not started nor finished at a precise interval of 6 hours (as displayed on the graphs), there are far fewer occurrences of the hashtags than there should be at the start and end of the scraping period.
 
@@ -303,10 +299,10 @@ Every large-scale project has to face a number of uncertain factors that could i
 It is possible that throughout the duration of the project serious illness or health problems may arise, meaning no work can be done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation was to arise, then the only solution would be to catch up on the work missed after recovering from the problem. However to reduce the impact of the illness, the project schedule will be followed closely, and therefore minimising the amount of work to catch-up on.
 
 \subsubsection{Technical Issues}
-The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur.
+The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur. Further to this, development will take place on a number of different machines throughout the course of the project. Due to the decentralised nature of the git version control tool, this means that each individual machine will also hold a separate copy of the work.
 
 \subsubsection{Scheduling Issues}
-Throughout the duration of the project, other University modules will be taking place and setting their own coursework, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart will be updated frequently to monitor the progress and ensure the project stays on track.
+Throughout the duration of the project, other University modules will be taking place and setting their own coursework, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart (\autoref{appendix:gantt}) will be updated frequently to monitor the progress and ensure the project stays on track.
 
 \subsubsection{Unrealistic Goals}
 Through the long-term planning and foresight required to plan a large-scale project, it is possible that the goals and functionality of the project may be more difficult to achieve than originally thought. In this case, the functionality of the project will be simplified to ensure that a core subset of the goals and features can still be achieved, in coordination with the project supervisor.
