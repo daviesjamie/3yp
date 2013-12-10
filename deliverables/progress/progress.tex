@@ -1,6 +1,5 @@
 \documentclass[12pt,a4paper]{article}
 
-\usepackage{todonotes}
 \usepackage{float}
 \usepackage{pdflscape}
 \usepackage{parskip}
@@ -8,7 +7,14 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=3.5cm]{geometry}
 \usepackage{graphicx}
+\usepackage{subfigure}
+
 \usepackage[bottom]{footmisc}
+\usepackage{longtable}
+\usepackage{todonotes}
+
+% Stretch table cell height
+\renewcommand{\arraystretch}{1.5}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BIBLATEX SETTINGS
@@ -217,9 +223,14 @@ Python has been chosen as the language of choice for the project. This is due to
 \end{itemize}
         
 \subsubsection{Collecting Twitter Data}
-Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter. To scrape data for the initial tests and analysis, tweets were collecting from the Twitter sample public stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
+Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter.
 
-By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
+To scrape a data corpus of random tweets, tweets can be collected from the Twitter public sample stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
+
+Another approach would be to scrape a data corpus of all tweets belong to a set of users. This could be achieved by directly querying the Twitter API for all tweets belonging to each user, one at a time. However, free access to the Twitter API is limited, and this would very quickly consume the quota of the free API access. Instead, another approach could be to create a new user account on Twitter and have that account follow each user that is in the set of users to scrape. The Twitter API can then be used to scrape the personal timeline of the new user account, thus avoiding the query quotas.
+
+\subsection{Preliminary Data Analysis}
+By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 random tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
 \begin{itemize}
     \item The tweet ID
     \item The timestamp of when the tweet was created
@@ -232,13 +243,55 @@ By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} libr
     \item The actual text of the tweet
 \end{itemize}
 
-\todo[inline]{Write about UserScraper approach}
+Through the use of some simple Python scripts and manual inspection, several interesting observations have been made. The more detailed list of the top hashtags in the dataset is available in \autoref{appendix:hashtags}.
 
-\subsection{Preliminary Data Analysis}
-\todo[inline]{Talk about work I've done already}
+The most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags and their number of occurrences --- despite them all having exactly the same meaning.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{| l | l |}
+        \hline
+        \textbf{Hashtag} & \textbf{Number of Occurrences} \\
+        \hline \hline
+        \#peopleschoice & 94849 \\ \hline
+        \#peopieschoice & 2043 \\ \hline
+        \#peoplechoice  & 439 \\ \hline
+        \#peoplesch     & 287 \\ \hline
+        \#peopleschoi   & 269 \\ \hline
+        \#peoplesc      & 230 \\ \hline
+        \#peoplescho    & 219 \\ \hline
+        \#peolpeschoice & 164 \\ \hline
+        \#peopleschioce & 137 \\ \hline
+        \#pca           & 94 \\ \hline
+    \end{tabular}
+    \caption{Occurrences of hashtags referring to the People's Choice Awards}
+    \label{tbl:redundancy}
+\end{table}
+
+Another interesting observation is that the times that different hashtags are used varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Figure \autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Figure \autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
+
+\emph{Note:} The drop-offs in the first and last 6 hours on either side of the graphs are due to the way that the data has been accumulated over time. As the scraping script was not started nor finished at a precise interval of 6 hours (as displayed on the graphs), there are far fewer occurrences of the hashtags than there should be at the start and end of the scraping period.
+
+\begin{figure}[H]
+    \centering
+    \subfigure[\#android]{
+        \includegraphics[width=0.95\textwidth]{android}
+        \label{fig:android}
+    }
+
+    \subfigure[\#blackfriday]{
+        \includegraphics[width=0.95\textwidth]{blackfriday}
+        \label{fig:blackfriday}
+    }
+    \caption{Usage of hashtags over the period that the dataset was collected.}
+\end{figure}
 
 \subsection{Future Work}
-\todo[inline]{Talk about work I still need to do}
+Now that the background research is complete and some initial observations have been made about the usage of hashtags on Twitter, the next step in the project is to experiment with different clustering and classification techniques to create an optimal content-based recommendation engine for hashtags.
+
+After the recommendation engine has been constructed, it will then be used as the core framework during the implementation of the two main features of the system: suggesting hashtags whilst composing a tweet, and enhancing hashtag search functionality by expanding the initial query to include other relevant hashtags.
+
+Finally, after the above has been completed, it will then be time to create the web-based user interface and connect the client-side interface with the server-side backend code.
 
 \pagebreak
 
@@ -284,6 +337,69 @@ This project is running in parallel with other University modules and their resp
         \includegraphics[height=0.85\textwidth]{gantt.png}
     \end{figure}
 \end{landscape}
+
+\section{Hashtags in Testing Dataset}
+\label{appendix:hashtags}
+The table below lists the 50 most popular hashtags in the dataset of 500,000 random tweets that were collected for the initial tests and analysis in the period Monday 2nd December - Thursday 5th December 2013.
+\begin{longtable}{| l | l |}
+    \hline
+    \textbf{Hashtag} & \textbf{Number of Occurrences} \\
+    \hline \hline
+    \#peopleschoice             &   94849   \\ \hline
+    \#mtvstars                  &   40677   \\ \hline
+    \#femaleartist              &   17801   \\ \hline
+    \#gameinsight               &   12958   \\ \hline
+    \#breakoutartist            &   11036   \\ \hline
+    \#popartist                 &   10214   \\ \hline
+    \#musicfans                 &   10152   \\ \hline
+    \#chemistry                 &   9781    \\ \hline
+    \#scifiactor                &   8394    \\ \hline
+    \#musicvideo                &   7962    \\ \hline
+    \#teamfollowback            &   7664    \\ \hline
+    \#android                   &   7380    \\ \hline
+    \#retweet                   &   7195    \\ \hline
+    \#androidgames              &   7128    \\ \hline
+    \#voicesave                 &   5429    \\ \hline
+    \#ipad                      &   4711    \\ \hline
+    \#dramatictvactress         &   4426    \\ \hline
+    \#ipadgames                 &   4419    \\ \hline
+    \#scifitv                   &   4104    \\ \hline
+    \#allthatmattersmusicvideo  &   3801    \\ \hline
+    \#rt                        &   3362    \\ \hline
+    \#cabletvdrama              &   3075    \\ \hline
+    \#tvcrimedrama              &   3045    \\ \hline
+    \#nowplaying                &   2953    \\ \hline
+    \#scifiactress              &   2869    \\ \hline
+    \#comedictvactor            &   2840    \\ \hline
+    \#band                      &   2749    \\ \hline
+    \#tvbromance                &   2681    \\ \hline
+    \#comedicmovieactress       &   2636    \\ \hline
+    \#tvgalpals                 &   2562    \\ \hline
+    \#teamretweet               &   2508    \\ \hline
+    \#movieactress              &   2327    \\ \hline
+    \#newtvdrama                &   2310    \\ \hline
+    \#follow2befollowed         &   2304    \\ \hline
+    \#win                       &   2252    \\ \hline
+    \#pocketphoto               &   2047    \\ \hline
+    \#peopieschoice             &   2043    \\ \hline
+    \#tfbjp                     &   2040    \\ \hline
+    \#iphone                    &   2027    \\ \hline
+    \#allthatmatersmusicvideo   &   2022    \\ \hline
+    \#givingtuesday             &   1962    \\ \hline
+    \#wcw                       &   1924    \\ \hline
+    \#oomf                      &   1896    \\ \hline
+    \#openfollow                &   1832    \\ \hline
+    \#np                        &   1736    \\ \hline
+    \#iphonegames               &   1690    \\ \hline
+    \#cabletvactress            &   1676    \\ \hline
+    \#maleartist                &   1670    \\ \hline
+    \#christmas                 &   1670    \\ \hline
+    \#news                      &   1663    \\ \hline
+
+    \caption{The most popular hashtags in the initial testing dataset.}
+    \label{tbl:hashtags}
+\end{longtable}
+
 
 \setcounter{secnumdepth}{0}
 \section{References}
