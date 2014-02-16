@@ -8,6 +8,9 @@ oauth.json
 # Ignore Pycharm project
 .idea/
 
+# Python ignores
+*.pyc
+
 # Latex ignores
 *.aux
 *.bbl
