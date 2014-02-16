@@ -2,11 +2,11 @@
 .venv
 env/
 
-# Data ignores
-data/*
-!data/example-tweet-data.txt
-!data/count_hashtags.txt
-!data/hashtags.txt
+# Ignore private credentials
+oauth.json
+
+# Ignore Pycharm project
+.idea/
 
 # Latex ignores
 *.aux
