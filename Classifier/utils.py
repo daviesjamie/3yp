@@ -1,5 +1,3 @@
-__author__ = 'Jamie Davies'
-
 import json
 
 
