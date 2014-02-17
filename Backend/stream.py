@@ -31,14 +31,14 @@ class AbstractStream:
         """
         Transforms the stream by only keeping items that match the supplied predicate.
         """
-        return FilterStream(predicate)
+        return FilterStream(self, predicate)
 
     def map(self, function):
         """
         Transforms the stream by applying the supplied function to each item in the stream,
         thus creating a new stream.
         """
-        return MapStream(function)
+        return MapStream(self, function)
 
     @abc.abstractmethod
     def has_next(self):
@@ -88,7 +88,7 @@ class MapStream(AbstractStream):
     """
     A stream created by applying a Function to the elements in another stream.
     """
-    
+
     def __init__(self, source, function):
         self.source = source
         self.function = function
@@ -98,3 +98,33 @@ class MapStream(AbstractStream):
 
     def next(self):
         return self.function.apply(self.source.next)
+
+
+class Operation:
+    """
+    Defines an operation that can be applied to an object.
+    """
+
+    @abc.abstractmethod
+    def perform(self, obj):
+        pass
+
+
+class Predicate:
+    """
+    Used to apply a boolean test to an object, to determine if it meets some set criteria.
+    """
+
+    @abc.abstractmethod
+    def test(self, obj):
+        pass
+
+
+class Function:
+    """
+    Applies a function to some input, producing an appropriate result.
+    """
+
+    @abc.abstractmethod
+    def apply(self, input):
+        pass
