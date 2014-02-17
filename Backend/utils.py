@@ -1,4 +1,13 @@
 import json
+from stream import Operation
+
+
+class PrintTweetOperation(Operation):
+    """
+    Simple operation to print the text of a tweet.
+    """
+    def perform(self, obj):
+        print obj['text']
 
 
 def _load_credentials(cred_file):
@@ -8,7 +17,9 @@ def _load_credentials(cred_file):
 
 
 def credentials(cred_file):
-    """Fetches OAuth credentials from a JSON file."""
+    """
+    Fetches OAuth credentials from a JSON file.
+    """
 
     creds = _load_credentials(cred_file)
     app_key = creds['APP_KEY']
