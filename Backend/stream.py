@@ -19,13 +19,13 @@ class AbstractStream:
         if limit != 0:
             count = 0
             while self.has_next():
-                operation.perform(next())
+                operation.perform(self.next())
                 count += 1
                 if count >= limit:
                     break
         else:
             while self.has_next():
-                operation.perform(next())
+                operation.perform(self.next())
 
     def filter(self, predicate):
         """
