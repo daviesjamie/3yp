@@ -64,7 +64,7 @@ class FilterStream(AbstractStream):
         self.obj = None
 
     def has_next(self):
-        if self.obj:
+        if self.obj is not None:
             return True
 
         while self.source.has_next():
