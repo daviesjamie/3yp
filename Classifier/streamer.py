@@ -69,5 +69,5 @@ class Streamer(TwythonStreamer):
 
 
 if __name__ == '__main__':
-    stream = Streamer(*credentials("oauth.json"))
-    stream.statuses.sample()
+    streamer = Streamer(*credentials("oauth.json"))
+    streamer.statuses.sample()

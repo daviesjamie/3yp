@@ -4,6 +4,7 @@ import sys
 from twython import Twython, TwythonError
 from utils import credentials
 
+
 class Searcher:
 
     def __init__(self, app_key, app_secret, access_token, access_token_secret, limit=100):
