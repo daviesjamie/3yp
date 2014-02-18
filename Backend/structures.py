@@ -1,7 +1,37 @@
 import abc
 
+class Operation:
+    """
+    Defines an operation that can be applied to items in a stream.
+    """
 
-class StreamQueue:
+    @abc.abstractmethod
+    def perform(self, obj):
+        pass
+
+
+class Predicate:
+    """
+    Used to apply a boolean test to items in a stream, to determine if it meets some set
+    criteria.
+    """
+
+    @abc.abstractmethod
+    def test(self, obj):
+        pass
+
+
+class Function:
+    """
+    Applies a function to items in a stream, producing an appropriate result.
+    """
+
+    @abc.abstractmethod
+    def apply(self, input):
+        pass
+
+
+class BufferedQueue:
     """
     Abstract implementation of a queue with a finite capacity. If the queue becomes full and
     further items are added, then those elements are dropped. In addition, if an item is

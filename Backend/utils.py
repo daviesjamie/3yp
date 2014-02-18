@@ -1,5 +1,5 @@
 import json
-from stream import Operation
+from structures import Operation
 
 
 class PrintTweetOperation(Operation):
