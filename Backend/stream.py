@@ -100,31 +100,35 @@ class MapStream(AbstractStream):
         return self.function.apply(self.source.next)
 
 
-class Operation:
+class BufferedStream(AbstractStream):
     """
-    Defines an operation that can be applied to an object.
-    """
+    Base implementation of an AbstractStream that uses a BufferedQueue as its internal buffer.
 
-    @abc.abstractmethod
-    def perform(self, obj):
-        pass
-
-
-class Predicate:
-    """
-    Used to apply a boolean test to an object, to determine if it meets some set criteria.
+    This class is designed for use with live data sources that may produce data faster than it
+    can be consumed, as the internal BufferedQueue will drop items that aren't consumed (i.e,
+    removed from the queue) fast enough.
     """
 
-    @abc.abstractmethod
-    def test(self, obj):
-        pass
+    def __init__(self, buffer):
+        self.buffer = buffer
+        self.connected = True
 
+    def register(self, item):
+        """
+        Attempts to 'register' an item with the BufferedStream by offering it to the
+        BufferedQueue. Returns True if the item was successfully published to the stream, or False
+        if it wasn't.
+        """
+        return self.buffer.offer(item)
 
-class Function:
-    """
-    Applies a function to some input, producing an appropriate result.
-    """
+    def disconnect(self):
+        """
+        Closes the stream (by making has_next() return false)
+        """
+        self.connected = False
 
-    @abc.abstractmethod
-    def apply(self, input):
-        pass
+    def has_next(self):
+        return self.connected
+
+    def next(self):
+        return buffer.take()
