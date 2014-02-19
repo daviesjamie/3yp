@@ -1,4 +1,6 @@
 import abc
+from collections import deque
+from multiprocessing import Lock
 
 class Operation:
     """
@@ -72,3 +74,28 @@ class BufferedQueue:
         constraints).
         """
         pass
+
+
+class DequeBufferedQueue(BufferedQueue):
+    def __init__(self, capacity):
+        self.queue = deque([], capacity)
+
+    def offer(self, item):
+        if len(self.queue) < self.queue.maxlen:
+            self.queue.appendleft(item)
+            return True
+
+        return False
+
+    def put(self, item):
+        self.queue.appendleft(item)
+
+    def take(self):
+        # FIXME: This is probably a bad way of waiting for the list to be populated!
+        while len(self.queue) == 0:
+            pass
+
+        return self.queue.pop()
+
+    def remaining_capacity(self):
+        return self.queue.maxlen - len(self.queue)
