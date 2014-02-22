@@ -51,15 +51,6 @@ class BufferedQueue:
         pass
 
     @abc.abstractmethod
-    def put(self, item):
-        """
-        Inserts the specified element into the queue. If this cannot be done without immediately
-        violating capacity restrictions, then the oldest item in the queue is dropped (and
-        returned) to make space for this one.
-        """
-        pass
-
-    @abc.abstractmethod
     def take(self):
         """
         Retrieves and removes the head of this queue, waiting if necessary until an element
