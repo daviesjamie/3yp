@@ -109,9 +109,9 @@ class BufferedStream(AbstractStream):
     removed from the queue) fast enough.
     """
 
-    def __init__(self, buffer):
-        self.buffer = buffer
-        self.connected = True
+    def __init__(self, buf):
+        self.buf = buf
+        self.connected = False
 
     def register(self, item):
         """
@@ -119,11 +119,11 @@ class BufferedStream(AbstractStream):
         BufferedQueue. Returns True if the item was successfully published to the stream, or False
         if it wasn't.
         """
-        return self.buffer.offer(item)
+        return self.buf.offer(item)
 
     def disconnect(self):
         """
-        Closes the stream (by making has_next() return false)
+        Closes the stream (by making has_next() return False)
         """
         self.connected = False
 
@@ -131,4 +131,4 @@ class BufferedStream(AbstractStream):
         return self.connected
 
     def next(self):
-        return buffer.take()
+        return self.buf.take()
