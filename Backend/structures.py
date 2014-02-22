@@ -1,6 +1,7 @@
 import abc
-from collections import deque
-from multiprocessing import Lock
+import multiprocessing
+import Queue
+
 
 class Operation:
     """
@@ -67,26 +68,21 @@ class BufferedQueue:
         pass
 
 
-class DequeBufferedQueue(BufferedQueue):
+class QueueBufferedQueue(BufferedQueue):
     def __init__(self, capacity):
-        self.queue = deque([], capacity)
+        self.max_size = capacity
+        self.queue = multiprocessing.Queue(capacity)
 
     def offer(self, item):
-        if len(self.queue) < self.queue.maxlen:
-            self.queue.appendleft(item)
-            return True
+        try:
+            self.queue.put(item, False)
+        except Queue.Full:
+            return False
 
-        return False
-
-    def put(self, item):
-        self.queue.appendleft(item)
+        return True
 
     def take(self):
-        # FIXME: This is probably a bad way of waiting for the list to be populated!
-        while len(self.queue) == 0:
-            pass
-
-        return self.queue.pop()
+        return self.queue.get(True)
 
     def remaining_capacity(self):
-        return self.queue.maxlen - len(self.queue)
+        return self.remaining_capacity() - self.queue.qsize()
