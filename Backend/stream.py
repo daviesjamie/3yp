@@ -121,6 +121,13 @@ class BufferedStream(AbstractStream):
         """
         return self.buf.offer(item)
 
+    def connect(self):
+        """
+        Opens the streaming connection to the data source (makes has_next() return True)
+        """
+        self.connected = True
+        print "connect()"
+
     def disconnect(self):
         """
         Closes the stream (by making has_next() return False)
