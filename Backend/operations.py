@@ -23,8 +23,8 @@ class PrintTweetOperation(Operation):
     Simple operation to print the text of a tweet.
     """
     def perform(self, obj):
-        print '@{user}: {text}'.format(user=obj['user']['screen_name'], text=obj['text'])
-
+        print u'@{user}: {text}'.format(user=obj['user']['screen_name'], text=obj['text'])
+        # print '@' + obj['user']['screen_name'] + ': ' + obj['text']
 
 class PrintJSONOperation(Operation):
     """
