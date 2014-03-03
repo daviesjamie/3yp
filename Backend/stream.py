@@ -45,12 +45,14 @@ class AbstractStream:
         """
         Tests to see if there are any items left in the stream to consume.
         """
+        pass
 
     @abc.abstractmethod
     def next(self):
         """
         Fetches the next item in the stream.
         """
+        pass
 
 
 class FilterStream(AbstractStream):
