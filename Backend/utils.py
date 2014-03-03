@@ -1,6 +1,6 @@
 import json
 from structures import Operation, Function
-from twokenise import tokenize
+from twokenize import tokenize
 
 
 class PrintTweetOperation(Operation):
