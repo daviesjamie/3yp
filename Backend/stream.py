@@ -67,7 +67,7 @@ class FilterStream(AbstractStream):
         if self.obj is not None:
             return True
 
-        while self.source.has_next():
+        while self.source.has_next() and self.obj is None:
             self.obj = self.source.next()
             if not self.filter.test(self.obj):
                 self.obj = None
