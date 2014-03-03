@@ -1,5 +1,6 @@
 import json
-from structures import Operation
+from structures import Operation, Function
+from twokenise import tokenize
 
 
 class PrintTweetOperation(Operation):
@@ -9,6 +10,22 @@ class PrintTweetOperation(Operation):
     def perform(self, obj):
         print obj['text']
 
+
+class TokenizeTweetMapping(Function):
+    """
+    Takes in a tweet JSON object and tokenizes the tweet text using Brendan O'Connor's
+    "twokenizer".
+    """
+    def apply(self, input):
+        return tokenize(input['text'])
+
+
+class PrintOperation(Operation):
+    """
+    Simple operation to print whatever input is supplied. Used for testing purposes only.
+    """
+    def perform(self, obj):
+        print obj
 
 def _load_credentials(cred_file):
     with open(cred_file) as f:

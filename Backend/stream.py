@@ -68,7 +68,7 @@ class FilterStream(AbstractStream):
             return True
 
         while self.source.has_next():
-            self.obj = self.source.next
+            self.obj = self.source.next()
             if not self.filter.test(self.obj):
                 self.obj = None
 
@@ -97,7 +97,7 @@ class MapStream(AbstractStream):
         return self.source.has_next()
 
     def next(self):
-        return self.function.apply(self.source.next)
+        return self.function.apply(self.source.next())
 
 
 class BufferedStream(AbstractStream):
