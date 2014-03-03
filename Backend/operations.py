@@ -26,6 +26,7 @@ class PrintTweetOperation(Operation):
         print u'@{user}: {text}'.format(user=obj['user']['screen_name'], text=obj['text'])
         # print '@' + obj['user']['screen_name'] + ': ' + obj['text']
 
+
 class PrintJSONOperation(Operation):
     """
     Simple operation to pretty-print JSON input. Used for testing purposes only.
