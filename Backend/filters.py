@@ -1,14 +1,6 @@
 from structures import Predicate
 
 
-class TruePredicate(Predicate):
-    """
-    Simple predicate that always returns True. Used for testing purposes only.
-    """
-    def test(self, obj):
-        return True
-
-
 class TweetsWithHashtagsPredicate(Predicate):
     """
     Filters tweets to only include those that contain hashtags.

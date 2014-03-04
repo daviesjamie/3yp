@@ -1,16 +1,15 @@
-from functions import TokenizeTweetFunction
-from operations import PrintTweetOperation, PrintOperation
-from predicates import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate, TruePredicate
-from twitter import TweetStream
-from utils import credentials
+from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
+from input import TweetStream
+from output import PrintTweetOperation
 from structures import QueueBufferedQueue
+from utils import credentials
 
 twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
 twitter.connect()
 
 twitter \
     .filter(TweetsWithHashtagsPredicate()) \
-    .filter(TruePredicate()) \
+    .filter(TweetsInEnglishPredicate()) \
     .for_each(PrintTweetOperation(), 10)
 
 twitter.disconnect()
