@@ -3,7 +3,7 @@ import multiprocessing
 import Queue
 
 
-class Operation:
+class Operation(object):
     """
     Defines an operation that can be applied to items in a stream.
     """
@@ -13,7 +13,7 @@ class Operation:
         pass
 
 
-class Predicate:
+class Predicate(object):
     """
     Used to apply a boolean test to items in a stream, to determine if it meets some set
     criteria.
@@ -24,7 +24,7 @@ class Predicate:
         pass
 
 
-class Function:
+class Function(object):
     """
     Applies a function to items in a stream, producing an appropriate result.
     """
@@ -34,7 +34,7 @@ class Function:
         pass
 
 
-class BufferedQueue:
+class BufferedQueue(object):
     """
     Abstract implementation of a queue with a finite capacity. If the queue becomes full and
     further items are added, then those elements are dropped. In addition, if an item is

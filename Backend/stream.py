@@ -1,7 +1,7 @@
 import abc
 
 
-class AbstractStream:
+class AbstractStream(object):
     """
     Abstract implementation of a read-only stream.
     """
