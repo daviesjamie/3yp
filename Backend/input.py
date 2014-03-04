@@ -6,6 +6,9 @@ from stream import BufferedStream, AbstractStream
 
 
 class TweetStream(BufferedStream):
+    """
+    Publishes tweets fetched from the Twitter Sample stream to a BufferedStream for processing.
+    """
     def __init__(self, buf, app_key, app_secret, access_token, access_token_secret):
         super(TweetStream, self).__init__(buf)
         self.source = self.TweetSource(self, app_key, app_secret, access_token,
@@ -24,6 +27,9 @@ class TweetStream(BufferedStream):
         self.worker.terminate()
 
     class TweetSource(TwythonStreamer):
+        """
+        Acts as the 'listener' to the official Twitter Sample stream.
+        """
         def __init__(self, publish_stream, app_key, app_secret, access_token, access_token_secret):
             super(TweetStream.TweetSource, self).__init__(app_key, app_secret, access_token,
                                                           access_token_secret)

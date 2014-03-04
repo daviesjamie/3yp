@@ -69,6 +69,9 @@ class BufferedQueue(object):
 
 
 class QueueBufferedQueue(BufferedQueue):
+    """
+    Implementation of a BufferedQueue using Python's Queue library as the backing data structure.
+    """
     def __init__(self, capacity):
         self.max_size = capacity
         self.queue = multiprocessing.Queue(capacity)

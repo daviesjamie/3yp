@@ -3,7 +3,7 @@ import abc
 
 class AbstractStream(object):
     """
-    Abstract implementation of a read-only stream.
+    Abstract implementation of a read-only data stream.
     """
 
     __metaclass__ = abc.ABCMeta
