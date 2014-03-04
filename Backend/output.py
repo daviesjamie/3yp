@@ -12,3 +12,6 @@ class JSONOutputOperation(Operation):
 
     def perform(self, obj):
         self.output.write(unicode(json.dumps(obj, ensure_ascii=False) + "\n"))
+
+    def __del__(self):
+        self.output.close()

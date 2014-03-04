@@ -65,3 +65,6 @@ class JSONInputStream(AbstractStream):
         self.next_line = None
 
         return to_return
+
+    def __del__(self):
+        self.input.close()
