@@ -62,7 +62,7 @@ class FilterStream(AbstractStream):
 
     def __init__(self, source, predicate):
         self.source = source
-        self.filter = predicate
+        self.predicate = predicate
         self.obj = None
 
     def has_next(self):
@@ -71,7 +71,7 @@ class FilterStream(AbstractStream):
 
         while self.source.has_next() and self.obj is None:
             self.obj = self.source.next()
-            if not self.filter.test(self.obj):
+            if not self.predicate.test(self.obj):
                 self.obj = None
 
         return self.obj is not None
