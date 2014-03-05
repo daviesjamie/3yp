@@ -1,3 +1,4 @@
+import pprint
 from structures import Function, Operation
 from twokenize import tokenize
 
@@ -11,10 +12,10 @@ class TokenizeTweetFunction(Function):
         return tokenize(input['text'])
 
 
-class TrainClassifierOperation(Operation):
+class Classifier(object):
     """
-    Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
-    each non-hashtag token is associated with a hashtag.
+    A naive bayes classifier that uses an internal model of the counts of hashtags appearing for
+    each given token to calculate the probability of a hashtag given a token.
 
     For example, given the tweet:
     "Such a great day! #sunny #sohappy"
@@ -35,23 +36,35 @@ class TrainClassifierOperation(Operation):
         self.fc = {}
         self.count = 0
 
-    def perform(self, obj):
-        # Separate hashtags and tokens
-        hashtags = set()
-        tokens = set()
-        for token in obj:
-            if token[0] == '#':
-                hashtags.add(unicode(token[1:]).lower())
-            else:
-                tokens.add(unicode(token).lower())
+    def print_model(self):
+        pprint.pprint(self.fc)
 
-        if len(hashtags) == 0:
-            return
+    class TrainOperation(Operation):
+        """
+        Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
+        each non-hashtag token is associated with a hashtag.
+        """
+        def __init__(self, classifier):
+            self.classifier = classifier
 
-        for token in tokens:
-            if token in self.fc:
-                for hashtag in hashtags:
-                    self.fc[token][hashtag] = self.fc[token].get(hashtag, 0) + 1
-            else:
-                self.fc[token] = dict.fromkeys(hashtags, 1)
+        def perform(self, obj):
+            # Separate hashtags and tokens
+            hashtags = set()
+            tokens = set()
+            for token in obj:
+                if token[0] == '#':
+                    hashtags.add(unicode(token[1:]).lower())
+                else:
+                    tokens.add(unicode(token).lower())
+
+            if len(hashtags) == 0:
+                return
+
+            for token in tokens:
+                if token in self.classifier.fc:
+                    for hashtag in hashtags:
+                        self.classifier.fc[token][hashtag] = self.classifier.fc[token].get(
+                            hashtag, 0) + 1
+                else:
+                    self.classifier.fc[token] = dict.fromkeys(hashtags, 1)
 
