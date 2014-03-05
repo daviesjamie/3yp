@@ -34,10 +34,13 @@ class Classifier(object):
     """
     def __init__(self):
         self.fc = {}
-        self.count = 0
+        self.cc = {}
 
     def print_model(self):
         pprint.pprint(self.fc)
+
+    def print_counts(self):
+        pprint.pprint(self.cc)
 
     class TrainOperation(Operation):
         """
@@ -67,4 +70,7 @@ class Classifier(object):
                             hashtag, 0) + 1
                 else:
                     self.classifier.fc[token] = dict.fromkeys(hashtags, 1)
+
+                self.classifier.cc[token] = self.classifier.cc.get(token, 0) + 1
+
 
