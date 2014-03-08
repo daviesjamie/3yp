@@ -1,8 +1,8 @@
-import json
+from flow.stream import BufferedStream, AbstractStream
 from multiprocessing import Process
-import sys
 from twython import TwythonStreamer
-from stream import BufferedStream, AbstractStream
+import json
+import sys
 
 
 class TweetStream(BufferedStream):

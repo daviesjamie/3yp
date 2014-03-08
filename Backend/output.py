@@ -1,6 +1,7 @@
 import json
 import io
-from structures import Operation
+
+from flow.structures import Operation
 
 
 class JSONOutputOperation(Operation):
@@ -15,14 +16,6 @@ class JSONOutputOperation(Operation):
 
     def __del__(self):
         self.output.close()
-
-
-class PrintOperation(Operation):
-    """
-    Simple operation to print whatever input is supplied. Used for testing purposes only.
-    """
-    def perform(self, obj):
-        print obj
 
 
 class PrintTweetOperation(Operation):

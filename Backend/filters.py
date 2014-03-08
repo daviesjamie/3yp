@@ -1,4 +1,4 @@
-from structures import Predicate
+from flow.structures import Predicate
 
 
 class TweetsWithHashtagsPredicate(Predicate):

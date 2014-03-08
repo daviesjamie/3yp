@@ -1,9 +1,5 @@
 from classifier import Classifier, TokenizeTweetFunction
-from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
-from input import TweetStream, JSONInputStream
-from output import PrintTweetOperation
-from structures import QueueBufferedQueue
-from utils import credentials
+from input import JSONInputStream
 
 classifier = Classifier()
 

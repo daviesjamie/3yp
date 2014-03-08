@@ -1,5 +1,6 @@
 import pprint
-from structures import Function, Operation
+
+from flow.structures import Function, Operation
 from twokenize import tokenize
 
 
