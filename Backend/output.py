@@ -1,7 +1,6 @@
 import json
 import io
-
-from flow.structures import Operation
+from flow.structs import Operation
 
 
 class JSONOutputOperation(Operation):
