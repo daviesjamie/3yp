@@ -1,4 +1,4 @@
-from flow.structs import Predicate
+from spout.structs import Predicate
 
 
 class TweetsWithHashtagsPredicate(Predicate):

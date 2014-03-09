@@ -1,5 +1,5 @@
 from classifier import Classifier, TokenizeTweetFunction
-from flow.sources import JSONInputStream
+from spout.sources import JSONInputStream
 
 classifier = Classifier()
 

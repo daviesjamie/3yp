@@ -1,5 +1,5 @@
 import pprint
-from flow.structs import Function, Operation
+from spout.structs import Function, Operation
 from twokenize import tokenize
 
 
