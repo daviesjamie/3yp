@@ -6,13 +6,12 @@ program's output on ~100k tweets.  if you iterate through many possible rules
 and only accept the ones that seeem to result in good diffs, it's a sort of
 statistical learning with in-the-loop human evaluation :)
 """
+import emoticons
 
 __author__ = "brendan o'connor (anyall.org)"
 
 import re
 import sys
-
-import emoticons
 
 
 mycompile = lambda pat: re.compile(pat, re.UNICODE)

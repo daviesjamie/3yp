@@ -1,5 +1,5 @@
 from spout.structs import Function, Operation
-from twokenize import tokenize
+from twokenize.twokenize import tokenize
 
 
 class TokenizeTweetFunction(Function):
