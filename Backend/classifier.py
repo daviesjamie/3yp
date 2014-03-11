@@ -1,4 +1,3 @@
-import pprint
 from spout.structs import Function, Operation
 from twokenize import tokenize
 
@@ -10,6 +9,18 @@ class TokenizeTweetFunction(Function):
     """
     def apply(self, input):
         return tokenize(input['text'])
+
+
+class TrainOperation(Operation):
+    """
+    Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
+    each non-hashtag token is associated with a hashtag.
+    """
+    def __init__(self, classifier):
+        self.classifier = classifier
+
+    def perform(self, obj):
+        self.classifier.train(obj)
 
 
 class Classifier(object):
@@ -36,41 +47,36 @@ class Classifier(object):
         self.fc = {}
         self.cc = {}
 
-    def print_model(self):
-        pprint.pprint(self.fc)
+    def get_model(self):
+        return self.fc
 
-    def print_counts(self):
-        pprint.pprint(self.cc)
+    def get_counts(self):
+        return self.cc
 
-    class TrainOperation(Operation):
-        """
-        Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
-        each non-hashtag token is associated with a hashtag.
-        """
-        def __init__(self, classifier):
-            self.classifier = classifier
+    def train(self, tweet):
+        # Separate hashtags and tokens
+        hashtags = set()
+        tokens = set()
+        for token in tweet:
+            if token[0] == '#':
+                hashtags.add(unicode(token[1:]).lower())
+            else:
+                tokens.add(unicode(token).lower())
 
-        def perform(self, obj):
-            # Separate hashtags and tokens
-            hashtags = set()
-            tokens = set()
-            for token in obj:
-                if token[0] == '#':
-                    hashtags.add(unicode(token[1:]).lower())
-                else:
-                    tokens.add(unicode(token).lower())
+        if len(hashtags) == 0:
+            return
 
-            if len(hashtags) == 0:
-                return
+        for token in tokens:
+            if token in self.fc:
+                for hashtag in hashtags:
+                    self.fc[token][hashtag] = self.fc[token].get(
+                        hashtag, 0) + 1
+            else:
+                self.fc[token] = dict.fromkeys(hashtags, 1)
 
-            for token in tokens:
-                if token in self.classifier.fc:
-                    for hashtag in hashtags:
-                        self.classifier.fc[token][hashtag] = self.classifier.fc[token].get(
-                            hashtag, 0) + 1
-                else:
-                    self.classifier.fc[token] = dict.fromkeys(hashtags, 1)
+            self.cc[token] = self.cc.get(token, 0) + 1
 
-                self.classifier.cc[token] = self.classifier.cc.get(token, 0) + 1
-
+    def classify(self, tweet, num=5):
+        # TODO
+        pass
 
