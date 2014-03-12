@@ -4,7 +4,7 @@ from spout.queues import QueueBufferedQueue
 from spout.sources import TweetStream
 from classifier import Classifier, TokenizeTweetFunction, TrainOperation
 from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
-from utils import credentials
+from oauth import credentials
 
 
 def run():
