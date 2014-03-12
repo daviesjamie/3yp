@@ -1,3 +1,4 @@
+from __future__ import division
 from spout.structs import Function, Operation
 from twokenize.twokenize import tokenize
 
@@ -47,14 +48,14 @@ class Classifier(object):
         self.fc = {}
         self.cc = {}
 
-    def get_model(self):
+    def get_features(self):
         return self.fc
 
     def get_counts(self):
         return self.cc
 
     def train(self, tweet):
-        # Separate hashtags and tokens
+        # Separate hashtags
         hashtags = set()
         tokens = set()
         for token in tweet:
@@ -76,7 +77,22 @@ class Classifier(object):
 
             self.cc[token] = self.cc.get(token, 0) + 1
 
-    def classify(self, tweet, num=5):
-        # TODO
-        pass
+    def classify(self, tweet, results=5):
+        # Twokenize tweet
+        tweet_tokens = tokenize(tweet)
 
+        # Filter out hashtags
+        tokens = set()
+        for token in tweet_tokens:
+            if token[0] != '#':
+                tokens.add(unicode(token).lower())
+
+        # Apply Bayes' Theorem
+        # P(Hashtag|Token) = P(Token|Hashtag)P(Hashtag) / P(Token)
+        probs = {}
+        for token in tokens:
+            if token in self.fc:
+                for hashtag in self.fc[token]:
+                    probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
+
+        return sorted(probs.iteritems(), key=lambda t: t[1])[:results]
