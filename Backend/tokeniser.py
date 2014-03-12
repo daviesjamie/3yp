@@ -2,18 +2,18 @@ from spout.structs import Function
 from twokenize.twokenize import tokenize
 
 
-class TokenizeTweetFunction(Function):
+class TokeniseTweetFunction(Function):
     """
-    Takes in a tweet JSON object and tokenizes the tweet text using Brendan O'Connor's
+    Takes in a tweet JSON object and tokenises the tweet text using Brendan O'Connor's
     "twokenizer".
     """
     def apply(self, input):
         return tokenize(input['text'])
 
 
-class TokenizeTextFunction(Function):
+class TokeniseTextFunction(Function):
     """
-    Takes in a plain text string and tokenizes it using Brendan O'Connor's "twokenizer".
+    Takes in a plain text string and tokenises it using Brendan O'Connor's "twokenizer".
     """
     def apply(self, input):
         return tokenize(input)
