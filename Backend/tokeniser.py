@@ -9,3 +9,11 @@ class TokenizeTweetFunction(Function):
     """
     def apply(self, input):
         return tokenize(input['text'])
+
+
+class TokenizeTextFunction(Function):
+    """
+    Takes in a plain text string and tokenizes it using Brendan O'Connor's "twokenizer".
+    """
+    def apply(self, input):
+        return tokenize(input)
