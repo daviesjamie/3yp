@@ -70,7 +70,7 @@ class Classifier(object):
             else:
                 tokens.add(unicode(token).lower())
 
-        if len(hashtags) == 0:
+        if len(hashtags) == 0 or len(tokens) == 0:
             return
 
         for token in tokens:
