@@ -4,15 +4,6 @@ from spout.structs import Function, Operation
 from twokenize.twokenize import tokenize
 
 
-class TokenizeTweetFunction(Function):
-    """
-    Takes in a tweet JSON object and tokenizes the tweet text using Brendan O'Connor's
-    "twokenizer".
-    """
-    def apply(self, input):
-        return tokenize(input['text'])
-
-
 class TrainOperation(Operation):
     """
     Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
