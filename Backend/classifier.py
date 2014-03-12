@@ -1,4 +1,5 @@
 from __future__ import division
+from multiprocessing import Lock
 from spout.structs import Function, Operation
 from twokenize.twokenize import tokenize
 
@@ -48,6 +49,9 @@ class Classifier(object):
         self.fc = {}
         self.cc = {}
 
+        self.lock_fc = Lock()
+        self.lock_cc = Lock()
+
     def get_features(self):
         return self.fc
 
@@ -68,14 +72,17 @@ class Classifier(object):
             return
 
         for token in tokens:
-            if token in self.fc:
-                for hashtag in hashtags:
-                    self.fc[token][hashtag] = self.fc[token].get(
-                        hashtag, 0) + 1
-            else:
-                self.fc[token] = dict.fromkeys(hashtags, 1)
+            with self.lock_fc:
+                if token in self.fc:
+                    for hashtag in hashtags:
+                        self.fc[token][hashtag] = self.fc[token].get(
+                            hashtag, 0) + 1
+                else:
+                    self.fc[token] = dict.fromkeys(hashtags, 1)
 
-            self.cc[token] = self.cc.get(token, 0) + 1
+            with self.lock_cc:
+                self.cc[token] = self.cc.get(token, 0) + 1
+
 
     def classify(self, tweet, results=5):
         # Twokenize tweet
@@ -91,8 +98,10 @@ class Classifier(object):
         # P(Hashtag|Token) = P(Token|Hashtag)P(Hashtag) / P(Token)
         probs = {}
         for token in tokens:
-            if token in self.fc:
-                for hashtag in self.fc[token]:
-                    probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
+            with self.lock_fc:
+                if token in self.fc:
+                    for hashtag in self.fc[token]:
+                        with self.lock_cc:
+                            probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
 
         return sorted(probs.iteritems(), key=lambda t: t[1])[:results]
