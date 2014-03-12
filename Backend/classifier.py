@@ -48,9 +48,11 @@ class Classifier(object):
     def __init__(self):
         self.fc = {}
         self.cc = {}
+        self.tot = 0
 
         self.lock_fc = Lock()
         self.lock_cc = Lock()
+        self.lock_tot = Lock()
 
     def get_features(self):
         return self.fc
@@ -82,6 +84,9 @@ class Classifier(object):
 
             with self.lock_cc:
                 self.cc[token] = self.cc.get(token, 0) + 1
+
+        with self.lock_tot:
+            self.tot += 1
 
 
     def classify(self, tweet, results=5):
