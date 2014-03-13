@@ -1,50 +1,56 @@
+from multiprocessing import Process
 from flask import Flask
-from flask.ext import restful
+from flask.ext.restful import Resource, Api, reqparse
 from spout.queues import QueueBufferedQueue
 from spout.sources import TweetStream
-from classifier import Classifier, TokenizeTweetFunction, TrainOperation
+from classifier import Classifier, TrainOperation
 from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
 from oauth import credentials
+from tokeniser import TokeniseTweetFunction
 
 
-def run():
-    classifier = Classifier()
+classifier = Classifier()
 
+def _train_classifier():
     twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
     twitter.connect()
 
     twitter \
         .filter(TweetsWithHashtagsPredicate()) \
         .filter(TweetsInEnglishPredicate()) \
-        .map(TokenizeTweetFunction()) \
+        .map(TokeniseTweetFunction()) \
         .for_each(TrainOperation(classifier), 10)
 
-    app = Flask(__name__)
-    api = restful.Api(app)
+    twitter.disconnect()
 
-    api.add_resource(Status,'/')
-    api.add_resource(Classification, '/classify')
-    api.add_resource(Model, '/model')
-    api.add_resource(Counts, '/counts')
+trainer = Process(target=_train_classifier)
 
-    app.run(debug=True)
+app = Flask(__name__)
+api = Api(app)
 
 
-class Status(restful.Resource):
-    pass
+class ClassificationAPI(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('text', type=str, required=True, help='No text to classify was provided', location='json')
+        self.reqparse.add_argument('results', type=int, required=False, default=5, location='json')
+        super(ClassificationAPI, self).__init__()
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        return classifier.classify(args['text'], args['results']), 201
 
 
-class Classification(restful.Resource):
-    pass
+class StatusAPI(Resource):
+    def get(self):
+        return { "status": "ok" }
 
 
-class Model(restful.Resource):
-    pass
-
-
-class Counts(restful.Resource):
-    pass
+api.add_resource(ClassificationAPI, '/api/classify')
+api.add_resource(StatusAPI, '/api/status')
 
 
 if __name__ == '__main__':
-    run()
+    # trainer.start()
+    classifier.state_load('test-20140313175630.pickle')
+    app.run(debug=True)
