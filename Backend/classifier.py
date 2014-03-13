@@ -58,7 +58,7 @@ class Classifier(object):
         hashtags = set()
         tokens = set()
         for token in tweet:
-            if token[0] == '#':
+            if token[0] == '#' and len(token) > 1:
                 hashtags.add(unicode(token[1:]).lower())
             else:
                 tokens.add(unicode(token).lower())
