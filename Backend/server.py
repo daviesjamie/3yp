@@ -3,6 +3,7 @@ from flask import Flask
 from flask.ext.restful import Resource, Api, reqparse
 from spout.queues import QueueBufferedQueue
 from spout.sources import TweetStream
+import sys
 from classifier import Classifier, TrainOperation
 from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
 from oauth import credentials
@@ -51,6 +52,9 @@ api.add_resource(StatusAPI, '/api/status')
 
 
 if __name__ == '__main__':
-    # trainer.start()
-    classifier.state_load('test-20140313175630.pickle')
+    if len(sys.argv) > 1:
+        classifier.state_load(sys.argv[1])
+    else:
+        trainer.start()
+
     app.run(debug=True)
