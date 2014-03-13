@@ -101,7 +101,7 @@ class Classifier(object):
                         with self.lock_cc:
                             probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
 
-        return sorted(probs.iteritems(), key=lambda t: t[1])[:results]
+        return sorted(probs.iteritems(), key=lambda t: t[1], reverse=True)[:results]
 
     def state_dump(self, fileprefix):
         with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
