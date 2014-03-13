@@ -104,10 +104,10 @@ class Classifier(object):
         return sorted(probs.iteritems(), key=lambda t: t[1])[:results]
 
     def state_dump(self, fileprefix):
-        with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d-%H%M%S")), "wb") as f:
+        with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
             with self.lock_cc and self.lock_fc:
-                pickle.dump(self.cc, f)
-                pickle.dump(self.fc, f)
+                pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
