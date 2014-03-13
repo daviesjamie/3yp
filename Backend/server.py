@@ -1,6 +1,7 @@
 from multiprocessing import Process
 from flask import Flask
 from flask.ext.restful import Resource, Api, reqparse
+from pympler import asizeof
 from spout.queues import QueueBufferedQueue
 from spout.sources import TweetStream
 import sys
@@ -44,7 +45,24 @@ class ClassificationAPI(Resource):
 
 class StatusAPI(Resource):
     def get(self):
-        return { "status": "ok" }
+        fc = classifier.get_features()
+        cc = classifier.get_counts()
+        tot = classifier.get_total()
+
+        return {
+            "training": {
+                "tweets": tot,
+                "tokens": len(cc)
+            },
+            "memory": {
+                "fc": asizeof.asizeof(fc),
+                "cc": asizeof.asizeof(cc),
+                "fc_kb": asizeof.asizeof(fc) / float(1024),
+                "cc_kb": asizeof.asizeof(cc) / float(1024),
+                "fc_mb": asizeof.asizeof(fc) / float(1024) / float(1024),
+                "cc_mb": asizeof.asizeof(cc) / float(1024) / float(1024)
+            }
+        }
 
 
 api.add_resource(ClassificationAPI, '/api/classify')
