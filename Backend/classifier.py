@@ -1,7 +1,9 @@
 from __future__ import division
 from multiprocessing import Lock
 from spout.structs import Function, Operation
+import time
 from twokenize.twokenize import tokenize
+import cPickle as pickle
 
 
 class TrainOperation(Operation):
@@ -79,7 +81,6 @@ class Classifier(object):
         with self.lock_tot:
             self.tot += 1
 
-
     def classify(self, tweet, results=5):
         # Twokenize tweet
         tweet_tokens = tokenize(tweet)
@@ -101,3 +102,15 @@ class Classifier(object):
                             probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
 
         return sorted(probs.iteritems(), key=lambda t: t[1])[:results]
+
+    def state_dump(self, fileprefix):
+        with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d-%H%M%S")), "wb") as f:
+            with self.lock_cc and self.lock_fc:
+                pickle.dump(self.cc, f)
+                pickle.dump(self.fc, f)
+
+    def state_load(self, filename):
+        with open(filename, "rb") as f:
+            with self.lock_cc and self.lock_fc:
+                self.cc = pickle.load(f)
+                self.fc = pickle.load(f)
