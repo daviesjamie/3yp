@@ -53,6 +53,9 @@ class Classifier(object):
     def get_counts(self):
         return self.cc
 
+    def get_total(self):
+        return self.tot
+
     def train(self, tweet):
         # Separate hashtags
         hashtags = set()
@@ -108,9 +111,11 @@ class Classifier(object):
             with self.lock_cc and self.lock_fc:
                 pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.tot, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
             with self.lock_cc and self.lock_fc:
                 self.cc = pickle.load(f)
                 self.fc = pickle.load(f)
+                self.tot = pickle.load(f)
