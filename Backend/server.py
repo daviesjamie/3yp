@@ -3,7 +3,7 @@
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer
-from devserver import app, trainer
+from restapi import app, trainer
 
 trainer.start()
 

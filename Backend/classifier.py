@@ -16,6 +16,7 @@ class TrainOperation(Operation):
 
     def perform(self, obj):
         self.classifier.train(obj)
+        print self.classifier.get_total()
 
 
 class Classifier(object):
@@ -42,19 +43,19 @@ class Classifier(object):
         self.fc = {}
         self.cc = {}
         self.tot = 0
-
-        self.lock_fc = Lock()
-        self.lock_cc = Lock()
-        self.lock_tot = Lock()
+        self.lock = Lock()
 
     def get_features(self):
-        return self.fc
+        with self.lock:
+            return self.fc
 
     def get_counts(self):
-        return self.cc
+        with self.lock:
+            return self.cc
 
     def get_total(self):
-        return self.tot
+        with self.lock:
+            return self.tot
 
     def train(self, tweet):
         # Separate hashtags
@@ -69,8 +70,8 @@ class Classifier(object):
         if len(hashtags) == 0 or len(tokens) == 0:
             return
 
-        for token in tokens:
-            with self.lock_fc:
+        with self.lock:
+            for token in tokens:
                 if token in self.fc:
                     for hashtag in hashtags:
                         self.fc[token][hashtag] = self.fc[token].get(
@@ -78,10 +79,8 @@ class Classifier(object):
                 else:
                     self.fc[token] = dict.fromkeys(hashtags, 1)
 
-            with self.lock_cc:
                 self.cc[token] = self.cc.get(token, 0) + 1
 
-        with self.lock_tot:
             self.tot += 1
 
     def classify(self, tweet, results=5):
@@ -97,25 +96,24 @@ class Classifier(object):
         # Apply Bayes' Theorem
         # P(Hashtag|Token) = P(Token|Hashtag)P(Hashtag) / P(Token)
         probs = {}
-        for token in tokens:
-            with self.lock_fc:
+        with self.lock:
+            for token in tokens:
                 if token in self.fc:
                     for hashtag in self.fc[token]:
-                        with self.lock_cc:
-                            probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
+                        probs[hashtag] = probs.get(hashtag, 1) * (self.fc[token][hashtag] / self.cc[token])
 
         return sorted(probs.iteritems(), key=lambda t: t[1], reverse=True)[:results]
 
     def state_dump(self, fileprefix):
         with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
-            with self.lock_cc and self.lock_fc:
+            with self.lock:
                 pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.tot, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
-            with self.lock_cc and self.lock_fc:
+            with self.lock:
                 self.cc = pickle.load(f)
                 self.fc = pickle.load(f)
                 self.tot = pickle.load(f)

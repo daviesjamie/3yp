@@ -1,4 +1,5 @@
 from multiprocessing import Process
+from multiprocessing.managers import BaseManager
 from flask import Flask
 from flask.ext.restful import Resource, Api, reqparse
 from pympler import asizeof
@@ -11,7 +12,17 @@ from oauth import credentials
 from tokeniser import TokeniseTweetFunction
 
 
-classifier = Classifier()
+class ClassifierManager(BaseManager):
+    pass
+
+ClassifierManager.register('Classifier', Classifier, exposed=['get_features', 'get_counts',
+                                                              'get_total', 'train', 'classify',
+                                                              'state_dump', 'state_load'])
+
+mymanager = ClassifierManager()
+mymanager.start()
+
+classifier = mymanager.Classifier()
 
 def _train_classifier():
     twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
@@ -21,9 +32,7 @@ def _train_classifier():
         .filter(TweetsWithHashtagsPredicate()) \
         .filter(TweetsInEnglishPredicate()) \
         .map(TokeniseTweetFunction()) \
-        .for_each(TrainOperation(classifier), 10)
-
-    twitter.disconnect()
+        .for_each(TrainOperation(classifier))
 
 trainer = Process(target=_train_classifier)
 
