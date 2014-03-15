@@ -32,7 +32,7 @@ def _train_classifier():
         .filter(TweetsWithHashtagsPredicate()) \
         .filter(TweetsInEnglishPredicate()) \
         .map(TokeniseTweetFunction()) \
-        .for_each(TrainOperation(classifier), 10)
+        .for_each(TrainOperation(classifier))
 
 trainer = Process(target=_train_classifier)
 
