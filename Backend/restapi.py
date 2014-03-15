@@ -23,8 +23,6 @@ def _train_classifier():
         .map(TokeniseTweetFunction()) \
         .for_each(TrainOperation(classifier), 10)
 
-    twitter.disconnect()
-
 trainer = Process(target=_train_classifier)
 
 app = Flask(__name__)
