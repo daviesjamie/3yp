@@ -16,7 +16,6 @@ class TrainOperation(Operation):
 
     def perform(self, obj):
         self.classifier.train(obj)
-        print self.classifier.get_total()
 
 
 class Classifier(object):
