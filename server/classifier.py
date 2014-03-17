@@ -111,28 +111,28 @@ class Classifier(object):
         # P(Hashtag|[Tokens]) =  -----------------------------------------------------------------------------------------
         #                                       P(Tokens[0]) * P(Tokens[1]) * ... * P(Tokens[N])
 
-        numerators = {}
-        denominator = 1
+        probs = {}
         with self.lock:
             for token in tokens:
                 # Ensure the token is known to the classifier
                 if token in self.model:
-                    # Include token probability (if it's known) in the denominator
                     p_token = self.token_count[token] / self.token_total
-                    denominator *= p_token
 
                     for hashtag in self.model[token]:
                         # Calculate individual probabilities
                         p_hashtag = self.hashtag_count[hashtag] / self.hashtag_total
-                        p_token_hashtag = self.model[token][hashtag] / self.token_count[token]
+                        p_token_hashtag = self.model[token][hashtag] / self.token_total
 
                         # Accumulate probabilities across all tokens
-                        numerators[hashtag] = numerators.get(hashtag, p_hashtag) * p_token_hashtag
+                        probs[hashtag] = probs.get(hashtag, p_hashtag) * \
+                                         ( p_token_hashtag * p_hashtag ) / p_token
 
-        # Build list of final probabilities
-        probs = {}
-        for hashtag in numerators:
-            probs[hashtag] = numerators[hashtag] / denominator
+                        print "token:\t\t\t" + token
+                        print "hashtag:\t\t" + hashtag
+                        print "p_token:\t\t" + str(p_token)
+                        print "p_hashtag:\t\t" + str(p_hashtag)
+                        print "p_token_hashtag:\t" + str(p_token_hashtag)
+                        print "---------------------------------------------------"
 
         return sorted(probs.iteritems(), key=lambda t: t[1], reverse=True)[:results]
 
