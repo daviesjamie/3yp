@@ -74,3 +74,7 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+# Created by http://www.gitignore.io
+
+### Bower ###
+bower_components
