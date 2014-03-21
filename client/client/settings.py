@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 TEMPLATE_DIRS = os.path.join(BASE_DIR, "templates")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "bower_components"),
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'twython_django',
+    'clever_twit'
 )
 
 MIDDLEWARE_CLASSES = (

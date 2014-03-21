@@ -9,5 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^', include('clever_twit.urls')),
     url(r'^', include('twython_django.urls'))
 )
