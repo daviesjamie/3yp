@@ -7,3 +7,12 @@ body {
     margin: 0 auto;
     text-align: center;
 }
+
+#tweet-btn {
+    color: #fff;
+    padding: 6px 12px;
+}
+
+#tweet-btn:hover {
+    background-color: #3276B1;
+}
