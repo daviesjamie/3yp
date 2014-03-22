@@ -10,7 +10,7 @@ from classifier import Classifier, TrainOperation
 from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate, NoRetweetsPredicate
 from oauth import credentials
 from tokeniser import TokeniseTweetFunction
-
+from apscheduler.scheduler import Scheduler
 
 class ClassifierManager(BaseManager):
     pass
@@ -45,7 +45,17 @@ def _train_classifier():
         .map(TokeniseTweetFunction()) \
         .for_each(TrainOperation(classifier))
 
+def _dump_classifier():
+    classifier.state_dump('state')
+
 trainer = Process(target=_train_classifier)
+
+import logging
+logging.basicConfig()
+
+sched = Scheduler()
+sched.start()
+sched.add_interval_job(_dump_classifier, minutes=1)
 
 app = Flask(__name__)
 api = Api(app)
