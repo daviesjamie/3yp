@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from twython import Twython
 
@@ -9,10 +10,8 @@ def index(request):
     return render(request, 'index.html')
 
 
+@login_required
 def tweet(request):
-    if not request.user.is_authenticated():
-        return render(request, 'cover.html')
-
     posted = False
     errors = []
 
