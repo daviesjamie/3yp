@@ -20,7 +20,9 @@ def tweet(request):
         status = request.POST.get('status')
 
         if len(status) > 140:
-            errors.append("Tweet was too long!")
+            errors.append("That tweet was too long!")
+        elif len(status) == 0:
+            errors.append("That tweet was empty!")
         else:
             user = request.user.twitterprofile
             twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET, user.oauth_token, user.oauth_secret)
