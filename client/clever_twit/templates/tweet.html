@@ -7,6 +7,7 @@
     <div class="row">
         <form id="tweet-form">
             <textarea class="form-control" rows="4" id="tweet-box"></textarea>
+            <span id="tweet-char-countdown"></span>
             <button type="button" class="btn btn-success btn-lg" id="submit-btn">Tweet</button>
         </form>
     </div>
@@ -15,25 +16,44 @@
 
 {% block scripts %}
 <script>
+    var defaultText = "Compose new Tweet...";
+
+    function addDefaultText() {
+        if($("#tweet-box").val() == "") {
+            $("#tweet-box").val(defaultText);
+            $("#tweet-box").addClass("grey");
+        }
+    }
+
+    function clearDefaultText() {
+        if($("#tweet-box").val() == defaultText) {
+            $("#tweet-box").val("");
+            $("#tweet-box").removeClass("grey");
+        }
+    }
+
+    function updateCountdown() {
+        // 140 chars is the max for Twitter
+        var remaining = 140 - $("#tweet-box").val().length;
+
+        if($("#tweet-box").val() != defaultText && remaining != 140) {
+            $("#tweet-char-countdown").text(remaining);
+        }
+        else {
+            $("#tweet-char-countdown").text("140");
+        }
+
+        $("#tweet-char-countdown").toggleClass("red", remaining < 0);
+        $("#tweet-char-countdown").toggleClass("grey", remaining >= 0);
+    }
+
     $(document).ready(function() {
-        var defaultText = "Compose new Tweet...";
 
-        $("#tweet-box").focus(function() {
-            if($(this).val() == defaultText) {
-                $(this).val("");
-                $(this).removeClass("default-text");
-            }
-        });
-
-        $("#tweet-box").blur(function() {
-            if($(this).val() == "") {
-                $(this).val(defaultText);
-                $(this).addClass("default-text");
-            }
-        });
-
-        $("#tweet-box").val(defaultText);
-        $("#tweet-box").addClass("default-text");
+        addDefaultText();
+        updateCountdown();
+        $("#tweet-box").on("focus", clearDefaultText);
+        $("#tweet-box").on("blur", addDefaultText);
+        $("#tweet-box").on("input", updateCountdown);
     });
 </script>
 {% endblock %}

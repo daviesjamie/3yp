@@ -19,15 +19,18 @@ body {
 
 #tweet-form {
     padding-top: 50px;
-    text-align: center;
+    text-align: right;
 }
 
-#tweet-form #tweet-box {
+#tweet-box {
     font-size: 1.5em;
     margin-bottom: 15px;
 }
 
-.default-text {
-    color: #aaaaaa;
+#tweet-char-countdown {
+    float: left;
+    font-size: 1.2em;
 }
 
+.grey { color: #aaaaaa; }
+.red { color: #ca332f; }
