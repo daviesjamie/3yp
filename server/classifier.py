@@ -39,23 +39,19 @@ class Classifier(object):
     }
     """
     def __init__(self):
-        self.tweet_total = 0
-
-        self.model = {}
-
-        self.token_count = {}
-        self.token_total = 0
-
-        self.hashtag_count = {}
-        self.hashtag_total = 0
+        self.fc = {}
+        self.cc = {}
 
         self.lock = Lock()
 
     def train(self, tweet):
+        # Twokenize tweet
+        tweet_tokens = tokenize(tweet)
+
         # Separate hashtags and tokens
         hashtags = set()
         tokens = set()
-        for token in tweet:
+        for token in tweet_tokens:
             if token[0] == '#' and len(token) > 1:
                 hashtags.add(unicode(token[1:]).lower())
             else:
@@ -67,74 +63,86 @@ class Classifier(object):
 
         with self.lock:
             for token in tokens:
-                # Increment token -> hashtag count (model)
-                if token in self.model:
+                if token in self.fc:
                     for hashtag in hashtags:
-                        self.model[token][hashtag] = self.model[token].get(hashtag, 0) + 1
+                        self.fc[token][hashtag] = self.fc[token].get(hashtag, 0) + 1
                 else:
-                    self.model[token] = dict.fromkeys(hashtags, 1)
-
-                # Increment token_count
-                self.token_count[token] = self.token_count.get(token, 0) + 1
-
-                # Increment token_total
-                self.token_total += 1
+                    self.fc[token] = dict.fromkeys(hashtags, 1)
 
             for hashtag in hashtags:
-                # Increment hashtag_count
-                self.hashtag_count[hashtag] = self.hashtag_count.get(hashtag, 0) + 1
+                self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
 
-                # Increment hashtag_total
-                self.hashtag_total += 1
+    def fprob(self, token, hashtag):
+        if self.catcount(hashtag) == 0:
+            return 0
+        return self.fc[token].get(hashtag, 0) / self.cc[hashtag]
 
-            # Increment tweet_total
-            self.tweet_total += 1
+    def weightedprob(self, token, hashtag, weight=1.0, ap=0.5):
+        fprob = self.fprob(token, hashtag)
+
+        totals = sum([self.fcount(token, hashtag) for hashtag in self.hashtags()])
+
+        return ((weight * ap) + (totals * fprob)) / (weight + totals)
+
+    def docprob(self, tokens, hashtag):
+        p = 1
+        for token in tokens:
+            p *= self.weightedprob(token, hashtag)
+
+        return p
+
+    def prob(self, tokens, hashtag):
+        catprob = self.catcount(hashtag) / self.totalcount()
+        docprob = self.docprob(tokens, hashtag)
+        return docprob * catprob
 
     def classify(self, tweet, results=5):
         # Twokenize tweet
         tweet_tokens = tokenize(tweet)
 
-        # Filter out hashtags
+        # Filter out any existing hashtags
         tokens = set()
         for token in tweet_tokens:
             if token[0] != '#':
                 tokens.add(unicode(token).lower())
 
-        # Apply Bayes' Theorem:
-        #
-        #                      P(Token|Hashtag) * P(Hashtag)
-        # P(Hashtag|Token) = --------------------------------
-        #                               P(Token)
-        #
-        #
-        #                          P(Hashtag) * P(Hashtag|Tokens[0]) * P(Hashtag|Tokens[1]) * ... * P(Hashtag|Tokens[N])
-        # P(Hashtag|[Tokens]) =  -----------------------------------------------------------------------------------------
-        #                                       P(Tokens[0]) * P(Tokens[1]) * ... * P(Tokens[N])
-
         probs = {}
-        with self.lock:
-            for token in tokens:
-                # Ensure the token is known to the classifier
-                if token in self.model:
-                    p_token = self.token_count[token] / self.token_total
 
-                    for hashtag in self.model[token]:
-                        # Calculate individual probabilities
-                        p_hashtag = self.hashtag_count[hashtag] / self.hashtag_total
-                        p_token_hashtag = self.model[token][hashtag] / self.token_total
-
-                        # Accumulate probabilities across all tokens
-                        probs[hashtag] = probs.get(hashtag, p_hashtag) * \
-                                         ( p_token_hashtag * p_hashtag ) / p_token
-
-                        print "token:\t\t\t" + token
-                        print "hashtag:\t\t" + hashtag
-                        print "p_token:\t\t" + str(p_token)
-                        print "p_hashtag:\t\t" + str(p_hashtag)
-                        print "p_token_hashtag:\t" + str(p_token_hashtag)
-                        print "---------------------------------------------------"
+        for hashtag in self.hashtags():
+            probs[hashtag] = self.prob(tokens, hashtag)
 
         return sorted(probs.iteritems(), key=lambda t: t[1], reverse=True)[:results]
+
+    ################################################################################################
+    # Getter/setter methods
+
+    def incf(self, token, hashtag):
+        self.fc.setdefault(token, {})
+        self.fc[token].setdefault(hashtag, 0)
+        self.fc[token][hashtag] += 1
+
+    def incc(self, hashtag):
+        self.cc.setdefault(cat, 0)
+        self.cc[hastag] += 1
+
+    def fcount(self, token, hashtag):
+        if token in self.fc and hashtag in self.fc[token]:
+            return self.fc[token][hashtag]
+        return 0
+
+    def catcount(self, hashtag):
+        if hashtag in self.cc:
+            return self.cc[hashtag]
+        return 0
+
+    def totalcount(self):
+        return sum(self.cc.values())
+
+    def hashtags(self):
+        return self.cc.keys()
+
+    ################################################################################################
+    # State loading/dumping
 
     def state_dump(self, fileprefix):
         with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
@@ -149,30 +157,3 @@ class Classifier(object):
                 self.token_count = pickle.load(f)
                 self.model = pickle.load(f)
                 self.tweet_total = pickle.load(f)
-
-    ################################################################################################
-    # Getter methods
-
-    def get_tweet_total(self):
-        with self.lock:
-            return self.tweet_total
-
-    def get_model(self):
-        with self.lock:
-            return self.model
-
-    def get_token_count(self):
-        with self.lock:
-            return self.token_count
-
-    def get_token_total(self):
-        with self.lock:
-            return self.token_total
-
-    def get_hashtag_count(self):
-        with self.lock:
-            return self.hashtag_count
-
-    def get_hashtag_total(self):
-        with self.lock:
-            return self.hashtag_total
