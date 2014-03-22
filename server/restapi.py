@@ -19,12 +19,14 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'classify',
                                                               'state_dump',
                                                               'state_load',
-                                                              'get_tweet_total',
-                                                              'get_model',
-                                                              'get_token_count',
-                                                              'get_token_total',
-                                                              'get_hashtag_count',
-                                                              'get_hashtag_total'])
+                                                              'fprob',
+                                                              'weightedprob',
+                                                              'docprob',
+                                                              'prob',
+                                                              'fcount',
+                                                              'catcount',
+                                                              'totalcount',
+                                                              'hashtags'])
 
 mymanager = ClassifierManager()
 mymanager.start()

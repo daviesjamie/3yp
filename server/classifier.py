@@ -116,15 +116,6 @@ class Classifier(object):
     ################################################################################################
     # Getter/setter methods
 
-    def incf(self, token, hashtag):
-        self.fc.setdefault(token, {})
-        self.fc[token].setdefault(hashtag, 0)
-        self.fc[token][hashtag] += 1
-
-    def incc(self, hashtag):
-        self.cc.setdefault(cat, 0)
-        self.cc[hastag] += 1
-
     def fcount(self, token, hashtag):
         if token in self.fc and hashtag in self.fc[token]:
             return self.fc[token][hashtag]
@@ -140,6 +131,15 @@ class Classifier(object):
 
     def hashtags(self):
         return self.cc.keys()
+
+    def _incf(self, token, hashtag):
+        self.fc.setdefault(token, {})
+        self.fc[token].setdefault(hashtag, 0)
+        self.fc[token][hashtag] += 1
+
+    def _incc(self, hashtag):
+        self.cc.setdefault(cat, 0)
+        self.cc[hastag] += 1
 
     ################################################################################################
     # State loading/dumping
