@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Clever Twit{% endblock %}</title>
+
+    {% load static %}
+
+    <!-- Bootstrap -->
+    <link href="{% static "bootstrap/dist/css/bootstrap.min.css" %}" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="{% static "css/styles.css" %}" rel="stylesheet">
+</head>
+
+<body>
+    {% block body %}{% endblock %}
+
+    <!-- jQuery (necessary for Bootstrap's javascript plugins) -->
+    <script src="{% static "jquery/dist/jquery.min.js" %}"></script>
+
+    <!-- Include all of Bootstrap's plugins -->
+    <script src="{% static "bootstrap/dist/js/bootstrap.min.js" %}"></script>
+</body>
+</html>
