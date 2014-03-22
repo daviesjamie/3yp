@@ -16,3 +16,18 @@ body {
 #tweet-btn:hover {
     background-color: #3276B1;
 }
+
+#tweet-form {
+    padding-top: 50px;
+    text-align: center;
+}
+
+#tweet-form #tweet-box {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.default-text {
+    color: #aaaaaa;
+}
+
