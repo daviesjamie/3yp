@@ -55,7 +55,7 @@ logging.basicConfig()
 
 sched = Scheduler()
 sched.start()
-sched.add_interval_job(_dump_classifier, minutes=1)
+sched.add_interval_job(_dump_classifier, hours=1)
 
 app = Flask(__name__)
 api = Api(app)
