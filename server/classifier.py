@@ -96,7 +96,7 @@ class Classifier(object):
         docprob = self.docprob(tokens, hashtag)
         return docprob * catprob
 
-    def classify(self, tweet, results=5):
+    def classify(self, tweet, results=None):
         # Twokenize tweet
         tweet_tokens = tokenize(tweet)
 
