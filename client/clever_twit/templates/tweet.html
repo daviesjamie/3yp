@@ -8,7 +8,7 @@
         <form id="tweet-form">
             <textarea class="form-control" rows="4" id="tweet-box"></textarea>
             <span id="tweet-char-countdown"></span>
-            <button type="button" class="btn btn-success btn-lg" id="submit-btn">Tweet</button>
+            <button type="button" class="btn btn-success btn-lg" id="tweet-submit">Tweet</button>
         </form>
     </div>
 </div>
@@ -45,6 +45,7 @@
 
         $("#tweet-char-countdown").toggleClass("red", remaining < 0);
         $("#tweet-char-countdown").toggleClass("grey", remaining >= 0);
+        $("#tweet-submit").prop('disabled', remaining < 0);
     }
 
     $(document).ready(function() {
