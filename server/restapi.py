@@ -26,8 +26,7 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'fcount',
                                                               'catcount',
                                                               'totalcount',
-                                                              'hashtags',
-                                                              'get_model'])
+                                                              'hashtags'])
 
 mymanager = ClassifierManager()
 mymanager.start()
@@ -75,19 +74,25 @@ class ClassificationAPI(Resource):
 
 class StatusAPI(Resource):
     def get(self):
-        fc, cc, total = classifier.get_model()
+        token_count = classifier.get_token_count()
+        hashtag_count = classifier.get_hashtag_count()
+        model = classifier.get_model()
 
         return {
             "training": {
-                "tweet_total": total,
-                "unique_tokens": len(fc.keys()),
-                "unique_hashtags": len(cc.keys())
+                "tweet_total": classifier.get_tweet_total(),
+                "token_total": classifier.get_token_total(),
+                "hashtag_total": classifier.get_hashtag_total(),
+                "unique_tokens": len(token_count),
+                "unique_hashtags": len(hashtag_count)
             },
             "memory": {
-                "fc_kb": asizeof.asizeof(fc) / float(1024),
-                "cc_kb": asizeof.asizeof(cc) / float(1024),
-                "fc_mb": asizeof.asizeof(fc) / float(1024) / float(1024),
-                "cc_mb": asizeof.asizeof(cc) / float(1024) / float(1024),
+                "token_count_kb": asizeof.asizeof(token_count) / float(1024),
+                "hashtag_count_kb": asizeof.asizeof(hashtag_count) / float(1024),
+                "model_kb": asizeof.asizeof(model) / float(1024),
+                "token_count_mb": asizeof.asizeof(token_count) / float(1024) / float(1024),
+                "hashtag_count_mb": asizeof.asizeof(hashtag_count) / float(1024) / float(1024),
+                "model_mb": asizeof.asizeof(model) / float(1024) / float(1024),
             }
         }
 

@@ -41,7 +41,7 @@ class Classifier(object):
     def __init__(self):
         self.fc = {}
         self.cc = {}
-        self.tweet_total = 0
+
         self.lock = Lock()
 
     def train(self, tweet):
@@ -71,8 +71,6 @@ class Classifier(object):
 
             for hashtag in hashtags:
                 self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
-
-            self.tweet_total += 1
 
     def fprob(self, token, hashtag):
         if self.catcount(hashtag) == 0:
@@ -142,10 +140,6 @@ class Classifier(object):
     def _incc(self, hashtag):
         self.cc.setdefault(cat, 0)
         self.cc[hastag] += 1
-
-    def get_model(self):
-        with self.lock:
-            return self.fc, self.cc, self.tweet_total
 
     ################################################################################################
     # State loading/dumping
