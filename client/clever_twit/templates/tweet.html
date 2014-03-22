@@ -4,11 +4,28 @@
 
 {% block content %}
 <div class="col-md-6 col-md-offset-3">
+    {% if posted %}
+        <div class="row">
+            <div class="alert alert-success">
+                <strong>Tweeted!</strong> Your message was successfully posted.
+            </div>
+        </div>
+    {% elif errors %}
+        {% for error in errors %}
+            <div class="row">
+                <div class="alert alert-danger">
+                    <strong>Error: </strong>{{ error }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="row">
-        <form id="tweet-form">
-            <textarea class="form-control" rows="4" id="tweet-box"></textarea>
+        <form id="tweet-form" action="{% url 'tweet' %}" method="post">
+            {% csrf_token %}
+            <textarea class="form-control" rows="4" id="tweet-box" name="status"></textarea>
             <span id="tweet-char-countdown"></span>
-            <button type="button" class="btn btn-success btn-lg" id="tweet-submit">Tweet</button>
+            <button type="submit" class="btn btn-success btn-lg" id="tweet-submit">Tweet</button>
         </form>
     </div>
 </div>

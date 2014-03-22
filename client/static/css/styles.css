@@ -18,7 +18,7 @@ body {
 }
 
 #tweet-form {
-    padding-top: 50px;
+    margin-top: 50px;
     text-align: right;
 }
 
@@ -30,6 +30,10 @@ body {
 #tweet-char-countdown {
     float: left;
     font-size: 1.2em;
+}
+
+alert {
+    margin-top: 50px;
 }
 
 .grey { color: #aaaaaa; }
