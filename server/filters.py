@@ -15,3 +15,11 @@ class TweetsInEnglishPredicate(Predicate):
     """
     def test(self, obj):
         return obj['lang'] == 'en'
+
+
+class NoRetweetsPredicate(Predicate):
+    """
+    Filters tweets to remove those that are 'retweeted'.
+    """
+    def test(self, obj):
+        return obj['retweeted'] == False

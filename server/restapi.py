@@ -7,7 +7,7 @@ from spout.queues import QueueBufferedQueue
 from spout.sources import TweetStream
 import sys
 from classifier import Classifier, TrainOperation
-from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate
+from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate, NoRetweetsPredicate
 from oauth import credentials
 from tokeniser import TokeniseTweetFunction
 
@@ -40,6 +40,7 @@ def _train_classifier():
     twitter \
         .filter(TweetsWithHashtagsPredicate()) \
         .filter(TweetsInEnglishPredicate()) \
+        .filter(NoRetweetsPredicate()) \
         .map(TokeniseTweetFunction()) \
         .for_each(TrainOperation(classifier))
 
