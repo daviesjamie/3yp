@@ -1,5 +1,6 @@
 from multiprocessing import Process
 from multiprocessing.managers import BaseManager
+from apscheduler.scheduler import Scheduler
 from flask import Flask
 from flask.ext.restful import Resource, Api, reqparse
 from pympler import asizeof
@@ -44,7 +45,14 @@ def _train_classifier():
         .map(TokeniseTweetFunction()) \
         .for_each(TrainOperation(classifier))
 
+def _dump_classifier():
+    classifier.state_dump('state')
+
 trainer = Process(target=_train_classifier)
+
+sched = Scheduler()
+sched.start()
+sched.add_interval_job(_dump_classifier, hours=1)
 
 app = Flask(__name__)
 api = Api(app)
