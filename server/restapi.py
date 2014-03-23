@@ -25,7 +25,8 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'fcount',
                                                               'catcount',
                                                               'totalcount',
-                                                              'hashtags'])
+                                                              'hashtags',
+                                                              'get_model'])
 
 mymanager = ClassifierManager()
 mymanager.start()
@@ -58,7 +59,7 @@ class ClassificationAPI(Resource):
 
     def post(self):
         args = self.reqparse.parse_args()
-        return classifier.classify(args['text'], args['results']), 201
+        return classifier.classify(args['text'], results=args['results']), 201
 
 
 class StatusAPI(Resource):
@@ -74,8 +75,8 @@ class StatusAPI(Resource):
             "memory": {
                 "fc_kb": asizeof.asizeof(fc) / float(1024),
                 "cc_kb": asizeof.asizeof(cc) / float(1024),
-                "fc_mb": asizeof.asizeof(fc) / float(1024) / float(1024),
-                "cc_mb": asizeof.asizeof(cc) / float(1024) / float(1024),
+                "fc_mb": asizeof.asizeof(fc) / float(1048576),
+                "cc_mb": asizeof.asizeof(cc) / float(1048576),
             }
         }
 

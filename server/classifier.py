@@ -73,7 +73,7 @@ class Classifier(object):
             self.tweet_total += 1
 
     def fprob(self, token, hashtag):
-        if self.catcount(hashtag) == 0:
+        if token not in self.fc:
             return 0
         return self.fc[token].get(hashtag, 0) / self.cc[hashtag]
 
