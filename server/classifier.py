@@ -41,6 +41,7 @@ class Classifier(object):
     def __init__(self):
         self.fc = {}
         self.cc = {}
+        self.tweet_total = 0
 
         self.lock = Lock()
 
@@ -71,6 +72,8 @@ class Classifier(object):
 
             for hashtag in hashtags:
                 self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
+
+            self.tweet_total += 1
 
     def fprob(self, token, hashtag):
         if self.catcount(hashtag) == 0:
@@ -117,29 +120,24 @@ class Classifier(object):
     # Getter/setter methods
 
     def fcount(self, token, hashtag):
-        if token in self.fc and hashtag in self.fc[token]:
-            return self.fc[token][hashtag]
-        return 0
+        with self.lock:
+            if token in self.fc and hashtag in self.fc[token]:
+                return self.fc[token][hashtag]
+            return 0
 
     def catcount(self, hashtag):
-        if hashtag in self.cc:
-            return self.cc[hashtag]
-        return 0
+        with self.lock:
+            if hashtag in self.cc:
+                return self.cc[hashtag]
+            return 0
 
     def totalcount(self):
-        return sum(self.cc.values())
+        with self.lock:
+            return sum(self.cc.values())
 
     def hashtags(self):
-        return self.cc.keys()
-
-    def _incf(self, token, hashtag):
-        self.fc.setdefault(token, {})
-        self.fc[token].setdefault(hashtag, 0)
-        self.fc[token][hashtag] += 1
-
-    def _incc(self, hashtag):
-        self.cc.setdefault(hashtag, 0)
-        self.cc[hashtag] += 1
+        with self.lock:
+            return self.cc.keys()
 
     def get_model(self):
         with self.lock:
@@ -151,13 +149,13 @@ class Classifier(object):
     def state_dump(self, fileprefix):
         with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
             with self.lock:
-                pickle.dump(self.token_count, f, pickle.HIGHEST_PROTOCOL)
-                pickle.dump(self.model, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.tweet_total, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
             with self.lock:
-                self.token_count = pickle.load(f)
-                self.model = pickle.load(f)
+                self.fc = pickle.load(f)
+                self.cc = pickle.load(f)
                 self.tweet_total = pickle.load(f)
