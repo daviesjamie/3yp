@@ -31,3 +31,16 @@ def tweet(request):
 
 
     return render(request, 'tweet.html', { 'posted': posted, 'errors': errors })
+
+
+@login_required
+def search(request):
+    return render(request, 'search.html')
+
+@login_required
+def graphs(request):
+    return render(request, 'graphs.html')
+
+@login_required
+def stats(request):
+    return render(request, 'stats.html')
