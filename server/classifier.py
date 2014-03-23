@@ -45,10 +45,7 @@ class Classifier(object):
 
         self.lock = Lock()
 
-    def train(self, tweet):
-        # Twokenize tweet
-        tweet_tokens = tokenize(tweet)
-
+    def train(self, tweet_tokens):
         # Separate hashtags and tokens
         hashtags = set()
         tokens = set()
