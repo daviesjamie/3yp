@@ -1,5 +1,6 @@
 from __future__ import division
 from multiprocessing import Lock
+from datetime import datetime
 from spout.structs import Function, Operation
 import time
 from twokenize.twokenize import tokenize
@@ -42,6 +43,7 @@ class Classifier(object):
         self.fc = {}
         self.cc = {}
         self.tweet_total = 0
+        self.start_time = datetime.now()
 
         self.lock = Lock()
 
@@ -139,6 +141,9 @@ class Classifier(object):
     def get_model(self):
         with self.lock:
             return self.fc, self.cc, self.tweet_total
+
+    def get_uptime(self):
+        return datetime.now() - self.start_time
 
     ################################################################################################
     # State loading/dumping

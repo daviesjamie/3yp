@@ -27,7 +27,8 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'catcount',
                                                               'totalcount',
                                                               'hashtags',
-                                                              'get_model'])
+                                                              'get_model',
+                                                              'get_uptime'])
 
 mymanager = ClassifierManager()
 mymanager.start()
@@ -73,19 +74,26 @@ class ClassificationAPI(Resource):
 class StatusAPI(Resource):
     def get(self):
         fc, cc, total = classifier.get_model()
+        uptime = classifier.get_uptime()
 
         return {
             "training": {
                 "tweet_total": total,
                 "unique_tokens": len(fc.keys()),
-                "unique_hashtags": len(cc.keys())
+                "unique_hashtags": len(cc.keys()),
             },
             "memory": {
                 "fc_kb": asizeof.asizeof(fc) / float(1024),
                 "cc_kb": asizeof.asizeof(cc) / float(1024),
                 "fc_mb": asizeof.asizeof(fc) / float(1048576),
                 "cc_mb": asizeof.asizeof(cc) / float(1048576),
-            }
+            },
+            "uptime":{
+                "days": uptime.days,
+                "hours": int(uptime.total_seconds() / 3600),
+                "minutes": int((uptime.total_seconds() % 3600) / 60),
+                "seconds": int(uptime.total_seconds() % 60),
+            },
         }
 
 
