@@ -138,8 +138,12 @@ class Classifier(object):
         self.fc[token][hashtag] += 1
 
     def _incc(self, hashtag):
-        self.cc.setdefault(cat, 0)
-        self.cc[hastag] += 1
+        self.cc.setdefault(hashtag, 0)
+        self.cc[hashtag] += 1
+
+    def get_model(self):
+        with self.lock:
+            return self.fc, self.cc, self.tweet_total
 
     ################################################################################################
     # State loading/dumping
