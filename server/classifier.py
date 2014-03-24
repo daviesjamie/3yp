@@ -87,7 +87,7 @@ class Classifier(object):
     def weightedprob(self, token, hashtag, weight=1.0, ap=0.5):
         fprob = self.fprob(token, hashtag)
 
-        totals = self.tc[token]
+        totals = self.tc.get(token, 0)
 
         return ((weight * ap) + (totals * fprob)) / (weight + totals)
 
