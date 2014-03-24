@@ -10,7 +10,7 @@ trainer.start()
 
 sched = Scheduler()
 sched.start()
-sched.add_interval_job(_dump_classifier, minutes=1)
+sched.add_interval_job(_dump_classifier, hours=1)
 
 http_server = HTTPServer(WSGIContainer(app))
 http_server.listen(5000)
