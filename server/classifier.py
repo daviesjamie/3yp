@@ -42,7 +42,9 @@ class Classifier(object):
     def __init__(self):
         self.fc = {}
         self.cc = {}
+        self.tc = {}
         self.tweet_total = 0
+        self.hashtag_total = 0
         self.start_time = datetime.now()
 
         self.lock = Lock()
@@ -69,7 +71,10 @@ class Classifier(object):
                 else:
                     self.fc[token] = dict.fromkeys(hashtags, 1)
 
+                self.tc[token] = self.tc.get(token, 0) + 1
+
             for hashtag in hashtags:
+                self.hashtag_total += 1
                 self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
 
             self.tweet_total += 1
@@ -82,7 +87,7 @@ class Classifier(object):
     def weightedprob(self, token, hashtag, weight=1.0, ap=0.5):
         fprob = self.fprob(token, hashtag)
 
-        totals = sum([self.fcount(token, hashtag) for hashtag in self.hashtags()])
+        totals = self.tc[token]
 
         return ((weight * ap) + (totals * fprob)) / (weight + totals)
 
@@ -132,7 +137,7 @@ class Classifier(object):
 
     def totalcount(self):
         with self.lock:
-            return sum(self.cc.values())
+            return self.hashtag_total
 
     def hashtags(self):
         with self.lock:
@@ -153,11 +158,15 @@ class Classifier(object):
             with self.lock:
                 pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.tc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.tweet_total, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.hashtag_total, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
             with self.lock:
                 self.fc = pickle.load(f)
                 self.cc = pickle.load(f)
+                self.tc = pickle.load(f)
                 self.tweet_total = pickle.load(f)
+                self.hashtag_total = pickle.load(f)
