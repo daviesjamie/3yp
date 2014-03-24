@@ -145,7 +145,10 @@ class Classifier(object):
 
     def get_model(self):
         with self.lock:
-            return self.fc, self.cc, self.tweet_total
+            return self.fc, self.cc, self.tc
+
+    def get_totals(self):
+        return self.tweet_total, self.hashtag_total
 
     def get_uptime(self):
         return datetime.now() - self.start_time
