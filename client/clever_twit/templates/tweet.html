@@ -73,9 +73,13 @@
     function displaySuggestions(data) {
         var items = [];
         $.each(data, function(i, item) {
-            items.push('<li>#' + item[0] + '</li>')
+            items.push('<li><a href="#">#' + item[0] + '</a></li>')
             $("#suggestions").empty();
             $("#suggestions").append(items.join(''));
+
+            $("#suggestions a").click(function() {
+                $('#tweet-box').val($('#tweet-box').val() + $(this).text());
+            });
         });
     }
 
