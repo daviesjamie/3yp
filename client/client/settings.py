@@ -59,6 +59,8 @@ ROOT_URLCONF = 'client.urls'
 
 WSGI_APPLICATION = 'client.wsgi.application'
 
+STATIC_ROOT = '/home/user/3yp/static'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
