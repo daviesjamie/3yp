@@ -29,6 +29,7 @@
         </form>
     </div>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
@@ -65,6 +66,10 @@
         $("#tweet-submit").prop('disabled', remaining < 0);
     }
 
+    function displaySuggestions(data) {
+        console.log(data);
+    }
+
     $(document).ready(function() {
 
         addDefaultText();
@@ -72,6 +77,19 @@
         $("#tweet-box").on("focus", clearDefaultText);
         $("#tweet-box").on("blur", addDefaultText);
         $("#tweet-box").on("input", updateCountdown);
+
+        $("#tweet-box").on("input", function() {
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/api/classify",
+                data: JSON.stringify({
+                    text: "USA",
+                    results: 5,
+                }),
+                success: displaySuggestions,
+            });
+        });
     });
 </script>
 {% endblock %}
