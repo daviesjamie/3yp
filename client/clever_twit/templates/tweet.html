@@ -78,7 +78,8 @@
             $("#suggestions").append(items.join(''));
 
             $("#suggestions a").click(function() {
-                $('#tweet-box').val($('#tweet-box').val() + $(this).text());
+                tb = $('#tweet-box').val();
+                $('#tweet-box').val(tb.replace(/\s\s*$/, '') + ' ' + $(this).text());
             });
         });
     }
