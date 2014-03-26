@@ -28,6 +28,10 @@
             <button type="submit" class="btn btn-success btn-lg" id="tweet-submit">Tweet</button>
         </form>
     </div>
+
+    <div class="row">
+        <ul id="suggestions" class="list-inline"></ul>
+    </div>
 </div>
 
 {% endblock %}
@@ -67,11 +71,19 @@
     }
 
     function displaySuggestions(data) {
-        console.log(data);
+        var items = [];
+        $.each(data, function(i, item) {
+            items.push('<li><a href="#">#' + item[0] + '</a></li>')
+            $("#suggestions").empty();
+            $("#suggestions").append(items.join(''));
+
+            $("#suggestions a").click(function() {
+                $('#tweet-box').val($('#tweet-box').val() + $(this).text());
+            });
+        });
     }
 
     $(document).ready(function() {
-
         addDefaultText();
         updateCountdown();
         $("#tweet-box").on("focus", clearDefaultText);
@@ -84,7 +96,7 @@
                 contentType: "application/json; charset=utf-8",
                 url: "/api/classify",
                 data: JSON.stringify({
-                    text: "USA",
+                    text: $("#tweet-box").val(),
                     results: 5,
                 }),
                 success: displaySuggestions,
