@@ -36,5 +36,10 @@ body {
     margin-top: 50px;
 }
 
+#suggestions {
+    margin-top: 30px;
+    font-size: 1.5em;
+}
+
 .grey { color: #aaaaaa; }
 .red { color: #ca332f; }
