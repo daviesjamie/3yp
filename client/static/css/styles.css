@@ -41,5 +41,16 @@ body {
     font-size: 1.5em;
 }
 
+#search-form {
+  margin-top: 50px;
+  text-align: center;
+}
+
+#search-box {
+  font-size: 1.5em;
+  padding: 18px 10px;
+  margin-bottom: 15px;
+}
+
 .grey { color: #aaaaaa; }
 .red { color: #ca332f; }
