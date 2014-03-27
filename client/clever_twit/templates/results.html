@@ -1,0 +1,31 @@
+{% extends "default.html" %}
+
+{% block title %}Results for {{ query }} - Clever Twit{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>#{{ query }}</h1>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Related hashtags</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-inline">
+                <li>#test</li>
+                <li>#blah</li>
+                <li>#another</li>
+                <li>#hashtag</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>Related tweets</h3>
+    <ul class="list-group">
+        {% for result in results %}
+            <li class="list-group-item">{{ result.text }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

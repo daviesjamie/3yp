@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from twython import Twython
 
@@ -44,3 +45,17 @@ def graphs(request):
 @login_required
 def stats(request):
     return render(request, 'stats.html')
+
+@login_required
+@csrf_exempt
+def results(request):
+    query = request.GET.get('q')
+    if query.startswith('#'):
+        query = query[1:]
+
+    user = request.user.twitterprofile
+    twitter = Twython(settings.TWITTER_KEY, settings.TWITTER_SECRET, user.oauth_token, user.oauth_secret)
+
+    results = twitter.search(q='#'+query, count=15)
+
+    return render(request, 'results.html', { 'query': query, 'results': results['statuses'] })

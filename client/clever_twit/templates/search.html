@@ -1,23 +1,15 @@
 {% extends "default.html" %}
 
-{% block title %}New Tweet - Clever Twit{% endblock %}
+{% block title %}Search - Clever Twit{% endblock %}
 
 {% block content %}
 <div class="col-md-6 col-md-offset-3">
-    {% if errors %}
-        {% for error in errors %}
-            <div class="row">
-                <div class="alert alert-danger">
-                    <strong>Ooops!</strong> {{ error }}
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
-
     <div class="row">
-        <form id="search-form" action="{% url 'tweet' %}" method="post">
-            {% csrf_token %}
-            <input type="text" class="form-control" id="search-box" name="query" placeholder="Search for a #hashtag...">
+        <form id="search-form" action="{% url 'results' %}" method="get">
+            <div class="input-group input-group-lg">
+                <span class="input-group-addon">#</span>
+                <input type="text" class="form-control" id="search-box" name="q" placeholder="Search for a #hashtag...">
+            </div>
             <button type="submit" class="btn btn-success btn-lg" id="search-submit">Search</button>
         </form>
     </div>
