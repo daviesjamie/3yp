@@ -12,10 +12,21 @@
 
 {% block scripts %}
 <script>
+    function format(val) {
+        if($.type(val) == "string") {
+            val = val.replace(/_/g, " ");
+            return val.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
+        else if($.type(val) == "number" && val % 1 != 0) {
+            return val.toFixed(2);
+        }
+        return val;
+    }
+
     function displayStats(data) {
         var stats = '';
         $.each(data, function(key, value) {
-            var header = '<h2>' + key + '</h2>';
+            var header = '<h2>' + format(key) + '</h2>';
 
             var table = '<table class="table table-hover">';
 
@@ -27,8 +38,8 @@
             table += '<tbody>';
             $.each(value, function(subkey, subvalue) {
                 table += '<tr>';
-                table += '<td>' + subkey + '</td>';
-                table += '<td>' + subvalue + '</td>';
+                table += '<td>' + format(subkey) + '</td>';
+                table += '<td>' + format(subvalue) + '</td>';
                 table += '</tr>';
             });
             table += '</tbody>';
