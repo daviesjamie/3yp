@@ -26,9 +26,13 @@
     function displayStats(data) {
         var stats = '';
         $.each(data, function(key, value) {
-            var header = '<h2>' + format(key) + '</h2>';
+            var header = '<div class="panel panel-default">';
+            header += '<div class="panel-heading">';
+            header += '<h3 class="panel-title">' + format(key) + '</h3>';
+            header += '</div>';
 
-            var table = '<table class="table table-hover">';
+            var table = '<div class="panel-body">';
+            table += '<table class="table table-hover">';
 
             table += '<thead>';
             table += '<th class="col-sm-2">Key</th>';
@@ -45,6 +49,8 @@
             table += '</tbody>';
 
             table += '</table>';
+            table += '</div>';
+            table += '</div>';
 
             stats += header + table;
         });
