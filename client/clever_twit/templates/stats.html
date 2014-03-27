@@ -4,4 +4,50 @@
 
 {% block content %}
     <h1>Stats</h1>
+
+    <div id="stats">
+        <b class="fa fa-refresh fa-spin"></b>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function displayStats(data) {
+        var stats = '';
+        $.each(data, function(key, value) {
+            var header = '<h2>' + key + '</h2>';
+
+            var table = '<table class="table table-hover">';
+
+            table += '<thead>';
+            table += '<th class="col-sm-2">Key</th>';
+            table += '<th>Value</th>';
+            table += '</thead>';
+
+            table += '<tbody>';
+            $.each(value, function(subkey, subvalue) {
+                table += '<tr>';
+                table += '<td>' + subkey + '</td>';
+                table += '<td>' + subvalue + '</td>';
+                table += '</tr>';
+            });
+            table += '</tbody>';
+
+            table += '</table>';
+
+            stats += header + table;
+        });
+
+        $('#stats').empty();
+        $('#stats').append(stats);
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            type: "GET",
+            url: "/api/status",
+            success: displayStats
+        });
+    })
+</script>
 {% endblock %}
