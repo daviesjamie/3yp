@@ -5,6 +5,7 @@ from spout.structs import Function, Operation
 import time
 from twokenize.twokenize import tokenize
 import cPickle as pickle
+from pympler import asizeof
 
 
 class TrainOperation(Operation):
@@ -143,15 +144,18 @@ class Classifier(object):
         with self.lock:
             return self.cc.keys()
 
-    def get_model(self):
+    def get_counts(self):
         with self.lock:
-            return self.fc, self.cc, self.tc
+            return len(self.fc.keys()), len(self.cc.keys())
 
     def get_totals(self):
         return self.tweet_total, self.hashtag_total
 
     def get_uptime(self):
         return datetime.now() - self.start_time
+
+    def get_memory_usage(self):
+        return asizeof.asizeof(self.fc), asizeof.asizeof(self.cc), asizeof.asizeof(self.tc)
 
     ################################################################################################
     # State loading/dumping
@@ -173,3 +177,4 @@ class Classifier(object):
                 self.tc = pickle.load(f)
                 self.tweet_total = pickle.load(f)
                 self.hashtag_total = pickle.load(f)
+                print "state loaded from " + filename

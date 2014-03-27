@@ -27,14 +27,16 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'catcount',
                                                               'totalcount',
                                                               'hashtags',
-                                                              'get_model',
+                                                              'get_counts',
                                                               'get_totals',
-                                                              'get_uptime'])
+                                                              'get_uptime',
+                                                              'get_memory_usage'])
 
 mymanager = ClassifierManager()
 mymanager.start()
 
 classifier = mymanager.Classifier()
+classifier.state_load("state-20140327141948.pickle")
 
 def _train_classifier():
     twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
@@ -74,25 +76,25 @@ class ClassificationAPI(Resource):
 
 class StatusAPI(Resource):
     def get(self):
-        fc, cc, tc = classifier.get_model()
+        fc, cc = classifier.get_counts()
         tweet_total, hashtag_total = classifier.get_totals()
         uptime = classifier.get_uptime()
+        fm, cm, tm = classifier.get_memory_usage()
 
         return {
             "training": {
                 "tweet_total": tweet_total,
                 "hashtag_total": hashtag_total,
-                #"token_total": sum(tc.values()),
-                "unique_tokens": len(fc.keys()),
-                "unique_hashtags": len(cc.keys()),
+                "unique_tokens": fc,
+                "unique_hashtags": cc,
             },
             "memory": {
-                "fc_kb": asizeof.asizeof(fc) / float(1024),
-                "cc_kb": asizeof.asizeof(cc) / float(1024),
-                "tc_kb": asizeof.asizeof(tc) / float(1024),
-                "fc_mb": asizeof.asizeof(fc) / float(1048576),
-                "cc_mb": asizeof.asizeof(cc) / float(1048576),
-                "tc_mb": asizeof.asizeof(tc) / float(1048576),
+                "fc_kb": fm / float(1024),
+                "cc_kb": cm / float(1024),
+                "tc_kb": tm / float(1024),
+                "fc_mb": fm / float(1048576),
+                "cc_mb": cm / float(1048576),
+                "tc_mb": tm / float(1048576),
             },
             "uptime":{
                 "days": uptime.days,
