@@ -37,6 +37,8 @@
 {% endblock %}
 
 {% block scripts %}
+{% load static %}
+<script src="{% static "jquery-autosize/jquery.autosize.min.js" %}"></script>
 <script>
     var defaultText = "Compose new Tweet...";
 
@@ -103,6 +105,8 @@
                 success: displaySuggestions,
             });
         });
+
+        $("#tweet-box").autosize();
     });
 </script>
 {% endblock %}
