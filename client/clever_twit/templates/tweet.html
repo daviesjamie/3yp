@@ -23,7 +23,7 @@
     <div class="row">
         <form id="tweet-form" action="{% url 'tweet' %}" method="post">
             {% csrf_token %}
-            <textarea class="form-control" rows="4" id="tweet-box" name="status"></textarea>
+            <textarea class="form-control" rows="4" id="tweet-box" name="status" placeholder="Compose new Tweet..."></textarea>
             <span id="tweet-char-countdown"></span>
             <button type="submit" class="btn btn-success btn-lg" id="tweet-submit">Tweet</button>
         </form>
@@ -40,32 +40,10 @@
 {% load static %}
 <script src="{% static "jquery-autosize/jquery.autosize.min.js" %}"></script>
 <script>
-    var defaultText = "Compose new Tweet...";
-
-    function addDefaultText() {
-        if($("#tweet-box").val() == "") {
-            $("#tweet-box").val(defaultText);
-            $("#tweet-box").addClass("grey");
-        }
-    }
-
-    function clearDefaultText() {
-        if($("#tweet-box").val() == defaultText) {
-            $("#tweet-box").val("");
-            $("#tweet-box").removeClass("grey");
-        }
-    }
-
     function updateCountdown() {
         // 140 chars is the max for Twitter
         var remaining = 140 - $("#tweet-box").val().length;
-
-        if($("#tweet-box").val() != defaultText && remaining != 140) {
-            $("#tweet-char-countdown").text(remaining);
-        }
-        else {
-            $("#tweet-char-countdown").text("140");
-        }
+        $("#tweet-char-countdown").text(remaining);
 
         $("#tweet-char-countdown").toggleClass("red", remaining < 0);
         $("#tweet-char-countdown").toggleClass("grey", remaining >= 0);
@@ -87,13 +65,9 @@
     }
 
     $(document).ready(function() {
-        addDefaultText();
         updateCountdown();
-        $("#tweet-box").on("focus", clearDefaultText);
-        $("#tweet-box").on("blur", addDefaultText);
-        $("#tweet-box").on("input", updateCountdown);
-
         $("#tweet-box").on("input", function() {
+            updateCountdown();
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
