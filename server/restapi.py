@@ -96,7 +96,7 @@ class StatusAPI(Resource):
             },
             "uptime":{
                 "days": uptime.days,
-                "hours": int(uptime.total_seconds() / 3600),
+                "hours": int(uptime.total_seconds() / 3600) % 24,
                 "minutes": int((uptime.total_seconds() % 3600) / 60),
                 "seconds": int(uptime.total_seconds() % 60),
             },
