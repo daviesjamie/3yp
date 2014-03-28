@@ -36,7 +36,6 @@ mymanager = ClassifierManager()
 mymanager.start()
 
 classifier = mymanager.Classifier()
-classifier.state_load("state-20140327141948.pickle")
 
 def _train_classifier():
     twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
