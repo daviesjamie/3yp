@@ -175,17 +175,14 @@ Another approach to deciphering the vast quantity of data on Twitter is to class
 
 \pagebreak
 
-\section{Analysis \& Design}
-Using knowledge gained from the background research in \autoref{sec:litreview}, the project goals described in \autoref{sec:goals} will be expanded in this section to provide an explanation of the design of the system.
-
-\subsection{Requirements}
+\section{Requirements}
 There are two main requirements the system in this project is aiming to fulfil. It must:
 \begin{itemize}
     \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
     \item Allow users to search for a hashtag and view related tweets, including those that don't contain that hashtag.
 \end{itemize}
 
-\subsubsection{Functional Requirements}
+\subsection{Functional Requirements}
 \begin{enumerate}
     \item \label{func:publish} The system must allow the user to log in and publish tweets to their Twitter account.
     \item \label{func:suggest} The system must provide hashtag recommendations as the user is creating a tweet.
@@ -196,7 +193,7 @@ There are two main requirements the system in this project is aiming to fulfil. 
     \item \label{func:probabilities} \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet.
 \end{enumerate}
 
-\subsubsection{Non-Functional Requirements}
+\subsection{Non-Functional Requirements}
 \begin{enumerate}
     \item \label{nfunc:web} The system must be accessible via a web interface.
     \item \label{nfunc:easy} The system must be responsive and easy to use.
@@ -206,125 +203,49 @@ There are two main requirements the system in this project is aiming to fulfil. 
     \item \label{nfunc:mobile} \emph{Optional:} The system must be accessible via mobile web browsers.
 \end{enumerate}
 
-\subsection{Available Tools \& Technology}
+\pagebreak
 
-To conform with the project requirements (specifically non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}), the core of the system be executable in a server-side environment. This limits the choice of programming language to a handful of possibilities, including: Javascript + Node.js\footnote{\url{http://nodejs.org/}}, PHP, Python and Java.
-
-Python has been chosen as the language of choice for the project. This is due to a number of factors:
-\begin{itemize}
-    \item Django\footnote{\url{www.djangoproject.com/}} offers a simple and flexible way of following the tradition MVC (Model-View-Controller) programming paradigm, as well as providing a pleasant interface to handling web requests.
-    \item Frameworks such as Twisted\footnote{\url{www.twistedmatrix.com}} make it easy to implement custom network applications in a scalable and efficient manner.
-    \item It has a strong developer community behind it, resulting in a large collection of available third-party libraries.
-    \item Through packages such as NumPy\footnote{\url{www.numpy.org/}}, Python has excellent support for scientific computing.
-\end{itemize}
-
-\subsubsection{Collecting Twitter Data}
-Twitter offers two APIs with which to access users' tweets: a REST API\footnote{\url{https://dev.twitter.com/docs/api/1.1}} and a Streaming API\footnote{\url{https://dev.twitter.com/docs/streaming-apis}}. The REST API offers query-based access to tweets, such as tweets by a specific user, and the Streaming API offers a live-stream of the latest tweets being published on Twitter.
-
-To scrape a data corpus of random tweets, tweets can be collected from the Twitter public sample stream. This is a stream containing a small random sample of all public tweets being made, which makes it possible to get a good sample of the tweets being posted on Twitter on a machine with limited resources.
-
-Another approach would be to scrape a data corpus of all tweets belonging to a set of users. This could be achieved by directly querying the Twitter API for all tweets belonging to each user, one at a time. However, free access to the Twitter API is limited, and this would very quickly consume the allowed query quota. Instead, another approach could be to create a new user account on Twitter and have that account follow each user that is in the set of users to scrape. The Twitter API can then be used to scrape the personal timeline of the new user account, thus avoiding the query quotas.
-
-\subsection{Preliminary Data Analysis}
-By using the Twython\footnote{\url{https://github.com/ryanmcgrath/twython}} library, which is a collection of pure Python wrapper functions around the Twitter API calls, 500,000 random tweets were collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. The tweets were stored in a CSV file, with numerous pieces of information about each tweet being stored:
-\begin{itemize}
-    \item The tweet ID
-    \item The timestamp of when the tweet was created
-    \item A list of the hashtags contained within the tweet
-    \item Whether the tweet is a retweet of another user's tweet
-    \item The geocoordinates of where the tweet was posted from (if available)
-    \item The ID of the user that posted the tweet
-    \item The location of the user, as declared by the user on their profile
-    \item The timezone the user has set on their profile
-    \item The actual text of the tweet
-\end{itemize}
-
-Through the use of some simple Python scripts and manual inspection, several interesting observations have been made. A more detailed list of the top hashtags in the dataset is available in \autoref{appendix:hashtags}.
-
-The most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags taken from the dataset and their number of occurrences. Despite them all having exactly the same meaning, the use of the tags is wide-spread --- providing proof of the problem that this project is aiming to tackle.
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{| l | l |}
-        \hline
-        \textbf{Hashtag} & \textbf{Number of Occurrences} \\
-        \hline \hline
-        \#peopleschoice & 94849 \\ \hline
-        \#peopieschoice & 2043 \\ \hline
-        \#peoplechoice  & 439 \\ \hline
-        \#peoplesch     & 287 \\ \hline
-        \#peopleschoi   & 269 \\ \hline
-        \#peoplesc      & 230 \\ \hline
-        \#peoplescho    & 219 \\ \hline
-        \#peolpeschoice & 164 \\ \hline
-        \#peopleschioce & 137 \\ \hline
-        \#pca           & 94 \\ \hline
-    \end{tabular}
-    \caption{Occurrences of hashtags referring to the People's Choice Awards}
-    \label{tbl:redundancy}
-\end{table}
-
-Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Figure \autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Figure \autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
-
-\emph{Note:} The drop-offs in the first and last 6 hours on either side of the graphs are due to the way that the data has been accumulated over time. As the scraping script was not started nor finished at a precise interval of 6 hours (as displayed on the graphs), there are far fewer occurrences of the hashtags than there should be at the start and end of the scraping period.
-
-\begin{figure}[H]
-    \centering
-    \subfigure[\#android]{
-        \includegraphics[width=0.95\textwidth]{android}
-        \label{fig:android}
-    }
-
-    \subfigure[\#blackfriday]{
-        \includegraphics[width=0.95\textwidth]{blackfriday}
-        \label{fig:blackfriday}
-    }
-    \caption{Usage of hashtags over the period that the dataset was collected.}
-\end{figure}
-
-\subsection{Future Work}
-Now that the background research is complete and some initial observations have been made about the usage of hashtags on Twitter, the next step in the project is to experiment with different clustering and classification techniques to create an optimal content-based recommendation engine for hashtags.
-
-After the recommendation engine has been constructed, it will then be used as the core framework during the implementation of the two main features of the system: suggesting hashtags whilst composing a tweet, and enhancing hashtag search functionality by expanding the initial query to include other relevant hashtags.
-
-Finally, after the above has been completed, it will then be time to create the web-based user interface and connect the client-side interface with the server-side backend code.
+\section{Design}
+    \subsection{Architecture}
+        \subsubsection{Processing Framework}
+        \subsubsection{Classifier}
+    \subsection{Interface}
+        \subsubsection{API Endpoints}
+        \subsubsection{Web Interface}
 
 \pagebreak
 
-\section{Project Management}
-\subsection{Risk Analysis}
-Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. Listed below are some of the issues that may occur during the project.
+\section{Implementation}
+    \subsection{Stream Processing}
+    \subsection{Classification System}
+        \subsubsection{Training}
+        \subsubsection{Classifying}
+        \subsubsection{Optimisation}
+        \subsubsection{RESTful Interface}
+    \subsection{Web Application}
+        \subsubsection{Framework}
+        \subsubsection{Authentication}
+        \subsubsection{Connecting to Classifier}
 
-\subsubsection{Health Issues}
-It is possible that throughout the duration of the project serious illness or health problems may arise, meaning no work can be done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation was to arise, then the only solution would be to catch up on the work missed after recovering from the problem. However to reduce the impact of the illness, the project schedule will be followed closely, and therefore minimising the amount of work to catch-up on.
+\pagebreak
 
-\subsubsection{Technical Issues}
-The project will be completed using an arsenal of digital tools and programming languages, all of which can produce unexpected technical issues. To protect against this, all work will be stored in a cloud-based git repository, hosted on the GitHub\footnote{\url{www.github.com}} service. This will provide both a cloud-based back-up solution, as well as enabling the facility to roll back through past modifications to the project, if an issue should occur. Further to this, development will take place on a number of different machines throughout the course of the project. Due to the decentralised nature of the git version control tool, this means that each individual machine will also hold a separate copy of the work.
+\section{Testing}
+    \subsection{Strategy}
+    \subsection{Unit Testing}
+    \subsection{Classification Testing}
+    \subsection{User Interface Testing}
+    \subsection{Requirements Validation}
 
-\subsubsection{Scheduling Issues}
-Throughout the duration of the project, other University modules will be taking place and setting their own coursework, exams and deadlines. This may place additional strain upon the project, and result in falling behind on the project schedule. To combat this, the project schedule has been carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progresses, the Gantt chart (\autoref{appendix:gantt}) will be updated frequently to monitor the progress and ensure the project stays on track.
-
-\subsubsection{Unrealistic Goals}
-Through the long-term planning and foresight required to plan a large-scale project, it is possible that the goals and functionality of the project may be more difficult to achieve than originally thought. In this case, the functionality of the project will be simplified to ensure that a core subset of the goals and features can still be achieved, in coordination with the project supervisor.
-
-\subsection{Project Planning}
-
-The planned work involved in the completion of this project has been carefully scheduled to maximise time, and to ensure that the components of the system are created in a logical order. The full detailed plan of the project is recorded in the project Gantt chart (\autoref{appendix:gantt}).
-
-The project will be developed using an Agile software development model, meaning that the development will be iterative and incremental, with testing running throughout the duration of the implementation phases. This approach allows the requirements, functionality and final implementation of the system to evolve over time, in response to the results of the testing.
-
-This project is running in parallel with other University modules and their respective coursework and exams. To ensure that these modules do not suffer as a result of the project, several precautions have been worked into the schedule:
-\begin{itemize}
-    \item The project as a whole has a lighter workload throughout the first semester, due to all other modules in that semester having a particularly high coursework load.
-    \item There is no work scheduled for the Christmas holiday or for the weeks directly after, due to the final exams and courseworks for other modules taking priority. This also provides a `buffer' period to catch-up on the project schedule if necessary.
-    \item There is a light workload scheduled for the Easter holiday, allowing for any over-runs the project schedule may have. This also provides time for revision and preparation for the exams at the end of the second semester.
-\end{itemize}
+\section{Conclusion}
+    \subsection{System Evaluation}
+    \subsection{Project Management}
+    \subsection{Future Work}
 
 \pagebreak
 
 \begin{landscape}
     \appendix
-    \section{Project Gantt Chart}
+    \section{Time Management}
     \label{appendix:gantt}
     This is a Gantt chart showing the scheduled progression through the different aspects of the project.
 
@@ -334,67 +255,14 @@ This project is running in parallel with other University modules and their resp
     \end{figure}
 \end{landscape}
 
-\section{Hashtags in Testing Dataset}
-\label{appendix:hashtags}
-The table below lists the 50 most popular hashtags in the dataset of 500,000 random tweets that were collected for the initial tests and analysis in the period Monday 2nd December - Thursday 5th December 2013.
-\begin{longtable}{| l | l |}
-    \hline
-    \textbf{Hashtag} & \textbf{Number of Occurrences} \\
-    \hline \hline
-    \#peopleschoice             &   94849   \\ \hline
-    \#mtvstars                  &   40677   \\ \hline
-    \#femaleartist              &   17801   \\ \hline
-    \#gameinsight               &   12958   \\ \hline
-    \#breakoutartist            &   11036   \\ \hline
-    \#popartist                 &   10214   \\ \hline
-    \#musicfans                 &   10152   \\ \hline
-    \#chemistry                 &   9781    \\ \hline
-    \#scifiactor                &   8394    \\ \hline
-    \#musicvideo                &   7962    \\ \hline
-    \#teamfollowback            &   7664    \\ \hline
-    \#android                   &   7380    \\ \hline
-    \#retweet                   &   7195    \\ \hline
-    \#androidgames              &   7128    \\ \hline
-    \#voicesave                 &   5429    \\ \hline
-    \#ipad                      &   4711    \\ \hline
-    \#dramatictvactress         &   4426    \\ \hline
-    \#ipadgames                 &   4419    \\ \hline
-    \#scifitv                   &   4104    \\ \hline
-    \#allthatmattersmusicvideo  &   3801    \\ \hline
-    \#rt                        &   3362    \\ \hline
-    \#cabletvdrama              &   3075    \\ \hline
-    \#tvcrimedrama              &   3045    \\ \hline
-    \#nowplaying                &   2953    \\ \hline
-    \#scifiactress              &   2869    \\ \hline
-    \#comedictvactor            &   2840    \\ \hline
-    \#band                      &   2749    \\ \hline
-    \#tvbromance                &   2681    \\ \hline
-    \#comedicmovieactress       &   2636    \\ \hline
-    \#tvgalpals                 &   2562    \\ \hline
-    \#teamretweet               &   2508    \\ \hline
-    \#movieactress              &   2327    \\ \hline
-    \#newtvdrama                &   2310    \\ \hline
-    \#follow2befollowed         &   2304    \\ \hline
-    \#win                       &   2252    \\ \hline
-    \#pocketphoto               &   2047    \\ \hline
-    \#peopieschoice             &   2043    \\ \hline
-    \#tfbjp                     &   2040    \\ \hline
-    \#iphone                    &   2027    \\ \hline
-    \#allthatmatersmusicvideo   &   2022    \\ \hline
-    \#givingtuesday             &   1962    \\ \hline
-    \#wcw                       &   1924    \\ \hline
-    \#oomf                      &   1896    \\ \hline
-    \#openfollow                &   1832    \\ \hline
-    \#np                        &   1736    \\ \hline
-    \#iphonegames               &   1690    \\ \hline
-    \#cabletvactress            &   1676    \\ \hline
-    \#maleartist                &   1670    \\ \hline
-    \#christmas                 &   1670    \\ \hline
-    \#news                      &   1663    \\ \hline
+\section{Testing Plans \& Results}
+\pagebreak
 
-    \caption{The most popular hashtags in the initial testing dataset.}
-    \label{tbl:hashtags}
-\end{longtable}
+\section{REST API Interface}
+\pagebreak
+
+\section{Original Project Brief}
+\pagebreak
 
 
 \setcounter{secnumdepth}{0}
