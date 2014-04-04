@@ -28,25 +28,27 @@ class ClassificationAPI(Resource):
 
 class StatusAPI(Resource):
     def get(self):
-        fc, cc = classifier.get_counts()
+        hashtags, tokens = classifier.get_unique_counts()
         tweet_total, hashtag_total = classifier.get_totals()
         uptime = classifier.get_uptime()
-        fm, cm, tm = classifier.get_memory_usage()
+        hc_mem, htc_mem, tc_mem, thc_mem = classifier.get_memory_usage()
 
         return {
             "training": {
                 "tweet_total": tweet_total,
                 "hashtag_total": hashtag_total,
-                "unique_tokens": fc,
-                "unique_hashtags": cc,
+                "unique_tokens": tokens,
+                "unique_hashtags": hashtags,
             },
             "memory": {
-                "fc_kb": fm / float(1024),
-                "cc_kb": cm / float(1024),
-                "tc_kb": tm / float(1024),
-                "fc_mb": fm / float(1048576),
-                "cc_mb": cm / float(1048576),
-                "tc_mb": tm / float(1048576),
+                "hc_kb": hc_mem / float(1024),
+                "hc_mb": hc_mem / float(1048576),
+                "htc_kb": htc_mem / float(1024),
+                "htc_mb": htc_mem / float(1048576),
+                "tc_kb": tc_mem / float(1024),
+                "tc_mb": tc_mem / float(1048576),
+                "thc_kb": thc_mem / float(1024),
+                "thc_mb": thc_mem / float(1048576),
             },
             "uptime":{
                 "days": uptime.days,
@@ -75,14 +77,14 @@ class HashtagAPI(Resource):
 class TokenListAPI(Resource):
     def get(self):
         args = num_parser.parse_args()
-        tc = classifier.get_tc(num=args.get('num', None))
+        tc = classifier.get_tokens(num=args.get('num', None))
         return tc
 
 
 class HashtagListAPI(Resource):
     def get(self):
         args = num_parser.parse_args()
-        cc = classifier.get_cc(num=args.get('num', None))
+        cc = classifier.get_hashtags(num=args.get('num', None))
         return cc
 
 

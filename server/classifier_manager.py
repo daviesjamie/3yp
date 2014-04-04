@@ -12,13 +12,13 @@ class _ClassifierManager(BaseManager):
 def get_classifier():
     _ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                                    'classify',
-                                                                   'get_cc',
-                                                                   'get_counts',
+                                                                   'get_hashtags',
                                                                    'get_hashtag_tokens',
                                                                    'get_memory_usage',
-                                                                   'get_tc',
+                                                                   'get_tokens',
                                                                    'get_token_hashtags',
                                                                    'get_totals',
+                                                                   'get_unique_counts',
                                                                    'get_uptime',
                                                                    'state_dump',
                                                                    'state_load'])
