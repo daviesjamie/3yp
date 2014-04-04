@@ -107,28 +107,34 @@ class StatusAPI(Resource):
             },
         }
 
-
-class HashtagAPI(Resource):
-    def get(self, hashtag):
-        return classifier.get_hashtag_tokens(hashtag)
-
-
-class HashtagListAPI(Resource):
-    def get(self):
-        cc = classifier.get_cc()
-        return cc
+num_parser = reqparse.RequestParser()
+num_parser.add_argument('num', type=int, location='args')
 
 
 class TokenAPI(Resource):
     def get(self, token):
-        return classifier.get_token_hashtags(token)
+        args = num_parser.parse_args()
+        return classifier.get_token_hashtags(token, num=args.get('num', None))
+
+
+class HashtagAPI(Resource):
+    def get(self, hashtag):
+        args = num_parser.parse_args()
+        return classifier.get_hashtag_tokens(hashtag, num=args.get('num', None))
 
 
 class TokenListAPI(Resource):
     def get(self):
-        tc = classifier.get_tc()
+        args = num_parser.parse_args()
+        tc = classifier.get_tc(num=args.get('num', None))
         return tc
 
+
+class HashtagListAPI(Resource):
+    def get(self):
+        args = num_parser.parse_args()
+        cc = classifier.get_cc(num=args.get('num', None))
+        return cc
 
 api.add_resource(ClassificationAPI, '/api/classify')
 api.add_resource(StatusAPI, '/api/status')

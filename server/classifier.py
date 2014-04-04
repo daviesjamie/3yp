@@ -143,12 +143,16 @@ class Classifier(object):
                 return self.cc[hashtag]
             return 0
 
-    def get_cc(self):
+    def get_cc(self, num=None):
         with self.lock:
+            if num:
+                return sorted(self.cc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
             return self.cc
 
-    def get_tc(self):
+    def get_tc(self, num=None):
         with self.lock:
+            if num:
+                return sorted(self.tc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
             return self.tc
 
     def totalcount(self):
@@ -167,10 +171,14 @@ class Classifier(object):
         return self.tweet_total, self.hashtag_total
 
     def get_hashtag_tokens(self, hashtag, num=None):
-        return sorted(self.ct[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+        if num:
+            return sorted(self.ct[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+        return self.ct[hashtag]
 
     def get_token_hashtags(self, token, num=None):
-        return sorted(self.fc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+        if num:
+            return sorted(self.fc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+        return self.fc[token]
 
     def get_uptime(self):
         return datetime.now() - self.start_time
