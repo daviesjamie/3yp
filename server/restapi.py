@@ -26,11 +26,13 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'fcount',
                                                               'catcount',
                                                               'get_cc',
+                                                              'get_tc',
                                                               'totalcount',
                                                               'hashtags',
                                                               'get_counts',
                                                               'get_totals',
                                                               'get_hashtag_tokens',
+                                                              'get_token_hashtags',
                                                               'get_uptime',
                                                               'get_memory_usage'])
 
@@ -117,10 +119,23 @@ class HashtagListAPI(Resource):
         return cc
 
 
+class TokenAPI(Resource):
+    def get(self, token):
+        return classifier.get_token_hashtags(token)
+
+
+class TokenListAPI(Resource):
+    def get(self):
+        tc = classifier.get_tc()
+        return tc
+
+
 api.add_resource(ClassificationAPI, '/api/classify')
 api.add_resource(StatusAPI, '/api/status')
 api.add_resource(HashtagAPI, '/api/hashtag/<string:hashtag>')
 api.add_resource(HashtagListAPI, '/api/hashtags')
+api.add_resource(TokenAPI, '/api/token/<string:token>')
+api.add_resource(TokenListAPI, '/api/tokens')
 
 
 if __name__ == '__main__':

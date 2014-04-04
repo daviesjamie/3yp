@@ -147,6 +147,10 @@ class Classifier(object):
         with self.lock:
             return self.cc
 
+    def get_tc(self):
+        with self.lock:
+            return self.tc
+
     def totalcount(self):
         with self.lock:
             return self.hashtag_total
@@ -164,6 +168,9 @@ class Classifier(object):
 
     def get_hashtag_tokens(self, hashtag, num=None):
         return sorted(self.ct[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+
+    def get_token_hashtags(self, token, num=None):
+        return sorted(self.fc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
 
     def get_uptime(self):
         return datetime.now() - self.start_time
