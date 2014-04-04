@@ -87,30 +87,6 @@ class Classifier(object):
 
             self.tweet_total += 1
 
-    def fprob(self, token, hashtag):
-        if token not in self.fc:
-            return 0
-        return self.fc[token].get(hashtag, 0) / self.cc[hashtag]
-
-    def weightedprob(self, token, hashtag, weight=1.0, ap=0.5):
-        fprob = self.fprob(token, hashtag)
-
-        totals = self.tc.get(token, 0)
-
-        return ((weight * ap) + (totals * fprob)) / (weight + totals)
-
-    def docprob(self, tokens, hashtag):
-        p = 1
-        for token in tokens:
-            p *= self.weightedprob(token, hashtag)
-
-        return p
-
-    def prob(self, tokens, hashtag):
-        catprob = self.catcount(hashtag) / self.totalcount()
-        docprob = self.docprob(tokens, hashtag)
-        return docprob * catprob
-
     def classify(self, tweet, results=None):
         # Twokenize tweet
         tweet_tokens = tokenize(tweet)
@@ -123,25 +99,59 @@ class Classifier(object):
 
         probs = {}
 
-        for hashtag in self.hashtags():
-            probs[hashtag] = self.prob(tokens, hashtag)
+        for hashtag in self._hashtags():
+            probs[hashtag] = self._prob(tokens, hashtag)
 
         return sorted(probs.iteritems(), key=lambda t: t[1], reverse=True)[:results]
 
-    ################################################################################################
-    # Getter/setter methods
 
-    def fcount(self, token, hashtag):
+    ################################################################################################
+    # Classification helper methods
+
+    def _catcount(self, hashtag):
+        with self.lock:
+            if hashtag in self.cc:
+                return self.cc[hashtag]
+            return 0
+
+    def _docprob(self, tokens, hashtag):
+        p = 1
+        for token in tokens:
+            p *= self._weightedprob(token, hashtag)
+        return p
+
+    def _fcount(self, token, hashtag):
         with self.lock:
             if token in self.fc and hashtag in self.fc[token]:
                 return self.fc[token][hashtag]
             return 0
 
-    def catcount(self, hashtag):
-        with self.lock:
-            if hashtag in self.cc:
-                return self.cc[hashtag]
+    def _fprob(self, token, hashtag):
+        if token not in self.fc:
             return 0
+        return self.fc[token].get(hashtag, 0) / self.cc[hashtag]
+
+    def _hashtags(self):
+        with self.lock:
+            return self.cc.keys()
+
+    def _prob(self, tokens, hashtag):
+        catprob = self._catcount(hashtag) / self._totalcount()
+        docprob = self._docprob(tokens, hashtag)
+        return docprob * catprob
+
+    def _totalcount(self):
+        with self.lock:
+            return self.hashtag_total
+
+    def _weightedprob(self, token, hashtag, weight=1.0, ap=0.5):
+        fprob = self._fprob(token, hashtag)
+        totals = self.tc.get(token, 0)
+        return ((weight * ap) + (totals * fprob)) / (weight + totals)
+
+
+    ################################################################################################
+    # Getter methods
 
     def get_cc(self, num=None):
         with self.lock:
@@ -149,42 +159,35 @@ class Classifier(object):
                 return sorted(self.cc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
             return self.cc
 
-    def get_tc(self, num=None):
-        with self.lock:
-            if num:
-                return sorted(self.tc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
-            return self.tc
-
-    def totalcount(self):
-        with self.lock:
-            return self.hashtag_total
-
-    def hashtags(self):
-        with self.lock:
-            return self.cc.keys()
-
     def get_counts(self):
         with self.lock:
             return len(self.fc.keys()), len(self.cc.keys())
-
-    def get_totals(self):
-        return self.tweet_total, self.hashtag_total
 
     def get_hashtag_tokens(self, hashtag, num=None):
         if num:
             return sorted(self.ct[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
         return self.ct[hashtag]
 
+    def get_memory_usage(self):
+        return asizeof.asizeof(self.fc), asizeof.asizeof(self.cc), asizeof.asizeof(self.tc)
+
+    def get_tc(self, num=None):
+        with self.lock:
+            if num:
+                return sorted(self.tc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
+            return self.tc
+
     def get_token_hashtags(self, token, num=None):
         if num:
             return sorted(self.fc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
         return self.fc[token]
 
+    def get_totals(self):
+        return self.tweet_total, self.hashtag_total
+
     def get_uptime(self):
         return datetime.now() - self.start_time
 
-    def get_memory_usage(self):
-        return asizeof.asizeof(self.fc), asizeof.asizeof(self.cc), asizeof.asizeof(self.tc)
 
     ################################################################################################
     # State loading/dumping

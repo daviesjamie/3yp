@@ -12,24 +12,16 @@ class _ClassifierManager(BaseManager):
 def get_classifier():
     _ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                                    'classify',
-                                                                   'state_dump',
-                                                                   'state_load',
-                                                                   'fprob',
-                                                                   'weightedprob',
-                                                                   'docprob',
-                                                                   'prob',
-                                                                   'fcount',
-                                                                   'catcount',
                                                                    'get_cc',
-                                                                   'get_tc',
-                                                                   'totalcount',
-                                                                   'hashtags',
                                                                    'get_counts',
-                                                                   'get_totals',
                                                                    'get_hashtag_tokens',
+                                                                   'get_memory_usage',
+                                                                   'get_tc',
                                                                    'get_token_hashtags',
+                                                                   'get_totals',
                                                                    'get_uptime',
-                                                                   'get_memory_usage'])
+                                                                   'state_dump',
+                                                                   'state_load'])
 
     mymanager = _ClassifierManager()
     mymanager.start()
