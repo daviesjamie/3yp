@@ -29,6 +29,7 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'hashtags',
                                                               'get_counts',
                                                               'get_totals',
+                                                              'get_hashtag_tokens',
                                                               'get_uptime',
                                                               'get_memory_usage'])
 
@@ -104,8 +105,14 @@ class StatusAPI(Resource):
         }
 
 
+class HashtagAPI(Resource):
+    def get(self, hashtag):
+        return classifier.get_hashtag_tokens(hashtag)
+
+
 api.add_resource(ClassificationAPI, '/api/classify')
 api.add_resource(StatusAPI, '/api/status')
+api.add_resource(HashtagAPI, '/api/hashtag/<string:hashtag>')
 
 
 if __name__ == '__main__':
