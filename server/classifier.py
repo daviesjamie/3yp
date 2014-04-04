@@ -41,10 +41,10 @@ class Classifier(object):
     }
     """
     def __init__(self):
-        self.fc = {}    # token -> hashtag -> count
-        self.cc = {}    # hashtag -> count
-        self.tc = {}    # token -> count
-        self.ct = {}    # hashtag -> token -> count
+        self.hc = {}    # { hashtag: count }
+        self.htc = {}   # { hashtag: { token: count } }
+        self.tc = {}    # { token: count }
+        self.thc = {}   # { token: { hashtag: count } }
         self.tweet_total = 0
         self.hashtag_total = 0
         self.start_time = datetime.now()
@@ -67,23 +67,23 @@ class Classifier(object):
 
         with self.lock:
             for token in tokens:
-                if token in self.fc:
+                if token in self.thc:
                     for hashtag in hashtags:
-                        self.fc[token][hashtag] = self.fc[token].get(hashtag, 0) + 1
+                        self.thc[token][hashtag] = self.thc[token].get(hashtag, 0) + 1
                 else:
-                    self.fc[token] = dict.fromkeys(hashtags, 1)
+                    self.thc[token] = dict.fromkeys(hashtags, 1)
 
                 self.tc[token] = self.tc.get(token, 0) + 1
 
             for hashtag in hashtags:
-                if hashtag in self.ct:
+                if hashtag in self.htc:
                     for token in tokens:
-                        self.ct[hashtag][token] = self.ct[hashtag].get(token, 0) + 1
+                        self.htc[hashtag][token] = self.htc[hashtag].get(token, 0) + 1
                 else:
-                    self.ct[hashtag] = dict.fromkeys(tokens, 1)
+                    self.htc[hashtag] = dict.fromkeys(tokens, 1)
 
+                self.hc[hashtag] = self.hc.get(hashtag, 0) + 1
                 self.hashtag_total += 1
-                self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
 
             self.tweet_total += 1
 
@@ -110,8 +110,8 @@ class Classifier(object):
 
     def _catcount(self, hashtag):
         with self.lock:
-            if hashtag in self.cc:
-                return self.cc[hashtag]
+            if hashtag in self.hc:
+                return self.hc[hashtag]
             return 0
 
     def _docprob(self, tokens, hashtag):
@@ -122,22 +122,22 @@ class Classifier(object):
 
     def _fcount(self, token, hashtag):
         with self.lock:
-            if token in self.fc and hashtag in self.fc[token]:
-                return self.fc[token][hashtag]
+            if token in self.thc and hashtag in self.thc[token]:
+                return self.thc[token][hashtag]
             return 0
 
     def _fprob(self, token, hashtag):
-        if token not in self.fc:
+        if token not in self.thc:
             return 0
-        return self.fc[token].get(hashtag, 0) / self.cc[hashtag]
+        return self.thc[token].get(hashtag, 0) / self.hc[hashtag]
 
     def _hashtags(self):
         with self.lock:
-            return self.cc.keys()
+            return self.hc.keys()
 
     def _prob(self, tokens, hashtag):
-        catprob = self._catcount(hashtag) / self._totalcount()
         docprob = self._docprob(tokens, hashtag)
+        catprob = self._catcount(hashtag) / self._totalcount()
         return docprob * catprob
 
     def _totalcount(self):
@@ -195,18 +195,20 @@ class Classifier(object):
     def state_dump(self, fileprefix):
         with open("{0}-{1}.pickle".format(fileprefix, time.strftime("%Y%m%d%H%M%S")), "wb") as f:
             with self.lock:
-                pickle.dump(self.fc, f, pickle.HIGHEST_PROTOCOL)
-                pickle.dump(self.cc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.hc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.htc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.tc, f, pickle.HIGHEST_PROTOCOL)
+                pickle.dump(self.thc, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.tweet_total, f, pickle.HIGHEST_PROTOCOL)
                 pickle.dump(self.hashtag_total, f, pickle.HIGHEST_PROTOCOL)
 
     def state_load(self, filename):
         with open(filename, "rb") as f:
             with self.lock:
-                self.fc = pickle.load(f)
-                self.cc = pickle.load(f)
+                self.hc = pickle.load(f)
+                self.htc = pickle.load(f)
                 self.tc = pickle.load(f)
+                self.thc = pickle.load(f)
                 self.tweet_total = pickle.load(f)
                 self.hashtag_total = pickle.load(f)
-                print "state loaded from " + filename
+                print "State sucessfully loaded from " + filename
