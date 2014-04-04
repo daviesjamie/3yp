@@ -25,6 +25,7 @@ ClassifierManager.register('Classifier', Classifier, exposed=['train',
                                                               'prob',
                                                               'fcount',
                                                               'catcount',
+                                                              'get_cc',
                                                               'totalcount',
                                                               'hashtags',
                                                               'get_counts',
@@ -110,9 +111,16 @@ class HashtagAPI(Resource):
         return classifier.get_hashtag_tokens(hashtag)
 
 
+class HashtagListAPI(Resource):
+    def get(self):
+        cc = classifier.get_cc()
+        return cc
+
+
 api.add_resource(ClassificationAPI, '/api/classify')
 api.add_resource(StatusAPI, '/api/status')
 api.add_resource(HashtagAPI, '/api/hashtag/<string:hashtag>')
+api.add_resource(HashtagListAPI, '/api/hashtags')
 
 
 if __name__ == '__main__':

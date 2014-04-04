@@ -143,6 +143,10 @@ class Classifier(object):
                 return self.cc[hashtag]
             return 0
 
+    def get_cc(self):
+        with self.lock:
+            return self.cc
+
     def totalcount(self):
         with self.lock:
             return self.hashtag_total
