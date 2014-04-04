@@ -96,7 +96,7 @@ api.add_resource(TokenAPI,          '/api/token/<string:token>'             )
 api.add_resource(TokenListAPI,      '/api/tokens'                           )
 
 
-def start():
+def dev_server():
     trainer = Process(target=train_classifier, args=[classifier])
     trainer.start()
 
@@ -110,5 +110,5 @@ def start():
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         classifier.state_load(sys.argv[1])
-    start()
+    dev_server()
 
