@@ -41,9 +41,10 @@ class Classifier(object):
     }
     """
     def __init__(self):
-        self.fc = {}
-        self.cc = {}
-        self.tc = {}
+        self.fc = {}    # token -> hashtag -> count
+        self.cc = {}    # hashtag -> count
+        self.tc = {}    # token -> count
+        self.ct = {}    # hashtag -> token -> count
         self.tweet_total = 0
         self.hashtag_total = 0
         self.start_time = datetime.now()
@@ -75,6 +76,12 @@ class Classifier(object):
                 self.tc[token] = self.tc.get(token, 0) + 1
 
             for hashtag in hashtags:
+                if hashtag in self.ct:
+                    for token in tokens:
+                        self.ct[hashtag][token] = self.ct[hashtag].get(token, 0) + 1
+                else:
+                    self.ct[hashtag] = dict.fromkeys(tokens, 1)
+
                 self.hashtag_total += 1
                 self.cc[hashtag] = self.cc.get(hashtag, 0) + 1
 
@@ -150,6 +157,9 @@ class Classifier(object):
 
     def get_totals(self):
         return self.tweet_total, self.hashtag_total
+
+    def get_hashtag_tokens(self, hashtag, num=None):
+        return sorted(self.ct[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
 
     def get_uptime(self):
         return datetime.now() - self.start_time
