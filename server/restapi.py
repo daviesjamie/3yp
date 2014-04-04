@@ -1,68 +1,17 @@
 from multiprocessing import Process
-from multiprocessing.managers import BaseManager
+import sys
+
 from apscheduler.scheduler import Scheduler
 from flask import Flask
 from flask.ext.restful import Resource, Api, reqparse
-from pympler import asizeof
-from spout.queues import QueueBufferedQueue
-from spout.sources import TweetStream
-import sys
-from classifier import Classifier, TrainOperation
-from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate, NoRetweetsPredicate
-from oauth import credentials
-from tokeniser import TokeniseTweetFunction
 
-class ClassifierManager(BaseManager):
-    pass
+from classifier_manager import get_classifier, train_classifier, dump_classifier
 
-ClassifierManager.register('Classifier', Classifier, exposed=['train',
-                                                              'classify',
-                                                              'state_dump',
-                                                              'state_load',
-                                                              'fprob',
-                                                              'weightedprob',
-                                                              'docprob',
-                                                              'prob',
-                                                              'fcount',
-                                                              'catcount',
-                                                              'get_cc',
-                                                              'get_tc',
-                                                              'totalcount',
-                                                              'hashtags',
-                                                              'get_counts',
-                                                              'get_totals',
-                                                              'get_hashtag_tokens',
-                                                              'get_token_hashtags',
-                                                              'get_uptime',
-                                                              'get_memory_usage'])
-
-mymanager = ClassifierManager()
-mymanager.start()
-
-classifier = mymanager.Classifier()
-
-def _train_classifier():
-    twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
-    twitter.connect()
-
-    twitter \
-        .filter(TweetsWithHashtagsPredicate()) \
-        .filter(TweetsInEnglishPredicate()) \
-        .filter(NoRetweetsPredicate()) \
-        .map(TokeniseTweetFunction()) \
-        .for_each(TrainOperation(classifier))
-
-def _dump_classifier():
-    classifier.state_dump('state')
-
-trainer = Process(target=_train_classifier)
-
-sched = Scheduler()
-sched.start()
-sched.add_interval_job(_dump_classifier, hours=1)
 
 app = Flask(__name__)
 api = Api(app)
+
+classifier = get_classifier()
 
 
 class ClassificationAPI(Resource):
@@ -136,18 +85,28 @@ class HashtagListAPI(Resource):
         cc = classifier.get_cc(num=args.get('num', None))
         return cc
 
-api.add_resource(ClassificationAPI, '/api/classify')
-api.add_resource(StatusAPI, '/api/status')
-api.add_resource(HashtagAPI, '/api/hashtag/<string:hashtag>')
-api.add_resource(HashtagListAPI, '/api/hashtags')
-api.add_resource(TokenAPI, '/api/token/<string:token>')
-api.add_resource(TokenListAPI, '/api/tokens')
+
+api.add_resource(ClassificationAPI, '/api/classify'                         )
+api.add_resource(StatusAPI,         '/api/status'                           )
+api.add_resource(HashtagAPI,        '/api/hashtag/<string:hashtag>'         )
+api.add_resource(HashtagListAPI,    '/api/hashtags'                         )
+api.add_resource(TokenAPI,          '/api/token/<string:token>'             )
+api.add_resource(TokenListAPI,      '/api/tokens'                           )
+
+
+def start():
+    trainer = Process(target=train_classifier, args=[classifier])
+    trainer.start()
+
+    sched = Scheduler()
+    sched.start()
+    sched.add_interval_job(dump_classifier, args=[classifier], hours=1)
+
+    app.run(debug=True)
 
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         classifier.state_load(sys.argv[1])
-    else:
-        trainer.start()
+    start()
 
-    app.run(debug=True)
