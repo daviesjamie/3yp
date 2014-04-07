@@ -1,7 +1,4 @@
 Generate graphs of new tokens and new hashtags over time from large dataset
-Filter out usernames
 Test classifier with large dataset
-Filter out URLs
-Filter out punctuation
 Use hashtag text for training
 Write unit tests to test correctness of the code
