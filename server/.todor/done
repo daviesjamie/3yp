@@ -1,3 +1,4 @@
 Filter out usernames
 Filter out URLs
 Filter out punctuation
+Use hashtag text for training

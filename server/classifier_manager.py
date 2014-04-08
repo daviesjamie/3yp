@@ -36,8 +36,8 @@ def train_classifier(classifier):
         .filter(TweetsWithHashtagsPredicate()) \
         .filter(TweetsInEnglishPredicate()) \
         .filter(NoRetweetsPredicate()) \
-        .map(TokeniseTweetFunction()) \
-        .for_each(TrainOperation(classifier))
+        .map(TokeniseTweetFunction(stop_words=True, punctuation=True, usernames=True, urls=True)) \
+        .for_each(TrainOperation(classifier, use_hashtag_text=True))
 
 def dump_classifier(classifier):
     classifier.state_dump('state')

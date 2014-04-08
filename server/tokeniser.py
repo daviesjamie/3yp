@@ -23,25 +23,25 @@ class TokeniseTextFunction(Function):
         self.usernames = usernames
         self.urls = urls
 
-        if not self.stop_words:
+        if self.stop_words:
             self.stop_word_list = _get_stop_words()
 
-        if not self.punctuation:
+        if self.punctuation:
             self.punctuation_map = dict((ord(char), None) for char in string.punctuation)
 
     def apply(self, input):
         tokens = tokenize(input)
 
-        if not self.stop_words:
+        if self.stop_words:
             tokens = [t for t in tokens if t not in self.stop_word_list]
 
-        if not self.punctuation:
+        if self.punctuation:
             tokens = [t for t in tokens if t.translate(self.punctuation_map)]
 
-        if not self.usernames:
+        if self.usernames:
             tokens = [t for t in tokens if not t.startswith('@')]
 
-        if not self.urls:
+        if self.urls:
             tokens = [t for t in tokens if not match(t, rule='IRI')]
 
         return tokens

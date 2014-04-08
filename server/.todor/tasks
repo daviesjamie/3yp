@@ -1,4 +1,4 @@
 Generate graphs of new tokens and new hashtags over time from large dataset
 Test classifier with large dataset
-Use hashtag text for training
 Write unit tests to test correctness of the code
+Create debug output for trainer
