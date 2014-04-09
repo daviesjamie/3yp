@@ -1,6 +1,6 @@
 import string
-from rfc3987 import match
 import os
+import re
 from spout.structs import Function
 from twokenize.twokenize import tokenize
 
@@ -29,6 +29,9 @@ class TokeniseTextFunction(Function):
         if self.punctuation:
             self.punctuation_map = dict((ord(char), None) for char in string.punctuation)
 
+        if self.urls:
+            self.url_regex = re.compile(r'(?:(?:https?:\/\/)|(?:www\.))[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b(?:[-a-zA-Z0-9@:%_\+.~#?&/=]*)')
+
     def apply(self, input):
         tokens = tokenize(input.lower())
 
@@ -42,7 +45,7 @@ class TokeniseTextFunction(Function):
             tokens = [t for t in tokens if not t.startswith('@')]
 
         if self.urls:
-            tokens = [t for t in tokens if not match(t, rule='IRI')]
+            tokens = [t for t in tokens if not re.match(self.url_regex, t)]
 
         return tokens
 
