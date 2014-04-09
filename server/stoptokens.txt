@@ -41,13 +41,11 @@ having
 he
 he'd
 he'll
-he's
 hed
 hell
 hes
 her
 here
-here's
 heres
 hers
 herself
@@ -55,7 +53,6 @@ him
 himself
 his
 how
-how's
 hows
 i
 i'd
@@ -71,10 +68,8 @@ in
 into
 is
 it
-it's
 its
 itself
-let's
 lets
 me
 more
@@ -102,7 +97,6 @@ same
 she
 she'd
 she'll
-she's
 shed
 shell
 shes
@@ -112,7 +106,6 @@ some
 such
 than
 that
-that's
 thats
 the
 their
@@ -121,7 +114,6 @@ them
 themselves
 then
 there
-there's
 theres
 these
 they
@@ -154,22 +146,17 @@ were
 weve
 were
 what
-what's
 whats
 when
-when's
 whens
 where
-where's
 wheres
 which
 while
 who
-who's
 whos
 whom
 why
-why's
 whys
 with
 won't
@@ -187,3 +174,4 @@ your
 yours
 yourself
 yourselves
+'s

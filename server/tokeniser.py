@@ -1,13 +1,13 @@
 import string
 from rfc3987 import match
+import os
 from spout.structs import Function
 from twokenize.twokenize import tokenize
 
-stop_word_file = "stopwords.txt"
+def _get_stop_tokens(file):
+    stop_token_file = os.path.join(os.path.dirname(__file__), file)
 
-
-def _get_stop_words():
-    with open(stop_word_file, 'r') as f:
+    with open(stop_token_file, 'r') as f:
         words = f.read().splitlines()
 
     return set(words)
@@ -17,14 +17,14 @@ class TokeniseTextFunction(Function):
     """
     Takes in a plain text string and tokenises it using Brendan O'Connor's "twokenizer".
     """
-    def __init__(self, stop_words=False, punctuation=False, usernames=False, urls=False):
-        self.stop_words = stop_words
+    def __init__(self, stop_tokens=False, punctuation=False, usernames=False, urls=False):
+        self.stop_tokens = stop_tokens
         self.punctuation = punctuation
         self.usernames = usernames
         self.urls = urls
 
-        if self.stop_words:
-            self.stop_word_list = _get_stop_words()
+        if self.stop_tokens:
+            self.stop_token_list = _get_stop_tokens("stoptokens.txt")
 
         if self.punctuation:
             self.punctuation_map = dict((ord(char), None) for char in string.punctuation)
@@ -32,11 +32,11 @@ class TokeniseTextFunction(Function):
     def apply(self, input):
         tokens = tokenize(input.lower())
 
-        if self.stop_words:
-            tokens = [t for t in tokens if t not in self.stop_word_list]
 
         if self.punctuation:
             tokens = [t for t in tokens if t.translate(self.punctuation_map)]
+        if self.stop_tokens:
+            tokens = [t for t in tokens if t not in self.stop_token_list]
 
         if self.usernames:
             tokens = [t for t in tokens if not t.startswith('@')]
@@ -52,9 +52,10 @@ class TokeniseTweetFunction(TokeniseTextFunction):
     Takes in a tweet JSON object and tokenises the tweet text using Brendan O'Connor's
     "twokenizer".
     """
-    def __init__(self, stop_words=False, punctuation=False, usernames=False, urls=False):
+    def __init__(self, stop_tokens=False, punctuation=False, usernames=False, urls=False):
         super(TokeniseTweetFunction, self) \
-            .__init__(stop_words=stop_words, punctuation=punctuation, usernames=usernames, urls=urls)
+            .__init__(stop_tokens=stop_tokens, punctuation=punctuation, usernames=usernames,
+                      urls=urls)
 
     def apply(self, input):
         return super(TokeniseTweetFunction, self).apply(input['text'])
