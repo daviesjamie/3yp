@@ -18,7 +18,7 @@ class TrainOperation(Operation):
         self.use_hashtag_text = use_hashtag_text
 
     def perform(self, obj):
-        self.classifier.train(obj, self.use_hashtag_text)
+        self.classifier.train(obj, use_hashtag_text=self.use_hashtag_text)
 
 
 class Classifier(object):
@@ -68,11 +68,11 @@ class Classifier(object):
         tokens = set()
         for token in tweet_tokens:
             if token[0] == '#' and len(token) > 1:
-                hashtags.add(unicode(token[1:]).lower())
+                hashtags.add(unicode(token[1:]))
                 if use_hashtag_text:
-                    tokens.add(unicode(token[1:]).lower())
+                    tokens.add(unicode(token[1:]))
             else:
-                tokens.add(unicode(token).lower())
+                tokens.add(unicode(token))
 
         # Ensure tweet has some hashtags and some non-hashtag tokens
         if len(hashtags) == 0 or len(tokens) == 0:

@@ -30,7 +30,7 @@ class TokeniseTextFunction(Function):
             self.punctuation_map = dict((ord(char), None) for char in string.punctuation)
 
     def apply(self, input):
-        tokens = tokenize(input)
+        tokens = tokenize(input.lower())
 
         if self.stop_words:
             tokens = [t for t in tokens if t not in self.stop_word_list]
