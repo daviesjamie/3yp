@@ -35,9 +35,6 @@ class TokeniseTextFunction(Function):
     def apply(self, input):
         tokens = tokenize(input.lower())
 
-
-        if self.punctuation:
-            tokens = [t for t in tokens if t.translate(self.punctuation_map)]
         if self.stop_tokens:
             tokens = [t for t in tokens if t not in self.stop_token_list]
 
@@ -46,6 +43,9 @@ class TokeniseTextFunction(Function):
 
         if self.urls:
             tokens = [t for t in tokens if not re.match(self.url_regex, t)]
+
+        if self.punctuation:
+            tokens = [t for t in tokens if t.translate(self.punctuation_map)]
 
         return tokens
 
