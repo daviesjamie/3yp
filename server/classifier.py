@@ -13,12 +13,11 @@ class TrainOperation(Operation):
     Takes in a stream of tokenized tweets and builds a dictionary keeping track of how many times
     each non-hashtag token is associated with a hashtag.
     """
-    def __init__(self, classifier, use_hashtag_text=False):
+    def __init__(self, classifier):
         self.classifier = classifier
-        self.use_hashtag_text = use_hashtag_text
 
     def perform(self, obj):
-        self.classifier.train(obj, use_hashtag_text=self.use_hashtag_text)
+       self.classifier.train(obj)
 
 
 class Classifier(object):
@@ -44,7 +43,7 @@ class Classifier(object):
     simulatenous training and classification, or simultaneous training from different sources.
     """
 
-    def __init__(self):
+    def __init__(self, use_hashtag_text=False):
         """
         Initialises the internal models and counts, and creates the mutex lock.
         """
@@ -58,7 +57,9 @@ class Classifier(object):
 
         self.lock = Lock()
 
-    def train(self, tweet_tokens, use_hashtag_text=False):
+        self.use_hashtag_text = use_hashtag_text
+
+    def train(self, tweet_tokens):
         """
         Takes in an iterable collection of tokens (from a tokenised tweet), and uses it to update
         the classifier's internal probability models.
@@ -69,7 +70,7 @@ class Classifier(object):
         for token in tweet_tokens:
             if token[0] == '#' and len(token) > 1:
                 hashtags.add(unicode(token[1:]))
-                if use_hashtag_text:
+                if self.use_hashtag_text:
                     tokens.add(unicode(token[1:]))
             else:
                 tokens.add(unicode(token))
