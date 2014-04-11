@@ -1,6 +1,5 @@
 Generate graphs of new tokens and new hashtags over time from large dataset
 Write unit tests for REST API?
-Write unit tests for filters
-Write unit tests for classifier
 Test classifier with large dataset
 Write unit tests for outputs
+Write unit tests for state dumping

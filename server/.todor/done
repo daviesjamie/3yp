@@ -1,4 +1,6 @@
+Write unit tests for filters
 Filter out usernames
+Write unit tests for classifier
 Filter out URLs
 Filter out punctuation
 Use hashtag text for training
