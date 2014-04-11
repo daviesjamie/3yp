@@ -218,25 +218,23 @@ class Classifier(object):
         If num isn't specified, returns a list of ALL 'seen' hashtags and their counts.
         """
         with self.lock:
-            if num:
-                return sorted(self.hc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
-            return self.hc
+            return sorted(self.hc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
 
     def get_hashtag_tokens(self, hashtag, num=None):
         """
         Returns a list of the top num tokens and their counts that occur with a given hashtag. If
         num is none, returns ALL tokens and their counts for that hashtag.
         """
-        if num:
+        with self.lock:
             return sorted(self.htc[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
-        return self.htc[hashtag]
 
     def get_memory_usage(self):
         """
         Returns the sizes (in bytes) of the four main models that the classifier keeps in memory.
         """
-        return asizeof.asizeof(self.hc), asizeof.asizeof(self.htc), asizeof.asizeof(self.tc), \
-               asizeof.asizeof(self.thc)
+        with self.lock:
+            return asizeof.asizeof(self.hc), asizeof.asizeof(self.htc), asizeof.asizeof(self.tc), \
+                asizeof.asizeof(self.thc)
 
     def get_tokens(self, num=None):
         """
@@ -244,25 +242,23 @@ class Classifier(object):
         If num isn't specified, returns a list of ALL 'seen' tokens and their counts.
         """
         with self.lock:
-            if num:
-                return sorted(self.tc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
-            return self.tc
+            return sorted(self.tc.iteritems(), key=lambda t: t[1], reverse=True)[:num]
 
     def get_token_hashtags(self, token, num=None):
         """
         Returns a list of the top num hashtags and their counts that occur with a given token. If
         num is none, returns ALL hashtags and their counts for that token.
         """
-        if num:
+        with self.lock:
             return sorted(self.thc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
-        return self.thc[token]
 
     def get_totals(self):
         """
         Returns the total number of tweets and hashtags that this classifier has been trained with.
         Note that this is not the same as the total number of unique hashtags!
         """
-        return self.tweet_total, self.hashtag_total
+        with self.lock:
+            return self.tweet_total, self.hashtag_total
 
     def get_unique_counts(self):
         """
