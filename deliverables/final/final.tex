@@ -124,7 +124,9 @@ Such a recommendation system would also need to aid users in the navigational an
 
 \section{Preliminary Data Analysis}
 
-To investigate the usage of hashtags and the problems associated with them further, a dataset of 500,000 tweets was collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. Through the use of some trivial Python scripts, it is easy to find evidence of poor hashtag choices. In particular, the most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags taken from the dataset and their number of occurrences. Despite the tags all having exactly the same semantic meaning, the use of the tags is fragmented and spread across several tags.
+To investigate the usage of hashtags and the problems associated with them further, a dataset of 500,000 tweets was collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag.
+
+Through the use of some trivial Python scripts, it is easy to find evidence of poor hashtag choices. In particular, the most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags taken from the dataset and their number of occurrences. Despite the tags all having exactly the same semantic meaning, the use of the tags is fragmented and spread across several tags.
 
 \begin{table}[H]
 \centering
@@ -170,12 +172,12 @@ Another interesting observation is that of the times that different hashtags are
 The main design goals behind hashtags are to categorise tweets and allow them to show up more easily in searches\footnote{\url{https://support.twitter.com/articles/49309-using-hashtags-on-twitter}}. Whilst the task that this project is aiming to complete is novel and fairly unexplored, it is well connected with other experiments, systems and projects within the research community.
 
 \subsection{Recommendation Systems}
-Traditional recommendation systems are in place all over the web today. From music discovery services (such as Last.fm\footnote{\url{www.last.fm}}) to suggested purchases on retail sites (like that in place at Amazon\footnote{\url{www.amazon.co.uk}}, these systems are all personalised recommendation engines that take an individual user's preferences and use them to provide suggestions tailored to that user.
+Traditional recommendation systems are in place all over the web today. From music discovery services (such as Last.fm\footnote{\url{www.last.fm}}) to suggested purchases on retail sites (like on the front page of Amazon\footnote{\url{www.amazon.co.uk}}), these systems are all personalised recommendation engines that take an individual user's preferences and use them to provide suggestions tailored to that user.
 
 \subsubsection{Collaborative Filtering}
 Most personalised recommendation systems employ a set of techniques known as collaborative filtering. These techniques were first coined by \textcite{Goldberg:1992}, where a system named \emph{Tapestry} was created that allowed people to attach annotations to documents, and then use that information to filter the documents for other users.
 
-One common implementation of collaborative filtering is the so-called ``user-to-user'' approach. ``User-to-user'' collaborative filtering works by taking the preferences of a user $A$, and finding a small subset of other users in the system that have similar preferences. For each user $B$ in the subset any items that $B$ has adopted that $A$ hasn't are added to a ranked list of suggestions. $A$ is now more likely to adopt items in the list than the items of another random person \parencite{Schafer:2001}.
+One common implementation of collaborative filtering is the so-called ``user-to-user'' approach. ``User-to-user'' collaborative filtering works by taking the preferences of a user $A$, and finding a small subset of other users in the system that have similar preferences. For each user $B$ in the subset, any items that $B$ has adopted that $A$ hasn't are added to a ranked list of suggestions. $A$ is now more likely to adopt items in the list than the items of another random person \parencite{Schafer:2001}.
 
 \subsubsection{Content-Based Recommendation}
 Another approach to provide relevant recommendations to a user is the use of content-based recommendation systems. This is a type of system that recommends items relevant to other items by comparing the details and descriptions of the items themselves. This can be extended to suggest items for a user by comparing a content-based description of the user's preferences with the descriptions of the items \parencite{Pazzani:2007}.
@@ -211,15 +213,6 @@ After studying the advantages of providing personalised recommendations in retai
 
 \subsubsection{Overcoming Hashtag Duality}
 Observers of social media have realised that hashtags play a dual role within the online microblogging communities, such as Twitter. On one hand, hashtags fulfil the design goals that Twitter created them to accomplish (bookmarking and improving search); on the other hand, however, they serve as a badge of community membership: connecting users together. \textcite{Yang:2012} took this duality into account when attempting to create a hashtag recommendation system by training a SVM (support vector machine) classifier with a variety of features taken from the tweet metadata to overcome the duality and suggest relevant hashtags.
-
-\subsection{Broader Classification in Twitter}
-Twitter is a thriving metropolis of users expressing themselves on a daily (and often more frequent) basis, and has grown exponentially\footnote{\url{www.bloomberg.com/news/2013-10-15/twitter-revenue-more-than-doubles-in-third-quarter.html}} in size since its inception in 2006. Due to this, the data that it contains has caught the attention of researchers throughout computer science and even other disciplines. Whilst the concept of recommending hashtags is relatively unexplored, there have been many other classification experiments run with Twitter data.
-
-\subsubsection{Categorising Tweets}
-\textcite{Sriram:2010} proposed an approach to classify tweets into 5 general categories: \emph{news}, \emph{opinions}, \emph{deals}, \emph{events} and \emph{private messages}. This was achieved by training a classifier using a small set of specific features from each tweet, instead of using the traditional ``Bag-Of-Words'' (BOW) text classification method. The BOW approach is centred around counting occurrences of words in the text, but in the case of Twitter and its 140 character limit, it is very rare that words are actually repeated in a tweet.
-
-\subsubsection{Categorising Users}
-Another approach to deciphering the vast quantity of data on Twitter is to classify the users themselves. Twitter has become a powerful platform for people posting content about events, and as such it would be useful to automatically establish \emph{who} is participating in these events. By taking a number of features from each user account and passing them through a K-Nearest Neighbours (KNN) algorithm, \textcite{DeChoudhury:2012} developed a system that would classify a user's behaviour into one of three categories: \emph{organisations},\emph{journalists/media bloggers} and \emph{ordinary individuals}.
 
 \pagebreak
 
