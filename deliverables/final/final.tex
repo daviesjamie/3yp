@@ -104,6 +104,7 @@ I would also like to thank Dr.\ Jonathon Hare and Dr.\ Sina Samangooei for their
 \section*{Statement of Originality}
 
 The work contained within this report has not been previously submitted for a degree or diploma at any other higher education institution. To the best of my knowledge and belief, this project contains no material previously published or written by another person except where due references are made.
+
 \pagebreak
 
 \section{Introduction}
@@ -113,17 +114,11 @@ One of the most popular applications of a folksonomy is Twitter\footnote{\url{ww
 
 Despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
 
-\subsection{Project Goals}
-\label{sec:goals}
-This project will create a system that aims to support and enrich the information provided by hashtags on Twitter. It will use a combination of different machine-learning techniques to examine and classify the topics and concepts behind the hashtags and in doing so, be able to suggest suitable hashtags for tweets that are relevant to their content. This will allow users to make a better choice of hashtag when writing tweets, and therefore refine the information that they provide.
+There is also the converse issue of tag ambiguity to consider, in which a single hashtag could be associated with many meanings and connotations. The use of these hashtags can incorrectly imply that tweets are similar and related to one another, when in fact they are from distinct unrelated categories.
 
-However, as suggesting better hashtags will only improve the information gained from future tweets, the system will be extended to provide a context-aware tweet search facility. This will enable users to search for a particular hashtag, and instead of only returning tweets containing that hashtag (as current systems do), it will also provide tweets that are contextually relevant to the search term but do not contain that given hashtag.
+Because these problems are complicating the already vast hashtag information space, an intelligent recommendation system is needed to aid users in their choice of hashtags. For example, when a user writes a tweet such as: ``\emph{The golden gate bridge looks so nice today! I LOVE SF in this weather!}'', the system should recommend hashtags such as \texttt{\#SanFrancisco}, \texttt{\#California} or even \texttt{\#sohappy}, but should not recommend hashtags such as \texttt{\#ScienceFiction}, \texttt{\#amreading} or \texttt{\#fantasy}.
 
-Through the creation of the system, new insights and understanding of how people use Twitter could come to light. This provides the possibility to attempt to answer optional interesting questions, such as
-\begin{itemize}
-    \item Are certain types of tweet/hashtag easier to classify than others?
-    \item Is it possible to make relevant hashtag suggestions using just the tweet text itself, or is other metadata needed to make the recommendations useful?
-\end{itemize}
+Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. For example, when a user performs a search on Twitter for the hashtag \texttt{\#BGT}, the system should display not only those tweets that contain \texttt{\#BGT}, but also tweets that contain other relevant hashtags such as \texttt{\#BritainsGotTalent}, \texttt{\#VoteAttraction} or \texttt{\#VoteJackCarroll}.
 
 \pagebreak
 
