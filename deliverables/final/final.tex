@@ -75,11 +75,11 @@ A project report submitted for the award of\\
 MEng Computer Science\\[1cm]
 
 \emph{Supervisor:}\\
-Dr. Nick Gibbins\\[0.5cm]
+Dr.\ Nick Gibbins\\[0.5cm]
 %\href{mailto:nmg@ecs.soton.ac.uk}{\nolinkurl{nmg@ecs.soton.ac.uk}}\\[0.5cm]
 
 \emph{Examiner:}\\
-Dr. Klaus-Peter Zauner\\
+Dr.\ Klaus-Peter Zauner\\
 %\href{mailto:kpz@ecs.soton.ac.uk}{\nolinkurl{kpz@ecs.soton.ac.uk}}\\
 
 
@@ -119,6 +119,49 @@ There is also the converse issue of tag ambiguity to consider, in which a single
 Because these problems are complicating the already vast hashtag information space, an intelligent recommendation system is needed to aid users in their choice of hashtags. For example, when a user writes a tweet such as: ``\emph{The golden gate bridge looks so nice today! I LOVE SF in this weather!}'', the system should recommend hashtags such as \texttt{\#SanFrancisco}, \texttt{\#California} or even \texttt{\#sohappy}, but should not recommend hashtags such as \texttt{\#ScienceFiction}, \texttt{\#amreading} or \texttt{\#fantasy}.
 
 Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. For example, when a user performs a search on Twitter for the hashtag \texttt{\#BGT}, the system should display not only those tweets that contain \texttt{\#BGT}, but also tweets that contain other relevant hashtags such as \texttt{\#BritainsGotTalent}, \texttt{\#VoteAttraction} or \texttt{\#VoteJackCarroll}.
+
+\pagebreak
+
+\section{Preliminary Data Analysis}
+
+To investigate the usage of hashtags and the problems associated with them further, a dataset of 500,000 tweets was collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag. Through the use of some trivial Python scripts, it is easy to find evidence of poor hashtag choices. In particular, the most overwhelming observation is the quantity of redundant hashtags in use throughout Twitter. \autoref{tbl:redundancy} shows several hashtags taken from the dataset and their number of occurrences. Despite the tags all having exactly the same semantic meaning, the use of the tags is fragmented and spread across several tags.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{| l | l |}
+    \hline
+    \textbf{Hashtag} & \textbf{Number of Occurrences} \\
+    \hline \hline
+    \#peopleschoice & 94849 \\ \hline
+    \#peopieschoice & 2043 \\ \hline
+    \#peoplechoice  & 439 \\ \hline
+    \#peoplesch     & 287 \\ \hline
+    \#peopleschoi   & 269 \\ \hline
+    \#peoplesc      & 230 \\ \hline
+    \#peoplescho    & 219 \\ \hline
+    \#peolpeschoice & 164 \\ \hline
+    \#peopleschioce & 137 \\ \hline
+    \#pca           & 94 \\ \hline
+\end{tabular}
+\caption{Occurrences of hashtags referring to the People's Choice Awards}
+\label{tbl:redundancy}
+\end{table}
+
+Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (\autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (\autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
+
+\begin{figure}[H]
+    \centering
+    \subfigure[\#android]{
+        \includegraphics[width=0.75\textwidth]{android}
+        \label{fig:android}
+    }
+
+    \subfigure[\#blackfriday]{
+        \includegraphics[width=0.75\textwidth]{blackfriday}
+        \label{fig:blackfriday}
+    }
+    \caption{Usage of hashtags over the period that the dataset was collected.}
+\end{figure}
 
 \pagebreak
 
