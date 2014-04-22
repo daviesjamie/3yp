@@ -13,6 +13,9 @@
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
 
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
 \usepackage{todonotes}
 
 % Stretch table cell height
@@ -299,7 +302,23 @@ From the broad requirements outlined above, a set of formal requirements can be 
 
 \section{Architecture}
 
-The primary aim of the system is to produce an ordered list of recommended hashtags for a given string with a maximum length of 140 characters (a tweet). The secondary aim is to facilitate query expansion when searching Twitter for a hashtag. Due to non-functional requirement~\ref{nfunc:web}, both of these sub-systems must be available through a web interface. It is unreasonable and infeasible to expect all necessary training and classification to occur in Javascript code running in the browser, especially considering that some of those browsers might be on low-powered mobile platforms. For these reasons, a client-server architecture has been chosen for the system.
+The primary aim of the system is to produce an ordered list of recommended hashtags for a given string with a maximum length of 140 characters (a tweet). The secondary aim is to facilitate query expansion when searching Twitter for a hashtag. Due to non-functional requirement~\ref{nfunc:web}, both of these sub-systems must be available through a web interface. It is unreasonable and infeasible to expect all necessary training and classification to occur in Javascript code running in the browser, especially considering that some of those browsers might be on low-powered mobile platforms. For these reasons, a client-server architecture (\autoref{fig:clientserver}) has been chosen for the system.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}
+        \node[draw,rectangle,minimum width=2cm,minimum height=1.5cm] (server) at (0:0) {Server};
+        \node[draw,circle] (a) at +(0:2.5) {Client};
+        \node[draw,circle] (b) at +(72:2.5) {Client};
+        \node[draw,circle] (c) at +(2*72:2.5) {Client};
+        \node[draw,circle] (d) at +(3*72:2.5) {Client};
+        \node[draw,circle] (e) at +(4*72:2.5) {Client};
+        \foreach \from in {a, b, c, d, e}
+        \draw [->,thick] (\from) -- (server);
+    \end{tikzpicture}
+    \caption{A simplified diagram of the client-server architecture.}
+    \label{fig:clientserver}
+\end{figure}
 
 Using a client-server software model will allow for a distinct separation between the hashtag recommendation system and any interfaces that make use of the tool. The server will be running a single instance of the recommendation engine, and will handle all training and classification events. Multiple clients can then query the classifier running on the server for either hashtag suggestions or a search query expansion.
 
