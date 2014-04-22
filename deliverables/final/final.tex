@@ -296,7 +296,14 @@ From the broad requirements outlined above, a set of formal requirements can be 
 
 \chapter{Design}
 \label{chap:design}
-\todo[inline]{Design section.}
+
+\section{Architecture}
+
+The primary aim of the system is to produce an ordered list of recommended hashtags for a given string with a maximum length of 140 characters (a tweet). The secondary aim is to facilitate query expansion when searching Twitter for a hashtag. Due to non-functional requirement~\ref{nfunc:web}, both of these sub-systems must be available through a web interface. It is unreasonable and infeasible to expect all necessary training and classification to occur in Javascript code running in the browser, especially considering that some of those browsers might be on low-powered mobile platforms. For these reasons, a client-server architecture has been chosen for the system.
+
+Using a client-server software model will allow for a distinct separation between the hashtag recommendation system and any interfaces that make use of the tool. The server will be running a single instance of the recommendation engine, and will handle all training and classification events. Multiple clients can then query the classifier running on the server for either hashtag suggestions or a search query expansion.
+
+This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
 
 \pagebreak
 
