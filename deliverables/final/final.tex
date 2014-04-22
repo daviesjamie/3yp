@@ -13,6 +13,8 @@
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
 
+\usepackage{todonotes}
+
 % Stretch table cell height
 \renewcommand{\arraystretch}{1.5}
 
@@ -53,6 +55,9 @@ dashed=false,       % Re-print recurring author names in bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+\listoftodos
+\pagebreak
+
 \begin{titlepage}
 \center
 \vspace*{3cm}
@@ -90,9 +95,12 @@ Dr.\ Klaus-Peter Zauner\\
 \pagenumbering{roman}
 
 \begin{abstract}
+\todo[noline]{Make shorter}
 One of the key characteristics of Twitter and other microblogging platforms is the use of `hashtags' --- topical/categorical annotations provided by the authors of the posts (tweets) themselves. This flexible system was designed for the effective organisation and searching of tweets, but with Twitter facing an ever-increasing number of users and tweets it is hard for users to keep track of the vast number of hashtags in popular use. This results in data from the hashtags being fragmented and inaccurate due to the users making poor or uninformed hashtag choices.
 
 If users are presented with a choice of relevant hashtags when writing a tweet, they are more likely to publish tweets with accurate tag data. This project aims to create an intelligent hashtag recommendation tool to improve the quality of the information we can gain from hashtags. However, whilst such a system could improve future tweets, tweets that have already been published will remain untouched by the system. Thus, the system will be extended to also retrofit hashtags to published tweets --- allowing for tweets to appear in search results for a particular hashtag even if they don't actually contain the hashtag in question.
+
+\todo[inline]{Add more about scope of project}
 \end{abstract}
 \pagebreak
 
@@ -100,12 +108,12 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 
 \pagebreak
 
-\section*{Acknowledgements}
+\subsection*{Acknowledgements}
 I would like to thank my supervisor, Dr.\ Nick Gibbins, for providing inspiration and guidance throughout the course of the project.
 
 I would also like to thank Dr.\ Jonathon Hare and Dr.\ Sina Samangooei for their continued support and advice.
 
-\section*{Statement of Originality}
+\subsection*{Statement of Originality}
 
 The work contained within this report has not been previously submitted for a degree or diploma at any other higher education institution. To the best of my knowledge and belief, this project contains no material previously published or written by another person except where due references are made.
 
@@ -201,11 +209,11 @@ Although there exists a long history of research into traditional recommendation
 
 In order to facilitate the comparison of resources, tags and users, aggregate projections of the data can be constructed. This reduces the dimensionality of the data by sacrificing some information \parencite{Schmitz:2006}. There are two main classes of algorithms that perform this task: feature \emph{selection}, which reduces the size of a dataset by selecting a subset of the data, and feature \emph{extraction}, which uses the existing data to generate entirely new features. Despite the improved results that feature extraction can provide, their computational cost and memory requirements can often make them impractical for use on the extremely large datasets common with Folksonomies \parencite{Gemmell:2009}.
 
-One compromise to this trade-off is to use an algorithm such as Hebbian Deflation, which approximates the outputs of the intensive feature extraction techniques, but with lower computational cost and memory requirements \parencite{Oja:1985}. \textcite{Gemmell:2009} used this approach coupled with a K-Nearest Neighbour classifier to find appropriate tags for a given resource. This was done by finding `neighbouring' users: ``Neighbours are selected only if they have tagged the query resource and tags are selected for the recommendation set only if they have been applied by the neighbour to the resource.'' It was tested on data from the popular bookmarking site Delicious\footnote{\url{http://delicious.com/}} and from Citeulike\footnote{\url{http://www.citeulike.com/}}, a tool that enables researchers to manage and discover scholarly references, and it was found to be a successful approach with giving results.
+One compromise to this trade-off is to use an algorithm such as Hebbian Deflation, which approximates the outputs of the intensive feature extraction techniques, but with lower computational cost and memory requirements \parencite{Oja:1985}. \textcite{Gemmell:2009} used this approach coupled with a \todo{Add more about K-Nearest Neighbour implementation?}K-Nearest Neighbour classifier to find appropriate tags for a given resource. This was done by finding `neighbouring' users: ``Neighbours are selected only if they have tagged the query resource and tags are selected for the recommendation set only if they have been applied by the neighbour to the resource.'' It was tested on data from the popular bookmarking site Delicious\footnote{\url{http://delicious.com/}} and from Citeulike\footnote{\url{http://www.citeulike.com/}}, a tool that enables researchers to manage and discover scholarly references, and it was found to be a successful approach with giving results.
 
-\textcite{Niwa:2006} took a different approach to overcome the limitations of collaborative filtering. Using a modified version of the TF-IDF \parencite{Salton:1988}, they calculate the affinity level between users and tags (where affinity level is a measure of how frequently a user uses a particular tag), and then use this to calculate the similarity between tags. These similarity measures are then clustered using a custom clustering algorithm to provide a set of recommended tags for a given user and resource. This enabled them to adjust the level at which a user's preferences were taken into account when determining recommendations, as well as providing a simple solution to the tag redundancy issue found across most Folksonomies.
+\textcite{Niwa:2006} took a different approach to overcome the limitations of collaborative filtering. Using a modified version of the \todo{Add more TF-IDF implementation detail?}TF-IDF \parencite{Salton:1988}, they calculate the affinity level between users and tags (where affinity level is a measure of how frequently a user uses a particular tag), and then use this to calculate the similarity between tags. These similarity measures are then clustered using a custom clustering algorithm to provide a set of recommended tags for a given user and resource. This enabled them to adjust the level at which a user's preferences were taken into account when determining recommendations, as well as providing a simple solution to the tag redundancy issue found across most Folksonomies.
 
-Another popular machine-learning approach to the folksonomy tag recommendation problem is the use of a Naive Bayes classifier. Naive Bayes has been an accepted tool in information retrieval for a long time, with some early literature dating back over 50 years \parencite{Maron:1960}, and has recently been seeing a renaissance within the machine-learning community.
+Another popular machine-learning approach to the folksonomy tag recommendation problem is the use of a \todo{Add more about Naive Bayes implementation?}Naive Bayes classifier. Naive Bayes has been an accepted tool in information retrieval for a long time, with some early literature dating back over 50 years \parencite{Maron:1960}, and has recently been seeing a renaissance within the machine-learning community.
 
 As shown by \textcite{DePessemier:2010}, Naive Bayes can be easily adapted and extended to work in the context of providing recommendations to match a query or a set of user preferences. In particular, their algorithm relied upon the general user preferences for cases where the classifier produced an uncertain outcome, and became more context specific on a sliding scale as the classifer gave more certain probabilities.
 
@@ -231,6 +239,7 @@ Observers of social media have realised that hashtags play a dual role within th
 \pagebreak
 
 \chapter{Requirements}
+\todo[inline]{More of a build up to requirements, other than just stating them?}
 There are two main requirements the system in this project is aiming to fulfil. It must:
 \begin{itemize}
     \item Allow users to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
@@ -261,40 +270,22 @@ There are two main requirements the system in this project is aiming to fulfil. 
 \pagebreak
 
 \chapter{Design}
-    \section{Architecture}
-        \subsection{Processing Framework}
-        \subsection{Classifier}
-    \section{Interface}
-        \subsection{API Endpoints}
-        \subsection{Web Interface}
+\todo[inline]{Design section.}
 
 \pagebreak
 
 \chapter{Implementation}
-    \section{Stream Processing}
-    \section{Classification System}
-        \subsection{Training}
-        \subsection{Classifying}
-        \subsection{Optimisation}
-        \subsection{RESTful Interface}
-    \section{Web Application}
-        \subsection{Framework}
-        \subsection{Authentication}
-        \subsection{Connecting to Classifier}
+\todo[inline]{Implementation section.}
 
 \pagebreak
 
 \chapter{Testing}
-    \section{Strategy}
-    \section{Unit Testing}
-    \section{Classification Testing}
-    \section{User Interface Testing}
-    \section{Requirements Validation}
+\todo[inline]{Testing section.}
+
+\pagebreak
 
 \chapter{Conclusion}
-    \section{System Evaluation}
-    \section{Project Management}
-    \section{Future Work}
+\todo[inline]{Conclusion section.}
 
 \pagebreak
 
