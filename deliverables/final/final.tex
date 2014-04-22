@@ -14,7 +14,7 @@
 \usepackage{longtable}
 
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows}
+\usetikzlibrary{positioning,shapes,arrows}
 
 \usepackage{todonotes}
 
@@ -321,6 +321,35 @@ The primary aim of the system is to produce an ordered list of recommended hasht
 \end{figure}
 
 Using a client-server software model will allow for a distinct separation between the hashtag recommendation system and any interfaces that make use of the tool. The server will be running a single instance of the recommendation engine, and will handle all training and classification events. Multiple clients can then query the classifier running on the server for either hashtag suggestions or a search query expansion.
+
+\begin{figure}[htpb]
+    \centering
+    \subfigure{
+        \begin{tikzpicture}
+            \node[rectangle,draw,text width=5cm,anchor=north,rectangle split, rectangle split parts=2,text justified] (server) {
+                \textbf{Server}
+                \nodepart{second}- Hashtag recommendation\newline
+                - Search query expansion\newline
+                - Training classifier\newline
+                - Persistent state
+            };
+        \end{tikzpicture}
+        \label{fig:serveroverview}
+    }
+    \subfigure{
+        \begin{tikzpicture}
+            \node[rectangle,draw,text width=5cm,anchor=north,rectangle split, rectangle split parts=2,text justified] (client) {
+                \textbf{Client}
+                \nodepart{second}- Twitter authentication\newline
+                - Twitter API calls\newline
+                - Send requests to server\newline
+                - Receive data from server
+            };
+        \end{tikzpicture}
+        \label{fig:clientoverview}
+    }
+    \caption{Functional overviews of the server and client.}
+\end{figure}
 
 This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
 
