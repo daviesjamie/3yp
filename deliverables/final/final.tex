@@ -113,14 +113,6 @@ Collaborative tagging (sometimes referred to as social tagging) systems are desi
 
 One of the most popular applications of a folksonomy is Twitter\footnote{\url{www.twitter.com}}. `Hashtags,' which are simply any combination of letters or digits preceded by a hash character (\#), afford users the ability to create free-form tags to describe the content of their posts (tweets). Tweets can be categorized with several hashtags, thereby creating networks of tweets and users, and making it easy to find other related tweets, users and hashtags. This renders hashtags as a powerful tool in aiding the search and navigation of the billions of tweets contained within Twitter.
 
-Despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
-
-There is also the converse issue of tag ambiguity to consider, in which a single hashtag could be associated with many meanings and connotations. The use of these hashtags can incorrectly imply that tweets are similar and related to one another, when in fact they are from distinct unrelated categories.
-
-Because these problems are complicating the already vast hashtag information space, an intelligent recommendation system is needed to aid users in their choice of hashtags. For example, when a user writes a tweet such as: ``\emph{The golden gate bridge looks so nice today! I LOVE SF in this weather!}'', the system should recommend hashtags such as \texttt{\#SanFrancisco}, \texttt{\#California} or even \texttt{\#sohappy}, but should not recommend hashtags such as \texttt{\#ScienceFiction}, \texttt{\#amreading} or \texttt{\#fantasy}.
-
-Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. For example, when a user performs a search on Twitter for the hashtag \texttt{\#BGT}, the system should display not only those tweets that contain \texttt{\#BGT}, but also tweets that contain other relevant hashtags such as \texttt{\#BritainsGotTalent}, \texttt{\#VoteAttraction} or \texttt{\#VoteJackCarroll}.
-
 \section{Preliminary Data Analysis}
 
 To investigate the usage of hashtags and the problems associated with them further, a dataset of 500,000 tweets was collected from the sample Twitter stream over a time period of approximately 4.5 days. The tweets collected were filtered to ensure that they were in English, and contained at least one hashtag.
@@ -150,19 +142,30 @@ Through the use of some trivial Python scripts, it is easy to find evidence of p
 
 Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
 
+This data has shown that despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
+
 \begin{figure}[htpb]
     \centering
     \subfigure[\#android]{
-        \includegraphics[width=0.75\textwidth]{android}
+        \includegraphics[width=0.45\textwidth]{android}
         \label{fig:android}
     }
-
     \subfigure[\#blackfriday]{
-        \includegraphics[width=0.75\textwidth]{blackfriday}
+        \includegraphics[width=0.45\textwidth]{blackfriday}
         \label{fig:blackfriday}
     }
     \caption{Usage of hashtags over the period that the dataset was collected.}
 \end{figure}
+
+\section{Project Goals}
+
+The goal of this project is to develop an intelligent hashtag recommendation system for use with Twitter. For example, when a user writes a tweet such as: ``\emph{The golden gate bridge looks so nice today! I LOVE SF in this weather!}'', the system should recommend hashtags such as \texttt{\#SanFrancisco}, \texttt{\#California} or even \texttt{\#sohappy}, but should not recommend hashtags such as \texttt{\#ScienceFiction}, \texttt{\#amreading} or \texttt{\#fantasy}.
+
+The objective is to make it easier for users to select appropriate meaningful hashtags for their tweets, and in doing so, begin to tackle the problems presented by the sheer quantity and redundancy of hashtags in Twitter. The aim is that the user will be able to see hashtag suggestions in real-time as they are typing a tweet, thus making them more likely to publish tweets with accurate hashtag data.
+
+Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. For example, when a user performs a search on Twitter for the hashtag \texttt{\#BGT}, the system should display not only those tweets that contain \texttt{\#BGT}, but also tweets that are relevant to `Britain's Got Talent' but do not contain \texttt{\#BGT}.
+
+Therefore, another objective for this project is to make it easier for users to navigate and search the content available on Twitter, thus making the fragmented hashtag data already published to Twitter easier to search and navigate. The aim is that the same recommendation system used to suggest hashtags for content a user is creating could also be applied to a search query to provide an expanded query that can then be used to query Twitter.
 
 \pagebreak
 
