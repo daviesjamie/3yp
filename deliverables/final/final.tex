@@ -357,9 +357,11 @@ Another benefit of using a centralised server to encapsulate the hashtag recomme
 
 \section{Abstract Implementation}
 
-When using a client-server execution model, it is important to correctly balance the tasks that need to be executed between the clients and the server. Placing a high computational load on client machines can limit the accessibility of the system, whilst placing a high computational load on the server can cause a slow-down or even interrupted service for all clients using the system.
+When using a client-server execution model, it is important to correctly balance the tasks that need to be executed between the clients, the server and the users. Placing a high computational load on the users' machines can limit the accessibility of the system, whilst placing a high computational load on the server can cause a slow-down or even interrupted service for all clients using the system.
 
 The server encapsulates the hashtag classifier system. It will have the ability to train the classifier on tweet data independently and asynchronously to the other tasks that the classifier may need to perform. The training will perform as many of the computationally intensive operations on the classifier model as it feasibly can, to ensure that any requests from a client to classify a tweet or expand a query are performed as quickly as possible (fulfilling non-functional requirements \ref{nfunc:qsearch} and \ref{nfunc:qsuggest}). Asynchronous training will also provide the opportunity to integrate training data from the live Twitter stream (as described in functional requirement~\ref{func:stream}).
+
+The client's primary focus will be delivering the interface to the users. It will provide a way for the user to interact with the recommendations and search tools available on the server, as well as handling the users' authentication with Twitter and calling appropriate tweet/search functions in the Twitter API.
 
 \todo{Make this diagram neater}
 \begin{figure}[htpb]
@@ -396,9 +398,9 @@ The server encapsulates the hashtag classifier system. It will have the ability 
 
 
         % Users
-        \node (a) at (8.3cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
-        \node (b) at (9.8cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
-        \node (c) at (11.3cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
+        \node (a) at (8.3cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
+        \node (b) at (9.8cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
+        \node (c) at (11.3cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
 
 
         % Twitter
@@ -413,8 +415,31 @@ The server encapsulates the hashtag classifier system. It will have the ability 
         \draw[<->] (clientbox) -- (twitter);
         \draw[->,dashed] (twitter) -- (train);
     \end{tikzpicture}
-    \caption{An abstract view of the system.}
+    \caption{An abstract view of the implementation of the system.}
     \label{fig:abstractdetail}
+\end{figure}
+
+\section{User Interface}
+Whilst the primary focus of this project is the creation of the tool to provide hashtag suggestions and query expansions (the server), a simple prototype interface will also be developed. This interface will remain simple, but will enable users to log in to Twitter, post tweets using hashtag suggestions, and search Twitter using query expansion.
+
+Wireframes for the key views in the prototype interface can be seen in \autoref{fig:wireframes}.
+
+\begin{figure}[htpb]
+    \centering
+    \subfigure[Tweet composition page.]{
+        \includegraphics[width=0.9\linewidth]{wireframes/tweet.pdf}
+        \label{fig:wireframe:tweet}
+    }
+%    \subfigure[The beginning search page.]{
+%        \includegraphics[width=0.8\linewidth]{wireframes/search.pdf}
+%        \label{fig:wireframe:search}
+%    }
+    \subfigure[The search results page.]{
+        \includegraphics[width=0.9\linewidth]{wireframes/searchresults.pdf}
+        \label{fig:wireframe:searchresults}
+    }
+    \caption{Wireframe designs of the prototype interface.}
+    \label{fig:wireframes}
 \end{figure}
 
 \pagebreak
