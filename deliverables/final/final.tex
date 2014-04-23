@@ -545,7 +545,21 @@ Or, in plain English terminology:
 \end{equation}
 
 \subsection{Feature Extraction}
-\todo[inline]{Classifier feature extraction/tokenisation}
+As seen in the equations above, to predict hashtags for a tweet it is necessary to transform that tweet into a set of features. There are a number of approaches to this, and not all are limited to the text of the tweet. For instance, it could be possible to extract features from other information that is available with each tweet, such as date and time, or the location that the tweet was posted from. However, to keep things (relatively) simple, the feature extraction in this project is based solely upon the actual text that makes up the tweets themselves.
+
+Features are extracted from the tweets by passing their text through the `twokeniser' system created by \textcite{OConnor:2010}\footnote{Available online at \url{https://github.com/brendano/tweetmotif}}. This tool matches the text against a collection of complex regular expressions to split the text up into a collection of word-like objects. It is much more complex than splitting on whitespace however, as the tool correctly recognises and preserves complex structures such as urls and emoticons. The presence of each of the outputted tokens can then be used as a feature input for the classifier.
+
+\begin{listing}[htpb]
+    \begin{minted}[frame=lines,framesep=2mm]{python}
+>>> tokeniser = TokeniseTweetFunction()
+>>> tweet = "This is a #test! :-) http://url.com"
+>>> tokeniser.apply(tweet)
+['this', 'is', 'a', '#test', '!', ':-)', 'http://url.com']
+    \end{minted}
+    \caption{A demonstration of the `twokeniser' tool.}
+    \label{lst:twokeniser}
+\end{listing}
+
 
 \subsection{Training}
 \todo[inline]{Classifier training}
