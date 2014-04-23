@@ -448,7 +448,29 @@ Figure~\autoref{fig:wireframe:searchresults} shows the design of the interface f
 
 \chapter{Implementation}
 \label{chap:implementation}
-\todo[inline]{Implementation section.}
+
+This chapter aims to explain how the system was implemented, and the decisions that were made during the implementation process. It will also explain any difficulties that were encountered, and how they were dealt with.
+
+\section{Tools \& Technologies}
+The first decision to make when implementing the system was to decide upon the programming languages, technologies and libraries that would be used.
+
+Python was chosen as the language of choice for the majority of the project, including both the server and the content management system for the client. Python is a widely used high-level programming language whose syntax emphasises code readability and maintainability. Most importantly, it has a strong developer community behind it, resulting in a large collection of excellent third-party libraries, including the following:
+
+\begin{itemize}
+    \item Django\footnote{\url{www.djangoproject.com}} offers a simple and flexible way of following the traditional MVC (Model-View-Controller) programming paradigm. This made it easy to develop the client system, by providing a structured way to keep the authentication and page generation separate from the layout and design of the page. Django also offers a pleasant interface to handling web requests.
+    \item Flask\footnote{\url{http://flask.pocoo.org}} is a lightweight web application framework made with Python, that makes it simple to create web APIs and WSGI applications. It is used to create and handle the HTTP endpoints for the server.
+    \item Tornado\footnote{\url{www.tornadoweb.org}}, a Python web framework and asynchronous networking library, is an excellent library for creating efficient and highly scalable web applications.
+    \item Twython\footnote{\url{http://github.com/ryanmcgrath/twython}}, a thin but functional Python wrapper around the Twitter API, making Twitter API calls easily available within Python. It also provides a set of methods that handle OAuth authentication with Twitter.
+\end{itemize}
+
+The client interface itself was written with a combination of HTML, CSS and Javascript. In particular, the following tools and libraries were used:
+
+\begin{itemize}
+    \item Twitter Bootstrap\footnote{\url{http://getbootstrap.com}}, a front-end framework that enables sleek and interactive interfaces with minimal customisation, allowing for easier and faster web development. It also has the bonus of being the UI toolkit that Twitter itself uses, and gives the client interface a look and feel similar to that of Twitter. Lastly, Bootstrap makes use of CSS3 to provide a full responsive interface, allowing the same web page to be viewed across all devices, regardless of the screen size --- which helps to fulfil non-functional requirement \ref{nfunc:mobile}.
+    \item JQuery\footnote{\url{www.jquery.com}}, a Javascript library that contains a huge set of predefined functions and classes. It is designed to simplify client-side Javascript, and makes it much easier to manipulate the DOM from within Javascript --- it is used specifically within the client to perform AJAX requests to the server, and provide live hashtag suggestions.
+\end{itemize}
+
+Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but it also made secure and accessible.
 
 \pagebreak
 
