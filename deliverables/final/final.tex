@@ -14,7 +14,7 @@
 \usepackage{longtable}
 
 \usepackage{tikz}
-\usetikzlibrary{positioning,shapes,arrows}
+\usetikzlibrary{positioning,shapes,arrows,fit,calc}
 
 \usepackage{todonotes}
 
@@ -302,7 +302,7 @@ From the broad requirements outlined above, a set of formal requirements can be 
 
 \section{Architecture}
 
-The primary aim of the system is to produce an ordered list of recommended hashtags for a given string with a maximum length of 140 characters (a tweet). The secondary aim is to facilitate query expansion when searching Twitter for a hashtag. Due to non-functional requirement~\ref{nfunc:web}, both of these sub-systems must be available through a web interface. It is unreasonable and infeasible to expect all necessary training and classification to occur in Javascript code running in the browser, especially considering that some of those browsers might be on low-powered mobile platforms. For these reasons, a client-server architecture (\autoref{fig:clientserver}) has been chosen for the system.
+The primary aim of the system is to produce an ordered list of recommended hashtags for a given string with a maximum length of 140 characters (a tweet). The secondary aim is to facilitate query expansion when searching Twitter for a hashtag. Due to non-functional requirement~\ref{nfunc:web}, both of these sub-systems must be available through a web interface. It is unreasonable and infeasible to expect all necessary training and classification to occur in code running within the user's browser, especially considering that some of those browsers might be on low-powered mobile platforms. For these reasons, a client-server architecture (\autoref{fig:clientserver}) has been chosen for the system.
 
 \begin{figure}[htpb]
     \centering
@@ -320,7 +320,7 @@ The primary aim of the system is to produce an ordered list of recommended hasht
     \label{fig:clientserver}
 \end{figure}
 
-Using a client-server software model will allow for a distinct separation between the hashtag recommendation system and any interfaces that make use of the tool. The server will be running a single instance of the recommendation engine, and will handle all training and classification events. Multiple clients can then query the classifier running on the server for either hashtag suggestions or a search query expansion.
+Using a client-server software model will allow for a distinct separation between the hashtag recommendation system and any interfaces that make use of the tool. The server (Figure~\ref{fig:serveroverview}) will be running a single instance of the recommendation engine, and will handle all training and classification events. Multiple clients (Figure~\ref{fig:clientoverview}) can then query the classifier running on the server for either hashtag suggestions or a search query expansion.
 
 \begin{figure}[htpb]
     \centering
@@ -352,6 +352,70 @@ Using a client-server software model will allow for a distinct separation betwee
 \end{figure}
 
 This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
+
+Another benefit of using a centralised server to encapsulate the hashtag recommendation system is the clear separation of functionality between the client and server. This means that the interface that the user sees and interacts with is distinct from the technical functionality --- enabling multiple differently styled interfaces to connect to the recommendation server. It even presents the possibility to one day integrate easily with the Twitter web platform itself.
+
+\section{Abstract Implementation}
+
+When using a client-server execution model, it is important to correctly balance the tasks that need to be executed between the clients and the server. Placing a high computational load on client machines can limit the accessibility of the system, whilst placing a high computational load on the server can cause a slow-down or even interrupted service for all clients using the system.
+
+The server encapsulates the hashtag classifier system. It will have the ability to train the classifier on tweet data independently and asynchronously to the other tasks that the classifier may need to perform. The training will perform as many of the computationally intensive operations on the classifier model as it feasibly can, to ensure that any requests from a client to classify a tweet or expand a query are performed as quickly as possible (fulfilling non-functional requirements \ref{nfunc:qsearch} and \ref{nfunc:qsuggest}). Asynchronous training will also provide the opportunity to integrate training data from the live Twitter stream (as described in functional requirement~\ref{func:stream}).
+
+\todo{Make this diagram neater}
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[
+        node distance=7mm,
+        title/.style={anchor=west,font=\fontsize{9}{9}\color{black}\ttfamily},
+        typetag/.style={rectangle, draw=black!50, anchor=west}
+    ]
+        % Server
+        \node (server) [title] {Server};
+            \node (classifier) at ($(server.west)+(0,-28pt)$) [title,xshift=2mm] {Classifier};
+                \node (worker) at ($(classifier.west)+(0,-28pt)$) [title,xshift=2mm] {Worker Process};
+                    \node (train) [below=of worker.west,typetag] {Training Function};
+                \node (swebserver) at ($(train.west)+(0,-32pt)$) [title] {Web Server};
+                    \node (recommend) [below=of swebserver.west,typetag] {Hashtag Recommendation};
+                    \node (query) [below=of recommend.west,typetag] {Search Query Expansion};
+
+        \node (workerbox) [draw,fit={(worker) (train)}] {};
+        \node (swebserverbox) [draw,fit={(swebserver) (recommend) (query)}] {};
+        \node (classifierbox) [draw,fit={(classifier) (workerbox) (swebserverbox)}] {};
+        \node (serverbox) [draw,fit={(server) (classifierbox)},line width=1.5pt] {};
+
+
+        % Client
+        \node (client) at (7.5cm, 0) [title] {Client};
+        \node (cwebserver) at ($(client.west)+(0,-28pt)$) [title,xshift=2mm] {Web Server};
+                \node (auth) [below=of cwebserver.west,typetag] {Twitter Authentication};
+                \node (api) [below=of auth.west,typetag] {Twitter API Calls};
+                \node (interface) [below=of api.west, typetag] {Interface};
+
+        \node (cwebserverbox) [draw,fit={(cwebserver) (auth) (api) (interface)}] {};
+        \node (clientbox) [draw,fit={(client) (cwebserverbox)},line width=1.5pt] {};
+
+
+        % Users
+        \node (a) at (8.3cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
+        \node (b) at (9.8cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
+        \node (c) at (11.3cm, -5.5cm) [draw,circle,minimum width=1cm] {User};
+
+
+        % Twitter
+        \node (twitter) at (6.4cm, 2.5cm) [cloud,draw,cloud puffs=10,cloud puff arc=120,aspect=2,inner ysep=1em] {Twitter};
+
+
+        % Arrows
+        \draw[<->] (a) -- (interface);
+        \draw[<->] (b) -- (interface);
+        \draw[<->] (c) -- (interface);
+        \path[<->] (clientbox) edge node[sloped, anchor=center, above] {\footnotesize HTTP} (swebserverbox);
+        \draw[<->] (clientbox) -- (twitter);
+        \draw[->,dashed] (twitter) -- (train);
+    \end{tikzpicture}
+    \caption{An abstract view of the system.}
+    \label{fig:abstractdetail}
+\end{figure}
 
 \pagebreak
 
