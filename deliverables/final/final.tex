@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper]{report}
 
 \usepackage{float}
+\usepackage{amsmath}
 \usepackage{pdflscape}
 \usepackage{parskip}
 \usepackage[hyphens]{url}
@@ -498,7 +499,7 @@ The source of the stream could be easily changed from the live Twitter Stream to
 
 The creation of this programming interface enabled a tweet processing pipeline to be constructed. The use of Spout has reduced the complexity of the pipeline, and makes the code much more readable, as seen in the code snippet in Listing~\ref{lst:trainingstream} taken from the training code for the classifier.
 
-\begin{listing}[H]
+\begin{listing}[htpb]
     \begin{minted}[frame=lines,framesep=2mm]{python}
 twitter = TweetStream(QueueBufferedQueue(3)))
 twiter.connect()
@@ -522,7 +523,49 @@ Spout has been developed in an abstract, isolated fashion, meaning that it is di
 
 In addition to open-sourcing Spout, it has also been made available on the Python Package Index (PyPI)\footnote{\url{https://pypi.python.org/pypi/spout/0.1.5}}. This has been a huge success, with approximately 3000 recorded downloads at the time of writing.
 
-\todo[inline]{Classifier/Bayes}
+\section{Classification Server}
+To choose an appropriate classification algorithm, two main factors were considered. One factor was that the classifier had to be capable of being trained incrementally. This is so that the classifier can be trained upon a stream, and simultaneously still provide valid classifications. This is essential, as some classifiers require parsing the entire data set before they are able to provide classifications, making them unsuitable for working with data stream. The other factor to consider was that of probabilities: it was decided that it would be suitable for the classifier to return the probabilities of the hashtag recommendations it suggests (as seen in functional requirement~\ref{func:probabilities}).
+
+These considerations led to the choice of a Naive Bayes classifier. Naive Bayes is built upon Bayes' Theorem, which explains how to derive the probability of an event happening given that another event has happened:
+
+\begin{equation}
+    P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\end{equation}
+
+This can be expanded to give the probability of a classification based upon the presence of a set of features by making a naive assumption: that the presence of a particular feature is totally unrelated and unaffected by the presence (or lack) of any other feature. Doing so gives the probabilistic model for a Naive Bayes:
+
+\begin{equation}
+    P(C|F_1,\dots,F_n) = \frac{P(C) \cdot P(F_1,\dots,F_n)|C)}{P(F_1,\cdots,F_n)}
+\end{equation}
+
+Or, in plain English terminology:
+
+\begin{equation}
+    P(\text{Hashtag}|\text{Features}) = \frac{P(\text{Hashtag}) \cdot P(\text{Features}|\text{Hashtag})}{P(\text{Features})}
+\end{equation}
+
+\subsection{Feature Extraction}
+\todo[inline]{Classifier feature extraction/tokenisation}
+
+\subsection{Training}
+\todo[inline]{Classifier training}
+
+\subsection{Classifying}
+\todo[inline]{Classifier classifying}
+
+\subsection{Optimisation}
+\todo[inline]{Classifier Optimisation}
+
+\subsection{Asynchronous Access}
+\todo[inline]{Classifier Asynchronous Access}
+
+\subsection{Creating a RESTful API}
+\todo[inline]{Classifier RESTful API}
+
+\subsection{Managing State Loading/Saving}
+\todo[inline]{Classifier state loading/dumping}
+
+\section{Client}
 \todo[inline]{Client}
 
 \pagebreak
@@ -541,6 +584,8 @@ In addition to open-sourcing Spout, it has also been made available on the Pytho
 
 \begin{appendices}
 \chapter{Time Management}
+\todo[inline]{Write some stuff about time management}
+\todo[inline]{Add realistic GANTT chart}
 
 \begin{landscape}
     \label{appendix:gantt}
@@ -553,9 +598,12 @@ In addition to open-sourcing Spout, it has also been made available on the Pytho
 \end{landscape}
 
 \chapter{Testing Plans \& Results}
+\todo[inline]{Add testing plans and results}
+
 \pagebreak
 
 \chapter{REST API Interface}
+\todo[inline]{Add RESTful API Interface/Endpoints}
 \pagebreak
 
 \chapter{Original Project Brief}
