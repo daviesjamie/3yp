@@ -6,12 +6,16 @@
 \usepackage[hyphens]{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=3.5cm]{geometry}
+\usepackage{appendix}
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage[font={small}]{caption}
 
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
+
+\usepackage{minted}
+\usemintedstyle{manni}
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,arrows,fit,calc}
@@ -158,7 +162,7 @@ Through the use of some trivial Python scripts, it is easy to find evidence of p
 \label{tbl:redundancy}
 \end{table}
 
-Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\autoref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\autoref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
+Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\ref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\ref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
 
 This data has shown that despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from --- often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This tag redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
 
@@ -245,15 +249,15 @@ Observers of social media have realised that hashtags play a dual role within th
 \chapter{Analysis}
 \label{chap:analysis}
 
-As previously discussed in \autoref{chap:introduction}, there is a need for a hashtag recommendation system to improve the quality and clarity of hashtags in Twitter, as well as to aid navigation of the already existing fragmented data. This leads to the two main requirements the system in this project must fulfil:
+As previously discussed in Chapter~\ref{chap:introduction}, there is a need for a hashtag recommendation system to improve the quality and clarity of hashtags in Twitter, as well as to aid navigation of the already existing fragmented data. This leads to the two main requirements the system in this project must fulfil:
 \begin{itemize}
     \item Users should be able to compose and publish tweets whilst suggesting hashtags relevant to the content of their tweets.
     \item Users should be able to search for a hashtag and view related tweets, including those that don't contain that hashtag.
 \end{itemize}
 
-As seen from the research and discussion presented in \autoref{chap:litreview}, most existing approaches to providing recommendations within a folksonomy make extensive use of user preferences in their algorithms. From calculating a `neighbourhood' of similar users to falling back on a set of users' preferences when the data is unclear, most current approaches provide a personalised recommendation system.
+As seen from the research and discussion presented in Chapter~\ref{chap:litreview}, most existing approaches to providing recommendations within a folksonomy make extensive use of user preferences in their algorithms. From calculating a `neighbourhood' of similar users to falling back on a set of users' preferences when the data is unclear, most current approaches provide a personalised recommendation system.
 
-This raises the question of whether hashtags are clearly defined, or whether their meanings (and therefore the tweets they apply to) are dependent upon user opinion. Through the preliminary examination of a sample Twitter dataset conducted in \autoref{chap:introduction}, this project is inclined to believe that the correct usage of a hashtag is independent of how frequently a particular user uses that hashtag. Indeed, it could be argued that it is this preference of users to use a particular hashtag that results in users incorrectly using hashtags in the first place --- which is the very problem this project is aiming to tackle.
+This raises the question of whether hashtags are clearly defined, or whether their meanings (and therefore the tweets they apply to) are dependent upon user opinion. Through the preliminary examination of a sample Twitter dataset conducted in Chapter~\ref{chap:introduction}, this project is inclined to believe that the correct usage of a hashtag is independent of how frequently a particular user uses that hashtag. Indeed, it could be argued that it is this preference of users to use a particular hashtag that results in users incorrectly using hashtags in the first place --- which is the very problem this project is aiming to tackle.
 
 This indicates another requirement of the recommendation system:
 \begin{itemize}
@@ -473,6 +477,54 @@ The client interface itself was written with a combination of HTML, CSS and Java
 
 Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but it also made secure and accessible.
 
+\section{Spout: A Data Stream Processing Framework}
+To give the possibility of using either the live Twitter stream or a static file of tweets as the data source for the classifier, it was decided that the input data should be operated on as a stream. Doing so would allow identical processing of the tweet data, regardless of where the data came from.
+
+A library with a fluent interface was created to enable such a processing paradigm. A fluent interface is the use of chaining method calls together to relay the instruction context of a subsequent call, to improve the readability of the code. At the heart of the library is the concept of a stream, which is simply a sequential (and not necessarily finite) collection of data items. The \verb+Stream+ class defines the basic operations that can be performed upon a data stream:
+
+\begin{description}
+    \item[Mapping] \hfill \\
+        The items in one stream can be mapped to another stream. This is done by applying a supplied \verb+Function+ object to each item in the input stream, to produce another output stream.
+        \mint{python}+stream.map(Function)+
+    \item[Filtering] \hfill \\
+        The items in a stream can be filtered, so that the resultant stream only contains items that match a given criteria. This is done by using a supplied \verb+Predicate+ to test each item in the input stream, and copies it to the output stream if it passes the test criteria.
+        \mint{python}+stream.filter(Predicate)+
+    \item[Processing (Consuming)] \hfill \\
+        The items in a stream are used in some calculations or functionality that provides no further output to the stream. This is done by applying the supplied \verb+Operation+ to each item in the stream.
+        \mint{python}+stream.for_each(Operation)+
+\end{description}
+
+The source of the stream could be easily changed from the live Twitter Stream to a JSON file, or even to a plain text file. The interface is highly customisable, allowing for custom stream implementations to be created --- all that is required is for the stream to sequentially output items of data.
+
+The creation of this programming interface enabled a tweet processing pipeline to be constructed. The use of Spout has reduced the complexity of the pipeline, and makes the code much more readable, as seen in the code snippet in Listing~\ref{lst:trainingstream} taken from the training code for the classifier.
+
+\begin{listing}[H]
+    \begin{minted}[frame=lines,framesep=2mm]{python}
+twitter = TweetStream(QueueBufferedQueue(3)))
+twiter.connect()
+
+twitter \
+    .filter(TweetsWithHashtagsPredicate()) \
+    .filter(TweetsInEnglishPredicate()) \
+    .filter(NoRetweetsPredicate()) \
+    .map(TokeniseTweetFunction()) \
+    .for_each(TrainOperation(classifier)
+    \end{minted}
+    \caption{Code snippet demonstrating classifier training using Spout stream processing.}
+    \label{lst:trainingstream}
+\end{listing}
+
+Another feature built into Spout that can be seen in Listing~\ref{lst:trainingstream} is the use of a \verb+BufferedQueue+ object when creating the data stream. Processing data from a live data source can present an infamous problem: the consumer-producer problem. This is where the input data source (in this case, the live Twitter stream) produces data faster than the system can process it, or vice-versa. Spout's \verb+BufferedQueue+ object defines a thread-safe queue object of an arbitrary size that when full, drops any extra items and ignores them. Similarly, if the queue is empty and another item is requested, the queue blocks the process asking for an item until another item is available. Thus, a trivial solution to the consumer-producer problem is presented, by filtering the input data source through a \verb+BufferedQueue+ before processing it.
+
+\subsection{Publication}
+
+Spout has been developed in an abstract, isolated fashion, meaning that it is distinct from the hashtag suggestion system presented in this project. This means that Spout could be useful in a number of scenarios other than Twitter processing. Because of this, Spout has been made available independently from this project. The full source for Spout is available on GitHub\footnote{\url{http://github.com/daviesjamie/spout}}.
+
+In addition to open-sourcing Spout, it has also been made available on the Python Package Index (PyPI)\footnote{\url{https://pypi.python.org/pypi/spout/0.1.5}}. This has been a huge success, with approximately 3000 recorded downloads at the time of writing.
+
+\todo[inline]{Classifier/Bayes}
+\todo[inline]{Client}
+
 \pagebreak
 
 \chapter{Testing}
@@ -487,9 +539,10 @@ Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client
 
 \pagebreak
 
+\begin{appendices}
+\chapter{Time Management}
+
 \begin{landscape}
-    \appendix
-    \chapter{Time Management}
     \label{appendix:gantt}
     This is a Gantt chart showing the scheduled progression through the different aspects of the project.
 
@@ -508,6 +561,7 @@ Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client
 \chapter{Original Project Brief}
 \vspace*{-3cm}
 \hspace*{-2.4cm}\includegraphics[scale=0.9]{../brief/brief.pdf}
+\end{appendices}
 \pagebreak
 
 \setcounter{secnumdepth}{0}
