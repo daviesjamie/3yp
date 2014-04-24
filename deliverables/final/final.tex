@@ -426,6 +426,7 @@ The client's primary focus will be delivering the interface to the users. It wil
 \end{figure}
 
 \section{User Interface}
+\label{sec:wireframes}
 Whilst the primary focus of this project is the creation of the tool to provide hashtag suggestions and query expansions (the server), a simple prototype interface will also be developed. This interface will remain simple, but will enable users to log in to Twitter, post tweets using hashtag suggestions, and search Twitter using query expansion.
 
 Figure~\autoref{fig:wireframe:tweet} shows the design of the interface for creating a tweet. It follows conventional HCI principles, including displaying the site name and navigation in the top left, and having the user's username and user-oriented controls in the top right. There is a single box for the user to type their tweet message into, and as they are typing into this box, relevant hashtag suggestions will appear underneath. Clicking on one of these hashtags will insert it at the end of the text in the box.
@@ -642,7 +643,13 @@ To enable clients to connect to the classifier and send recommendation/query exp
 For a full list of the API endpoints used, please see Appendix~\ref{appendix:restapi}.
 
 \section{Client}
-\todo[inline]{Client}
+The classification server is designed with an open REST API, which creates the opportunity for a myriad of different clients to use the recommendation system. However, for the purposes of this project, a simple interface was created to demonstrate how the classification server can be accessed. For screenshots of the client interface, please see \todo{Add screenshots reference!}.
+
+The interface itself was built using Twitter Bootstrap to implement the wireframe designs in \autoref{sec:wireframes}.
+
+Django was used to handle the structure of the pages within the client. In addition, a custom extension of the Django authentication module was created to use the Twitter OAuth API to log users in. This enabled use of the fantastic user library from within Django, but also provided the necessary integration with Twitter. Query expansion and search results are acquired through a Django view that sends a POST request to the classification server, and then a GET request to the Twitter Search API, respectively.
+
+To achieve instant hashtag suggestions as the user types a tweet, a custom JQuery function was used. This monitors the input form field for any changes, and sends an AJAX request to the classifier server when any changes are detected. The JSON object that is returned from the AJAX request is then parsed and displayed appropriately in the suggestions area on the page. When the user has completed and submitted the tweet, another Django view is used to process the input and send it to the Twitter API, thus posting the tweet.
 
 \pagebreak
 
