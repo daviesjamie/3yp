@@ -82,7 +82,7 @@ Jamie Davies\\
 %\href{mailto:jagd1g11@ecs.soton.ac.uk}{\nolinkurl{jagd1g11@ecs.soton.ac.uk}}\\[3cm]
 \today\\[1cm]
 
-{\large
+{\Large
     Enhanced Content Analysis and Information\\
     Retrieval Using Twitter Hashtags\\[1cm]
 }
@@ -674,6 +674,7 @@ To test the REST API of the classifier server, tests were performed using the Un
 Testing the integration of the classifier components was a more involved task, requiring several short test scripts to be executed using specific data items chosen to exercise boundary cases. These tests were often executed interactively inside an IPython\footnote{\url{www.ipython.org}} shell. IPython is a tool an interactive Python shell that builds upon the default shell available with all Python installations. It offers enhanced functionality, including interactive examination of the data held within objects in a Matlab-style REPL (read, eval, print loop) environment. This made it possible to quickly pass data through a series of components and interactively examine the state of the components to ensure correctness of the code.
 
 \section{System Testing}
+\label{sec:systemtesting}
 To test the entire classification server system as a whole, there are two areas that need testing: the hashtag recommendation and the search query expansion.
 
 To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:tests}, and are discussed in detail in \autoref{chap:evaluation}.
@@ -796,6 +797,10 @@ By comparing the implemented system with the formal requirements described in Ch
         \hline
     \end{longtable}
 \end{center}
+
+\section{Experimental Results}
+Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train/test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up, refer to Section~\ref{sec:systemtesting}.
+
 \pagebreak
 
 \chapter{Conclusion}
@@ -815,7 +820,7 @@ By comparing the implemented system with the formal requirements described in Ch
 
 \section{Test Results}
 \label{appendix:tests}
-\todo[inline]{Add unit test descriptions here}.
+\todo[inline]{Add unit test descriptions here}
 \pagebreak
 
 \renewcommand{\arraystretch}{1.2}
