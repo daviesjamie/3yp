@@ -483,7 +483,7 @@ Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client
 \label{sec:spout}
 To give the possibility of using either the live Twitter stream or a static file of tweets as the data source for the classifier, it was decided that the input data should be operated on as a stream. Doing so would allow identical processing of the tweet data, regardless of where the data came from.
 
-A library with a fluent interface was created to enable such a processing paradigm. A fluent interface is the use of chaining method calls together to relay the instruction context of a subsequent call, to improve the readability of the code. At the heart of the library is the concept of a stream, which is simply a sequential (and not necessarily finite) collection of data items. The \verb+Stream+ class defines the basic operations that can be performed upon a data stream:
+Taking inspiration from a section of OpenIMAJ \parencite{Hare:2011}, a library with a fluent interface was created to enable such a processing paradigm. A fluent interface is the use of chaining method calls together to relay the instruction context of a subsequent call, to improve the readability of the code. At the heart of the library is the concept of a stream, which is simply a sequential (and not necessarily finite) collection of data items. The \verb+Stream+ class defines the basic operations that can be performed upon a data stream:
 
 \begin{description}
     \item[Mapping] \hfill \\
