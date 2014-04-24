@@ -653,9 +653,48 @@ To achieve instant hashtag suggestions as the user types a tweet, a custom JQuer
 
 \pagebreak
 
-\chapter{Testing}
+\chapter{Project Management}
+\label{chap:projmanagement}
+\todo[inline]{Project Management}
+
+\pagebreak
+
+\chapter{Testing Strategy \& Results}
 \label{chap:testing}
-\todo[inline]{Testing section.}
+
+The system presented in this project was tested throughout the development process, as well as after the implementation was complete.
+
+White-box testing was performed whilst creating every function, class and module in the system. This ensured that the inner structures and workings of the functions and objects were correct and performed as they should. Differing inputs were chosen for each test to exercise different paths through the code and ensure full code coverage. Maximising test code coverage is especially important within Python, as unlike a traditional compiled languages, errors in the code are not found until the particular lines they are on are executed.
+
+\section{Unit Testing}
+
+The Python tool Nose\footnote{\url{https://pypi.python.org/pypi/nose/}} was used to create and execute unit tests for each of the separate units within the classifier server and Spout. These unit tests were written using black-box testing techniques to examine the functionality of the units without examining their internal structures and workings. For a full list of unit tests performed, please see Appendix~\ref{appendix:unittests}.
+
+\section{Integration Testing}
+Integration testing techniques were used to ensure that when the individual units were combined, they gave the expected results.
+
+To test the REST API of the classifier server, tests were performed using the Unix \verb+curl+ utility. This allows for easy execution of both GET and POST requests to the server by requiring minimal set up and configuration and printing all received data to the console.
+
+Testing the integration of the classifier components was a more involved task, requiring several short test scripts to be executed using specific data items chosen to exercise boundary cases. These tests were often executed interactively inside an IPython\footnote{\url{www.ipython.org}} shell. IPython is a tool an interactive Python shell that builds upon the default shell available with all Python installations. It offers enhanced functionality, including interactive examination of the data held within objects in a Matlab-style REPL (read, eval, print loop) environment. This made it possible to quickly pass data through a series of components and interactively examine the state of the components to ensure correctness of the code.
+
+\section{System Testing}
+To test the entire classification server system as a whole, there are two areas that need testing: the hashtag recommendation and the search query expansion.
+
+To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:systemtests}, and are discussed in detail in \autoref{chap:evaluation}.
+
+As the search query expansion makes use of the Twitter API, scientifically evaluating the system becomes very difficult (as the Twitter Search API returns the latest tweets). Overcoming this would require either a higher level of access to the Twitter API, or the construction of a local search engine that can operate over a static set of tweets --- both of which are unfortunately outside the scope of this project.
+
+\section{User Testing}
+The primary scope of this project was the creation and evaluation of the classification server tool, and as thus, the client interface presented is intended only for demonstration purposes and for integration testing.
+
+If the client was to be published in its own right however, then it would require it's own testing. This would be performed through a set of test users using the system to perform a predefined set of operations, and then supplying feedback on the interface and usability of the client.
+
+
+\pagebreak
+
+\chapter{Evaluation}
+\label{chap:evaluation}
+\todo[inline]{Evaluation}
 
 \pagebreak
 
@@ -680,8 +719,13 @@ To achieve instant hashtag suggestions as the user types a tweet, a custom JQuer
     \end{figure}
 \end{landscape}
 
-\chapter{Testing Plans \& Results}
+\chapter{Unit Tests \& Results}
+\label{appendix:unittests}
 \todo[inline]{Add testing plans and results}
+
+\chapter{System Test Results}
+\label{appendix:systemtests}
+\todo[inline]{Add big test results}
 
 \pagebreak
 
