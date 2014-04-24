@@ -624,8 +624,17 @@ Finally, the last optimisation made to the classification system was to filter t
 
 Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. For a full list of the stop words used, see \todo{add stop words reference!}.
 
+\subsection{Search Query Expansion}
+\todo[inline]{Search Query Expansion}
+
 \subsection{Asynchronous Access}
-\todo[inline]{Classifier Asynchronous Access}
+To enable asynchronous training and classification function calls within the classifier, it became necessary to use a mutex lock to guard access to the internal models of the classifier. Any function that required accessing or updating the models would have to acquire the lock first, and would wait until the lock became available if necessary. This approach meant that multiple threads could train the classifier and ask for hashtag recommendations simultaneously.
+
+Unfortunately, this approach revealed a fundamental flaw with the Python thread execution model: regardless of how many threads are declared and executed within a piece of code, there will always be only a single thread executing at any given time. Python will automatically share execution time between active threads, and protects threads from interfering with each other through the global interpreter lock (GIL). In the case of the server system presented in this project, the GIL becomes a bottleneck that prevents the system from taking full advantage of multiprocessor systems.
+
+The solution to this issue was to use operating system level processes in the place of threads. This gives each process a separate interpreter, and therefore a separate GIL and a separate thread of execution --- achieving true parallel processing. However, this raised a new issue: each process has its own protected memory space, therefore making the exchange of data between processes difficult.
+
+To successfully share the classifier object between processes, and not have each process operating on a separate object, a proxy object is used. Extending the \texttt{BaseManager} class from the multiprocessing\footnote{\url{http://docs.python.org/2/library/multiprocessing.html}} library, the proxy object exposes a selection of the classifier methods to all of the processes, in a virtual classifier object. The manager itself runs a server process, with which the other processes communicate via the virtual classifier object. The manager then relays the function calls upon the proxy object to a concrete instantiation of the classifier.
 
 \subsection{Creating a RESTful API}
 \todo[inline]{Classifier RESTful API}
