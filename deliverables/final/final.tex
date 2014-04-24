@@ -12,6 +12,8 @@
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage[font={small}]{caption}
+\usepackage{multicol}
+\usepackage{enumitem}
 
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
@@ -602,6 +604,7 @@ Where:
 \end{itemize}
 
 \subsection{Optimisation}
+\label{ssec:optimisation}
 It can be seen in \autoref{eqn:prob} that the denominator of the equation is not related to the probability of the hashtag, and can thus can be seen as a constant. This means that the denominator can be safely ignored to reduce the computational complexity of the equation:
 
 \begin{equation}
@@ -623,7 +626,7 @@ Where:
 
 Finally, the last optimisation made to the classification system was to filter the input data in an attempt to purify the data being trained upon. Using the stream processing framework presented in Spout (\autoref{sec:spout}), it was possible to directly filter the tweets themselves upon a set of predicates, including removing all retweeted tweets\footnote{A retweet is a re-posting of someone else's tweet.}, tweets that didn't contain any hashtags, and tweets that weren't in English.
 
-Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. For a full list of the stop words used, see Appendix~\ref{appendix:stopwords}.
+Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. This is typically used to remove words which have a very high frequency in text/speech. For a full list of the stop words used, see Appendix~\ref{appendix:stopwords}.
 
 \subsection{Search Query Expansion}
 Due to the structure of the internal hashmaps inside the classifier, creating a query expansion is simple. The \texttt{htc} hashmap defines the relationship between hashtags and tokens --- therefore to get a set of tokens relevant to a given hashtag, the tokens listed under $\mathtt{htc}[\text{Hashtag}]$ are sorted by probability and then the top $N$ are returned.
@@ -762,7 +765,192 @@ In addition to a local repository, the project is also hosted remotely in a repo
 
 \chapter{Stop Word List}
 \label{appendix:stopwords}
-\todo[inline]{Add stop words}
+Shown below is the stop word list that was used to filter out high-frequency words from the input tokens to the classifier. Please see Subsection~\ref{ssec:optimisation} for an explanation.
+
+\footnotesize{\texttt{
+\begin{multicols}{6}
+    \begin{itemize}[leftmargin=*]
+        \item[] a
+        \item[] about
+        \item[] above
+        \item[] after
+        \item[] again
+        \item[] against
+        \item[] all
+        \item[] am
+        \item[] an
+        \item[] and
+        \item[] any
+        \item[] are
+        \item[] as
+        \item[] at
+        \item[] be
+        \item[] because
+        \item[] been
+        \item[] before
+        \item[] being
+        \item[] below
+        \item[] between
+        \item[] both
+        \item[] but
+        \item[] by
+        \item[] could
+        \item[] did
+        \item[] do
+        \item[] does
+        \item[] doing
+        \item[] down
+        \item[] during
+        \item[] each
+        \item[] few
+        \item[] for
+        \item[] from
+        \item[] further
+        \item[] had
+        \item[] has
+        \item[] have
+        \item[] having
+        \item[] he
+        \item[] he'd
+        \item[] he'll
+        \item[] hed
+        \item[] hell
+        \item[] hes
+        \item[] her
+        \item[] here
+        \item[] heres
+        \item[] hers
+        \item[] herself
+        \item[] him
+        \item[] himself
+        \item[] his
+        \item[] how
+        \item[] hows
+        \item[] i
+        \item[] i'd
+        \item[] i'll
+        \item[] i'm
+        \item[] i've
+        \item[] id
+        \item[] ill
+        \item[] im
+        \item[] ive
+        \item[] if
+        \item[] in
+        \item[] into
+        \item[] is
+        \item[] it
+        \item[] its
+        \item[] itself
+        \item[] lets
+        \item[] me
+        \item[] more
+        \item[] most
+        \item[] my
+        \item[] myself
+        \item[] no
+        \item[] nor
+        \item[] not
+        \item[] of
+        \item[] off
+        \item[] on
+        \item[] once
+        \item[] only
+        \item[] or
+        \item[] other
+        \item[] ought
+        \item[] our
+        \item[] ours
+        \item[] ourselves
+        \item[] out
+        \item[] over
+        \item[] own
+        \item[] rt
+        \item[] same
+        \item[] she
+        \item[] she'd
+        \item[] she'll
+        \item[] shed
+        \item[] shell
+        \item[] shes
+        \item[] should
+        \item[] so
+        \item[] some
+        \item[] such
+        \item[] than
+        \item[] that
+        \item[] thats
+        \item[] the
+        \item[] their
+        \item[] theirs
+        \item[] them
+        \item[] themselves
+        \item[] then
+        \item[] there
+        \item[] theres
+        \item[] these
+        \item[] they
+        \item[] they'd
+        \item[] they'll
+        \item[] they're
+        \item[] they've
+        \item[] theyd
+        \item[] theyll
+        \item[] theyre
+        \item[] theyve
+        \item[] this
+        \item[] those
+        \item[] through
+        \item[] to
+        \item[] too
+        \item[] under
+        \item[] until
+        \item[] up
+        \item[] very
+        \item[] was
+        \item[] we
+        \item[] we'd
+        \item[] we'll
+        \item[] we're
+        \item[] we've
+        \item[] wed
+        \item[] well
+        \item[] were
+        \item[] weve
+        \item[] were
+        \item[] what
+        \item[] whats
+        \item[] when
+        \item[] whens
+        \item[] where
+        \item[] wheres
+        \item[] which
+        \item[] while
+        \item[] who
+        \item[] whos
+        \item[] whom
+        \item[] why
+        \item[] whys
+        \item[] with
+        \item[] won't
+        \item[] would
+        \item[] you
+        \item[] you'd
+        \item[] you'll
+        \item[] you're
+        \item[] you've
+        \item[] youd
+        \item[] youll
+        \item[] youre
+        \item[] youve
+        \item[] your
+        \item[] yours
+        \item[] yourself
+        \item[] yourselves
+        \item[] 's
+    \end{itemize}
+\end{multicols}
+}}
 \pagebreak
 
 \chapter{REST API Interface}
