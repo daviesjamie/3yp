@@ -731,8 +731,70 @@ In addition to a local repository, the project is also hosted remotely in a repo
 
 \chapter{Evaluation}
 \label{chap:evaluation}
-\todo[inline]{Evaluation}
+A critical evaluation was conducted on the system by testing against the formal requirements presented in Chapter~\ref{chap:analysis}, as well as performing some experiments with a large dataset of tweets. Finally, comments are given on the system as a whole and its overall performance.
 
+\section{Requirements Verification}
+By comparing the implemented system with the formal requirements described in Chapter~\ref{chap:analysis}, it is possible to verify that the system meets the original goals that the project set out to fulfil.
+
+\subsection{Functional Requirements}
+\begin{center}
+    \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
+        \hline
+        \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
+        \hline
+        \hline
+        \endfirsthead
+        \hline
+        \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
+        \hline
+        \hline
+        \endhead
+        \textbf{1} & The system must allow the user to log in and publish their tweets using their Twitter account. & Pass & The client authenticates with Twitter to allow the user to post tweets. \\
+        \hline
+        \textbf{2} & The system must provide hashtag recommendations as the user is writing a tweet. & Pass & The client displays hashtag suggestions as the user types. \\
+        \hline
+        \textbf{3} & The system must perform a hashtag search through a large dataset of tweets and return all relevant tweets, including those that do not contain the search query. & Pass & Query expansion is provided to enable searching with the Twitter API. \\
+        \hline
+        \textbf{4} & The system must use information from a large dataset of tweets to generate a model representing each hashtag. & Pass & The internal models in the classifier count the occurrences of tokens within each hashtag, amongst other things. \\
+        \hline
+        \textbf{5} & The system must use only the data available through the Twitter API, and not make use of any other externally collected metrics, such as user preferences. & Pass & Only the textual content of the tweet itself is used. \\
+        \hline
+        \textbf{6} & The system must be able to compare tweets against its representational hashtag models. & Pass & The classifier can calculate the probabilities for all hashtags for a given tweet. \\
+        \hline
+        \textbf{7} & \emph{Optional:} In place of a large dataset, the system must be able to use information from the live Twitter stream. & Pass & A stream processing library was created to enable use of the live Twitter stream. The final system constantly trains on the live stream, dealing with classification requests asynchronously. \\
+        \hline
+        \textbf{8} & \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet. & Partial & The system provides probabilities, but they are not accurate due to the optimisations made to the classifier. \\
+        \hline
+    \end{longtable}
+\end{center}
+
+\subsection{Non-Functional Requirements}
+\begin{center}
+    \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
+        \hline
+        \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
+        \hline
+        \hline
+        \endfirsthead
+        \hline
+        \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
+        \hline
+        \hline
+        \endhead
+        \textbf{1} & The system must be accessible via a web interface. & Pass & The classifier server is accessible through a REST API, enabling any web-based client to connect (including the prototype client developed in this project). \\
+        \hline
+        \textbf{2} & The system must be responsive and easy to use. & Pass & The classifier server is quick to respond to all requests, enabling a responsive client. \\
+        \hline
+        \textbf{3} & The system must be able to perform searches quickly. & Pass & The server provides a quick query expansion tool, meaning the speed of the searches is as practically as fast as the Twitter API can search. \\
+        \hline
+        \textbf{4} & The system must be able to make hashtag recommendations quickly. & Pass & The classifier has been optimised to provide quick recommendations. \\
+        \hline
+        \textbf{5} & \emph{Optional:} The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments. & Partial & The system is capable of producing tag-clouds for hashtags and tokens, but other visualisations could be implemented. \\
+        \hline
+        \textbf{6} & \emph{Optional:} The system must be accessible via mobile web browsers. & Pass & All major processing is done on the classification server, enabling any client to connect to the system --- including ones optimised for mobiles. The included client interface is mobile-friendly. \\
+        \hline
+    \end{longtable}
+\end{center}
 \pagebreak
 
 \chapter{Conclusion}
@@ -743,7 +805,7 @@ In addition to a local repository, the project is also hosted remotely in a repo
 
 \chapter*{References}
 \addcontentsline{toc}{chapter}{References}
-{\footnotesize \printbibliography[heading=none]}
+\printbibliography[heading=none]
 
 \begin{subappendices}
 \renewcommand\thesection{\Alph{section}}
