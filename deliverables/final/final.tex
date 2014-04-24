@@ -637,7 +637,9 @@ The solution to this issue was to use operating system level processes in the pl
 To successfully share the classifier object between processes, and not have each process operating on a separate object, a proxy object is used. Extending the \texttt{BaseManager} class from the multiprocessing\footnote{\url{http://docs.python.org/2/library/multiprocessing.html}} library, the proxy object exposes a selection of the classifier methods to all of the processes, in a virtual classifier object. The manager itself runs a server process, with which the other processes communicate via the virtual classifier object. The manager then relays the function calls upon the proxy object to a concrete instantiation of the classifier.
 
 \subsection{Creating a RESTful API}
-\todo[inline]{Classifier RESTful API}
+To enable clients to connect to the classifier and send recommendation/query expansion requests, the system must be available through a web interface. To achieve this, function calls to the classifier proxy object were wrapped into a series of web endpoints, using the Flask library. They make use of POST and GET data sent with the requests, and send all data output from the classifier back to the origin of the request in JSON format.
+
+For a full list of the API endpoints used, please see Appendix~\ref{appendix:restapi}.
 
 \section{Client}
 \todo[inline]{Client}
@@ -677,6 +679,7 @@ To successfully share the classifier object between processes, and not have each
 \pagebreak
 
 \chapter{REST API Interface}
+\label{appendix:restapi}
 \todo[inline]{Add RESTful API Interface/Endpoints}
 \pagebreak
 
