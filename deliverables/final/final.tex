@@ -567,13 +567,13 @@ To perform the calculations necessary for a Naive Bayes classifier, the server m
 
 \begin{itemize}
     \item A count of the total number of times each hashtag has been seen\\
-        \verb+{ hashtag : count }+
+        \verb+hc = { hashtag : count }+
     \item A count of the number of times each token appears with a given hashtag\\
-        \verb+{ hashtag : { token : count } }+
+        \verb+htc = { hashtag : { token : count } }+
     \item A count of the total number of times each token has been seen\\
-        \verb+{ token : count }+
+        \verb+tc = { token : count }+
     \item A count of the number of times each hashtag appears with a given token\\
-        \verb+{ token : { hashtag : count } }+
+        \verb+thc = { token : { hashtag : count } }+
 \end{itemize}
 
 It is important to note here that the hashmaps simply store the count of each feature, and can therefore be quickly and easily incremented independently of the other features. Traditionally, Naive Bayes stores the probabilities of each feature --- but doing this here would result in all of the features having to be recalculated every time a single feature count was updated. This would be a highly inefficient process, and so the probabilities are instead calculated on demand when needed.
@@ -582,11 +582,42 @@ In addition to this, the classifier also stores the total number of tweets and t
 
 To update these internal models, the training function takes in a collection of features (tokens) and ensures that both hashtags and non-hashtag tokens are present. If this is the case, the models are incremented by looping through the tokens and adjusting the hashmaps.
 
-\subsection{Classifying}
-\todo[inline]{Classifier classifying}
+\subsection{Providing Recommendations}
+To classify a tweet, the Naive Bayes probability model is used to calculate the probability of every hashtag known to the classifier applying to the tweet. These probabilities are then sorted, and the top $M$ probabilities (and their respective hashtags) are supplied as recommendations for the tweet.
+
+The hashmaps and variables discussed above can be integrated into the Naive Bayes model to give a formula for calculating the probability of a hashtag given a set of tokens:
+
+\begin{align}
+    P(\text{Hashtag}|\text{Tokens}) &= \frac{P(\text{Tokens}|\text{Hashtag}) \cdot P(\text{Hashtag})}{P(\text{Tokens})}\\
+                                      &= \frac{\left(\prod\limits_{i=1}^{N} \frac{\mathtt{thc}[\text{Token}_i][\text{Hashtag}]}{\mathtt{hc}[\text{Hashtag}]}\right) \cdot \frac{\mathtt{hc}[\text{Hashtag}]}{\mathtt{hashtag\_total}}}{\left(\prod\limits_{j=1}^{N} \frac{\mathtt{tc}[\text{Token}_j]}{\mathtt{token\_total}}\right)}\label{eqn:prob}
+\end{align}
+
+Where:
+\begin{itemize}
+    \item There are $N$ tokens.
+    \item \texttt{hashtag\_total} is the total number of hashtags seen.
+    \item \texttt{token\_total} is the total number of non-hashtag tokens seen.
+\end{itemize}
 
 \subsection{Optimisation}
-\todo[inline]{Classifier Optimisation}
+It can be seen in \autoref{eqn:prob} that the denominator of the equation is not related to the probability of the hashtag, and can thus can be seen as a constant. This means that the denominator can be safely ignored to reduce the computational complexity of the equation:
+
+\begin{equation}
+    P(\text{Hashtag}|\text{Tokens}) = \left(\prod\limits_{i=1}^{N} \frac{\mathtt{thc}[\text{Token}_i][\text{Hashtag}]}{\mathtt{hc}[\text{Hashtag}]}\right) \cdot \frac{\mathtt{hc}[\text{Hashtag}]}{\mathtt{hashtag\_total}}\label{eqn:oprob}
+\end{equation}
+
+Another issue with this approach to Naive Bayes is that when there is very little data for a given hashtag or token, the probability can become heavily biased. For example, if token has only been seen once with a hashtag, then that token will have a 100\% probability of being in used in conjunction with that hashtag. This effect was overcome with a weighting function, $P^*$, that adds a small bias towards an assumed probability:
+
+\begin{equation}
+    P^*(\text{Hashtag}|\text{Token}) = \frac{(\mathtt{weight} \cdot \mathtt{ap}) + (\mathtt{tc}[\text{Token}] \cdot P(\text{Hashtag}|\text{Token}))}{\mathtt{weight} + \mathtt{tc}[\text{Token}]}
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item \texttt{weight} is the weighting of the bias, measured in number of tokens.
+    \item \texttt{ap} is the assumed probability.
+    \item $P(\text{Hashtag}|\text{Token})$ is the standard probability calculated using the method described in \autoref{eqn:oprob}.
+\end{itemize}
 
 \subsection{Asynchronous Access}
 \todo[inline]{Classifier Asynchronous Access}
