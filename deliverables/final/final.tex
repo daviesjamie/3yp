@@ -2,6 +2,7 @@
 
 \usepackage{float}
 \usepackage{amsmath}
+\usepackage{amsfonts}
 \usepackage{pdflscape}
 \usepackage{parskip}
 \usepackage[hyphens]{url}
@@ -532,22 +533,22 @@ These considerations led to the choice of a Naive Bayes classifier. Naive Bayes 
     P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
 \end{equation}
 
-This can be expanded to give the probability of a classification based upon the presence of a set of features by making a naive assumption: that the presence of a particular feature is totally unrelated and unaffected by the presence (or lack) of any other feature. Doing so gives the probabilistic model for a Naive Bayes:
+This can be expanded to give the probability of a classification based upon the presence of a set of features by making a \textbf{naive assumption}: that the presence of a particular feature is totally unrelated and unaffected by the presence (or lack) of any other feature. By making this assumption, we can derive the probabilistic model for a Naive Bayes classifier:
 
 \begin{equation}
-    P(C|F_1,\dots,F_n) = \frac{P(C) \cdot P(F_1,\dots,F_n)|C)}{P(F_1,\cdots,F_n)}
+    P(C|F_1,\dots,F_n) = \frac{P(F_1,\dots,F_n)|C) \cdot P(C)}{P(F_1,\cdots,F_n)}
 \end{equation}
 
 Or, in plain English terminology:
 
 \begin{equation}
-    P(\text{Hashtag}|\text{Features}) = \frac{P(\text{Hashtag}) \cdot P(\text{Features}|\text{Hashtag})}{P(\text{Features})}
+    P(\text{Hashtag}|\text{Features}) = \frac{P(\text{Features}|\text{Hashtag}) \cdot P(\text{Hashtag})}{P(\text{Features})}
 \end{equation}
 
 \subsection{Feature Extraction}
 As seen in the equations above, to predict hashtags for a tweet it is necessary to transform that tweet into a set of features. There are a number of approaches to this, and not all are limited to the text of the tweet. For instance, it could be possible to extract features from other information that is available with each tweet, such as date and time, or the location that the tweet was posted from. However, to keep things (relatively) simple, the feature extraction in this project is based solely upon the actual text that makes up the tweets themselves.
 
-Features are extracted from the tweets by passing their text through the `twokeniser' system created by \textcite{OConnor:2010}\footnote{Available online at \url{https://github.com/brendano/tweetmotif}}. This tool matches the text against a collection of complex regular expressions to split the text up into a collection of word-like objects. It is much more complex than splitting on whitespace however, as the tool correctly recognises and preserves complex structures such as urls and emoticons. The presence of each of the outputted tokens can then be used as a feature input for the classifier.
+Features are extracted from the tweets by passing their text through the `twokeniser' system created by \textcite{OConnor:2010}.\footnote{Available online at \url{http://github.com/brendano/tweetmotif}} This tool matches the text against a collection of complex regular expressions to split the text up into a collection of word-like objects. It is much more complex than splitting on whitespace however, as the tool correctly recognises and preserves complex structures such as urls and emoticons. The presence of each of the outputted tokens can then be used as a feature input for the classifier.
 
 \begin{listing}[htpb]
     \begin{minted}[frame=lines,framesep=2mm]{python}
@@ -562,7 +563,24 @@ Features are extracted from the tweets by passing their text through the `twoken
 
 
 \subsection{Training}
-\todo[inline]{Classifier training}
+To perform the calculations necessary for a Naive Bayes classifier, the server must store information about the tweets it has been trained on. It does this by updating a number of hashmaps stored in memory:
+
+\begin{itemize}
+    \item A count of the total number of times each hashtag has been seen\\
+        \verb+{ hashtag : count }+
+    \item A count of the number of times each token appears with a given hashtag\\
+        \verb+{ hashtag : { token : count } }+
+    \item A count of the total number of times each token has been seen\\
+        \verb+{ token : count }+
+    \item A count of the number of times each hashtag appears with a given token\\
+        \verb+{ token : { hashtag : count } }+
+\end{itemize}
+
+It is important to note here that the hashmaps simply store the count of each feature, and can therefore be quickly and easily incremented independently of the other features. Traditionally, Naive Bayes stores the probabilities of each feature --- but doing this here would result in all of the features having to be recalculated every time a single feature count was updated. This would be a highly inefficient process, and so the probabilities are instead calculated on demand when needed.
+
+In addition to this, the classifier also stores the total number of tweets and the total number of hashtag instances it has been trained on.
+
+To update these internal models, the training function takes in a collection of features (tokens) and ensures that both hashtags and non-hashtag tokens are present. If this is the case, the models are incremented by looping through the tokens and adjusting the hashmaps.
 
 \subsection{Classifying}
 \todo[inline]{Classifier classifying}
@@ -575,9 +593,6 @@ Features are extracted from the tweets by passing their text through the `twoken
 
 \subsection{Creating a RESTful API}
 \todo[inline]{Classifier RESTful API}
-
-\subsection{Managing State Loading/Saving}
-\todo[inline]{Classifier state loading/dumping}
 
 \section{Client}
 \todo[inline]{Client}
