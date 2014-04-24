@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{pdflscape}
+\usepackage{longtable}
 \usepackage{parskip}
 \usepackage[hyphens]{url}
 \usepackage[hidelinks]{hyperref}
@@ -656,7 +657,7 @@ To achieve instant hashtag suggestions as the user types a tweet, a custom JQuer
 
 \pagebreak
 
-\chapter{Testing Strategy \& Results}
+\chapter{Testing Strategy}
 \label{chap:testing}
 
 The system presented in this project was tested throughout the development process, as well as after the implementation was complete.
@@ -749,9 +750,64 @@ In addition to a local repository, the project is also hosted remotely in a repo
 \chapter*{Appendices}
 \addcontentsline{toc}{chapter}{Appendices}
 
+\begin{landscape}
 \section{Test Results}
 \label{appendix:tests}
-\todo[inline]{Add test results}
+
+\begin{center}
+    Test results showing the percentage of \textbf{one or more} of $N$ recommended hashtags being correct.
+    \begin{longtable}{|c|c|c|c|c||c|c|c|c|c|c|c|}
+        \hline
+        \multicolumn{5}{|c||}{Filters} & \multicolumn{7}{|c|}{$N$} \\
+        \hline
+        \textbf{Hashtag Text} & \textbf{Stop Words} & \textbf{URLs} & \textbf{Punctuation} & \textbf{Usernames} & \textbf{1} & \textbf{5} & \textbf{10} & \textbf{15} & \textbf{20} & \textbf{30} & \textbf{50} \\
+        \hline
+        \hline
+        \endfirsthead
+        & & & & & 30.20 & 40.24 & 43.54 & 45.44 & 47.18 & 49.30 & 51.80 \\
+        \hline
+        $\bullet$ & & & & & 30.22 & 40.70 & 43.90 & 45.78 & 47.66 & 49.66 & 52.18 \\
+        \hline
+        & $\bullet$ & & & & 31.30 & 41.10 & 44.44 & 46.90 & 48.04 & 49.96 & 52.44 \\
+        \hline
+        & & $\bullet$ & & & 30.20 & 40.24 & 43.54 & 45.44 & 47.18 & 49.30 & 51.80 \\
+        \hline
+        & & & $\bullet$ & & 29.76 & 39.70 & 43.54 & 45.36 & 47.10 & 49.02 & 51.42 \\
+        \hline
+        & & & & $\bullet$ & 26.56 & 37.08 & 40.48 & 42.60 & 44.42 & 46.92 & 49.58 \\
+        \hline
+        $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 22.66 & 32.16 & 35.58 & 37.82 & 39.54 & 41.82 & 44.76 \\
+        \hline
+    \end{longtable}
+
+    \pagebreak
+
+    Test results showing the percentage of \textbf{all} of the correct hashtags being present in $N$ recommended hashtags.
+    \begin{longtable}{|c|c|c|c|c||c|c|c|c|c|c|}
+        \hline
+        \multicolumn{5}{|c||}{Filters} & \multicolumn{6}{|c|}{$N$} \\
+        \hline
+        \textbf{Hashtag Text} & \textbf{Stop Words} & \textbf{URLs} & \textbf{Punctuation} & \textbf{Usernames} & \textbf{5} & \textbf{10} & \textbf{15} & \textbf{20} & \textbf{30} & \textbf{50} \\
+        \hline
+        \hline
+        \endfirsthead
+        & & & & & 30.24 & 35.42 & 37.20 & 38.94 & 41.42 & 43.42 \\
+        \hline
+        $\bullet$ & & & & & 30.34 & 35.66 & 37.44 & 39.10 & 41.54 & 43.70 \\
+        \hline
+        & $\bullet$ & & & & 31.58 & 36.20 & 38.44 & 39.86 & 42.04 & 44.28 \\
+        \hline
+        & & $\bullet$ & & & 30.24 & 35.42 & 37.20 & 38.94 & 41.42 & 43.42 \\
+        \hline
+        & & & $\bullet$ & & 30.10 & 34.98 & 36.90 & 38.60 & 41.12 & 43.08 \\
+        \hline
+        & & & & $\bullet$ & 27.28 & 31.94 & 34.22 & 36.12 & 38.66 & 40.92 \\
+        \hline
+        $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 22.78 & 27.32 & 29.42 & 31.12 & 33.80 & 36.42 \\
+        \hline
+    \end{longtable}
+\end{center}
+\end{landscape}
 \pagebreak
 
 \section{Stop Word List}
