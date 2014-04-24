@@ -8,7 +8,7 @@
 \usepackage[hyphens]{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=3.5cm]{geometry}
-\usepackage[titletoc]{appendix}
+\usepackage{appendix}
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage[font={small}]{caption}
@@ -740,35 +740,26 @@ In addition to a local repository, the project is also hosted remotely in a repo
 
 \pagebreak
 
-\setcounter{secnumdepth}{0}
 \chapter*{References}
+\addcontentsline{toc}{chapter}{References}
 {\footnotesize \printbibliography[heading=none]}
 
-\begin{appendices}
-\chapter{Gantt Charts}
-\label{appendix:gantt}
-\todo[inline]{Add realistic Gantt chart}
+\begin{subappendices}
+\renewcommand\thesection{\Alph{section}}
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
 
-\begin{landscape}
-    This is a Gantt chart showing the scheduled progression through the different aspects of the project.
-
-    \begin{figure}[H]
-        \centering
-        \includegraphics[height=0.85\textwidth]{gantt.png}
-    \end{figure}
-\end{landscape}
-
-\chapter{Tests Results}
+\section{Test Results}
 \label{appendix:tests}
 \todo[inline]{Add test results}
 \pagebreak
 
-\chapter{Stop Word List}
+\section{Stop Word List}
 \label{appendix:stopwords}
 Shown below is the stop word list that was used to filter out high-frequency words from the input tokens to the classifier. Please see Subsection~\ref{ssec:optimisation} for an explanation.
 
 \footnotesize{\texttt{
-\begin{multicols}{6}
+\begin{multicols}{5}
     \begin{itemize}[leftmargin=*]
         \item[] a
         \item[] about
@@ -953,25 +944,40 @@ Shown below is the stop word list that was used to filter out high-frequency wor
 }}
 \pagebreak
 
-\chapter{REST API Interface}
+\section{REST API Interface}
 \label{appendix:restapi}
 \todo[inline]{Add RESTful API Interface/Endpoints}
 \pagebreak
 
-\chapter{Client Interface Screenshots}
+\section{Client Interface Screenshots}
 \label{appendix:screenshots}
 \todo[inline]{Add screenshots}
 \pagebreak
 
-\chapter{Project Directory Listing}
+\begin{landscape}
+    \section{Gantt Charts}
+    \label{appendix:gantt}
+    This is a Gantt chart showing the \emph{scheduled} progression through the different aspects of the project.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[height=0.85\textwidth]{gantt.png}
+    \end{figure}
+
+    \todo{Insert the actual progression Gantt}This is a Gantt chart showing the \emph{actual} progression through the different aspects of the project.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[height=0.85\textwidth]{gantt.png}
+    \end{figure}
+\end{landscape}
+\pagebreak
+
+\section{Project Directory Listing}
 \label{appendix:directorytree}
 \todo[inline]{Add directory tree}
 \pagebreak
 
-\chapter{Original Project Brief}
-\vspace*{-3cm}
-\hspace*{-2.4cm}\includegraphics[scale=0.9]{../brief/brief.pdf}
-\end{appendices}
-\pagebreak
+\section{Original Project Brief}
+\begin{center}\includegraphics[trim=2.5cm 2.5cm 2.5cm 3.5cm,clip,width=\textwidth]{../brief/brief.pdf}\end{center}
+\end{subappendices}
 
 \end{document}
