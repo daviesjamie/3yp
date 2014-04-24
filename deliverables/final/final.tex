@@ -67,8 +67,6 @@ dashed=false,       % Re-print recurring author names in bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\listoftodos
-\pagebreak
 
 \begin{titlepage}
 \center
@@ -121,9 +119,7 @@ If users are presented with a choice of relevant hashtags when writing a tweet, 
 \pagebreak
 
 \subsection*{Acknowledgements}
-I would like to thank my supervisor, Dr.\ Nick Gibbins, for providing inspiration and guidance throughout the course of the project.
-
-I would also like to thank Dr.\ Jonathon Hare and Dr.\ Sina Samangooei for their continued support and advice.
+Thank you to everyone involved in the creation of this project. Most importantly, thank you to Nick Gibbins for providing the inspiration for this project and steering me in the right direction when I got lost. Thank you to Jon and Sina for giving up their time to give me the advice and enthusiasm I needed. Thanks to Katie for having the patience to be optimistic when I couldn't remember how. Thank you to Hayden and Miles, for making the \LaTeX\ styling of this document a constant competition. Thanks to Mum and Dad for their support and proofreading. Thanks to everyone who downloaded Spout, the response to the package was overwhelming.
 
 \subsection*{Statement of Originality}
 
@@ -655,6 +651,8 @@ Django was used to handle the structure of the pages within the client. In addit
 
 To achieve instant hashtag suggestions as the user types a tweet, a custom JQuery function was used. This monitors the input form field for any changes, and sends an AJAX request to the classifier server when any changes are detected. The JSON object that is returned from the AJAX request is then parsed and displayed appropriately in the suggestions area on the page. When the user has completed and submitted the tweet, another Django view is used to process the input and send it to the Twitter API, thus posting the tweet.
 
+\todo[inline]{Add stuff about tag cloud generation}
+
 \pagebreak
 
 \chapter{Testing Strategy}
@@ -707,6 +705,7 @@ By comparing the Gantt charts for the proposed progression of the project, and t
 \section{Risk Analysis}
 Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. It is important to identify risks at the start of a project and take any steps necessary to reduce the likelihood or impact of those risks. Listed below are some of the issues that could have occurred during the project, and the steps taken to deal with them.
 
+\todo[inline]{Change to table layout?}
 \subsection{Health Issues}
 It is possible that throughout the duration of the project serious illness or health problems could have arisen, meaning no work could have been done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation had arisen, then the only solution would have been to catch up on the work missed after recovering from the problem. However, to reduce the impact of any potential illness, the project schedule was followed closely, and therefore the amount of work to catch-up on was minimised.
 
@@ -721,6 +720,7 @@ Through the long-term planning and foresight required to plan a large-scale proj
 
 \section{Version Control}
 \label{sec:git}
+\todo[inline]{Is all of this needed?}
 Git\footnote{\url{www.git-scm.com}} is a distributed version control system that is both free and open source. It allows the user to create a repository that stores a complete history and full version tracking that is not dependent on network access or a central server (unlike the popular alternative, Subversion\footnote{\url{http://subversion.apache.org}}).
 
 This entire project, including all source code and documentation, has been inside a Git repository since its creation. Whenever any file is modified, added or deleted, it is committed to the repository. This means that if a change is made to the project that is later decided to be an unwanted change, it is very simple to use the Git tool to revert the file (or even the whole working directory) back to a previous version. This is also a form of protection against accidental modifications or deletion of files --- as once data is committed to the repository, it is always possible to revert back to it.
@@ -737,6 +737,7 @@ A critical evaluation was conducted on the system by testing against the formal 
 By comparing the implemented system with the formal requirements described in Chapter~\ref{chap:analysis}, it is possible to verify that the system meets the original goals that the project set out to fulfil.
 
 \subsection{Functional Requirements}
+\todo[inline]{Move tables to appendix?}
 \begin{center}
     \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
         \hline
