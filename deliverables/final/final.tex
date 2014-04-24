@@ -8,7 +8,7 @@
 \usepackage[hyphens]{url}
 \usepackage[hidelinks]{hyperref}
 \usepackage[margin=3.5cm]{geometry}
-\usepackage{appendix}
+\usepackage[titletoc]{appendix}
 \usepackage{graphicx}
 \usepackage{subfigure}
 \usepackage[font={small}]{caption}
@@ -623,7 +623,7 @@ Where:
 
 Finally, the last optimisation made to the classification system was to filter the input data in an attempt to purify the data being trained upon. Using the stream processing framework presented in Spout (\autoref{sec:spout}), it was possible to directly filter the tweets themselves upon a set of predicates, including removing all retweeted tweets\footnote{A retweet is a re-posting of someone else's tweet.}, tweets that didn't contain any hashtags, and tweets that weren't in English.
 
-Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. For a full list of the stop words used, see \todo{add stop words reference!}.
+Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. For a full list of the stop words used, see Appendix~\ref{appendix:stopwords}.
 
 \subsection{Search Query Expansion}
 Due to the structure of the internal hashmaps inside the classifier, creating a query expansion is simple. The \texttt{htc} hashmap defines the relationship between hashtags and tokens --- therefore to get a set of tokens relevant to a given hashtag, the tokens listed under $\mathtt{htc}[\text{Hashtag}]$ are sorted by probability and then the top $N$ are returned.
@@ -643,19 +643,13 @@ To enable clients to connect to the classifier and send recommendation/query exp
 For a full list of the API endpoints used, please see Appendix~\ref{appendix:restapi}.
 
 \section{Client}
-The classification server is designed with an open REST API, which creates the opportunity for a myriad of different clients to use the recommendation system. However, for the purposes of this project, a simple interface was created to demonstrate how the classification server can be accessed. For screenshots of the client interface, please see \todo{Add screenshots reference!}.
+The classification server is designed with an open REST API, which creates the opportunity for a myriad of different clients to use the recommendation system. However, for the purposes of this project, a simple interface was created to demonstrate how the classification server can be accessed. For screenshots of the client interface, please see Appendix~\ref{appendix:screenshots}.
 
 The interface itself was built using Twitter Bootstrap to implement the wireframe designs in \autoref{sec:wireframes}.
 
 Django was used to handle the structure of the pages within the client. In addition, a custom extension of the Django authentication module was created to use the Twitter OAuth API to log users in. This enabled use of the fantastic user library from within Django, but also provided the necessary integration with Twitter. Query expansion and search results are acquired through a Django view that sends a POST request to the classification server, and then a GET request to the Twitter Search API, respectively.
 
 To achieve instant hashtag suggestions as the user types a tweet, a custom JQuery function was used. This monitors the input form field for any changes, and sends an AJAX request to the classifier server when any changes are detected. The JSON object that is returned from the AJAX request is then parsed and displayed appropriately in the suggestions area on the page. When the user has completed and submitted the tweet, another Django view is used to process the input and send it to the Twitter API, thus posting the tweet.
-
-\pagebreak
-
-\chapter{Project Management}
-\label{chap:projmanagement}
-\todo[inline]{Project Management}
 
 \pagebreak
 
@@ -668,7 +662,7 @@ White-box testing was performed whilst creating every function, class and module
 
 \section{Unit Testing}
 
-The Python tool Nose\footnote{\url{https://pypi.python.org/pypi/nose/}} was used to create and execute unit tests for each of the separate units within the classifier server and Spout. These unit tests were written using black-box testing techniques to examine the functionality of the units without examining their internal structures and workings. For a full list of unit tests performed, please see Appendix~\ref{appendix:unittests}.
+The Python tool Nose\footnote{\url{https://pypi.python.org/pypi/nose/}} was used to create and execute unit tests for each of the separate units within the classifier server and Spout. These unit tests were written using black-box testing techniques to examine the functionality of the units without examining their internal structures and workings. For a full list of unit tests performed, please see Appendix~\ref{appendix:tests}.
 
 \section{Integration Testing}
 Integration testing techniques were used to ensure that when the individual units were combined, they gave the expected results.
@@ -680,7 +674,7 @@ Testing the integration of the classifier components was a more involved task, r
 \section{System Testing}
 To test the entire classification server system as a whole, there are two areas that need testing: the hashtag recommendation and the search query expansion.
 
-To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:systemtests}, and are discussed in detail in \autoref{chap:evaluation}.
+To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:tests}, and are discussed in detail in \autoref{chap:evaluation}.
 
 As the search query expansion makes use of the Twitter API, scientifically evaluating the system becomes very difficult (as the Twitter Search API returns the latest tweets). Overcoming this would require either a higher level of access to the Twitter API, or the construction of a local search engine that can operate over a static set of tweets --- both of which are unfortunately outside the scope of this project.
 
@@ -689,6 +683,11 @@ The primary scope of this project was the creation and evaluation of the classif
 
 If the client was to be published in its own right however, then it would require it's own testing. This would be performed through a set of test users using the system to perform a predefined set of operations, and then supplying feedback on the interface and usability of the client.
 
+\pagebreak
+
+\chapter{Project Management}
+\label{chap:projmanagement}
+\todo[inline]{Project Management}
 
 \pagebreak
 
@@ -700,13 +699,16 @@ If the client was to be published in its own right however, then it would requir
 
 \chapter{Conclusion}
 \label{chap:conclusion}
-\todo[inline]{Conclusion section.}
+\todo[inline]{Conclusion}
 
 \pagebreak
 
+\setcounter{secnumdepth}{0}
+\chapter*{References}
+{\footnotesize \printbibliography[heading=none]}
+
 \begin{appendices}
-\chapter{Time Management}
-\todo[inline]{Write some stuff about time management}
+\chapter{GANTT Charts}
 \todo[inline]{Add realistic GANTT chart}
 
 \begin{landscape}
@@ -719,14 +721,14 @@ If the client was to be published in its own right however, then it would requir
     \end{figure}
 \end{landscape}
 
-\chapter{Unit Tests \& Results}
-\label{appendix:unittests}
-\todo[inline]{Add testing plans and results}
+\chapter{Tests Results}
+\label{appendix:tests}
+\todo[inline]{Add test results}
+\pagebreak
 
-\chapter{System Test Results}
-\label{appendix:systemtests}
-\todo[inline]{Add big test results}
-
+\chapter{Stop Word List}
+\label{appendix:stopwords}
+\todo[inline]{Add stop words}
 \pagebreak
 
 \chapter{REST API Interface}
@@ -734,14 +736,20 @@ If the client was to be published in its own right however, then it would requir
 \todo[inline]{Add RESTful API Interface/Endpoints}
 \pagebreak
 
+\chapter{Client Interface Screenshots}
+\label{appendix:screenshots}
+\todo[inline]{Add screenshots}
+\pagebreak
+
+\chapter{Project Directory Listing}
+\label{appendix:directorytree}
+\todo[inline]{Add directory tree}
+\pagebreak
+
 \chapter{Original Project Brief}
 \vspace*{-3cm}
 \hspace*{-2.4cm}\includegraphics[scale=0.9]{../brief/brief.pdf}
 \end{appendices}
 \pagebreak
-
-\setcounter{secnumdepth}{0}
-\chapter{References}
-{\footnotesize \printbibliography[heading=none]}
 
 \end{document}
