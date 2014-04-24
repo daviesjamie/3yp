@@ -627,7 +627,7 @@ Where:
 
 Finally, the last optimisation made to the classification system was to filter the input data in an attempt to purify the data being trained upon. Using the stream processing framework presented in Spout (\autoref{sec:spout}), it was possible to directly filter the tweets themselves upon a set of predicates, including removing all retweeted tweets\footnote{A retweet is a re-posting of someone else's tweet.}, tweets that didn't contain any hashtags, and tweets that weren't in English.
 
-Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. This is typically used to remove words which have a very high frequency in text/speech. For a full list of the stop words used, see Appendix~\ref{appendix:stopwords}.
+Another set of filters was configured to work upon the data from the tokenisation of the tweets including whether to allow url tokens, whether to allow username tokens, whether to allow punctuation tokens, and whether to use stop word removal. Removing stop words is a widely used technique in the field of natural language processing which checks input against a predefined list of words, and removes any occurrences of those words. This is typically used to remove words which have a very high frequency in text/speech. For a full list of the stop words used, see Appendix~\ref{appendix:stopwords}. Experiments were also performed using another filter that uses the text of the hashtags in a tweet as extra tokens.
 
 \subsection{Search Query Expansion}
 Due to the structure of the internal hashmaps inside the classifier, creating a query expansion is simple. The \texttt{htc} hashmap defines the relationship between hashtags and tokens --- therefore to get a set of tokens relevant to a given hashtag, the tokens listed under $\mathtt{htc}[\text{Hashtag}]$ are sorted by probability and then the top $N$ are returned.
@@ -750,11 +750,14 @@ In addition to a local repository, the project is also hosted remotely in a repo
 \chapter*{Appendices}
 \addcontentsline{toc}{chapter}{Appendices}
 
-\begin{landscape}
 \section{Test Results}
 \label{appendix:tests}
+\todo[inline]{Add unit test descriptions here}.
+\pagebreak
 
-\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{landscape}
+\begin{center}\begin{small}
     Test results showing the percentage of \textbf{one or more} of $N$ recommended hashtags being correct.
     \begin{longtable}{|c|c|c|c|c||c|c|c|c|c|c|c|}
         \hline
@@ -780,8 +783,6 @@ In addition to a local repository, the project is also hosted remotely in a repo
         \hline
     \end{longtable}
 
-    \pagebreak
-
     Test results showing the percentage of \textbf{all} of the correct hashtags being present in $N$ recommended hashtags.
     \begin{longtable}{|c|c|c|c|c||c|c|c|c|c|c|}
         \hline
@@ -806,7 +807,7 @@ In addition to a local repository, the project is also hosted remotely in a repo
         $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 22.78 & 27.32 & 29.42 & 31.12 & 33.80 & 36.42 \\
         \hline
     \end{longtable}
-\end{center}
+\end{small}\end{center}
 \end{landscape}
 \pagebreak
 
