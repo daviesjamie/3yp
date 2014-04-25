@@ -732,7 +732,7 @@ In addition to a local repository, the project is also hosted remotely in a repo
 
 \chapter{Evaluation}
 \label{chap:evaluation}
-A critical evaluation was conducted on the system by testing against the formal requirements presented in Chapter~\ref{chap:analysis}, as well as performing some experiments with a large dataset of tweets. Finally, comments are given on the system as a whole and its overall performance.
+A critical evaluation was conducted on the system by testing against the formal requirements presented in Chapter~\ref{chap:analysis}, as well as performing some experiments with a large dataset of tweets. Finally, the structure and progression of the project as a whole is discussed and evaluated.
 
 \section{Requirements Verification}
 By comparing the implemented system with the formal requirements described in Chapter~\ref{chap:analysis}, it is possible to verify that the system meets the original goals that the project set out to fulfil.
@@ -799,7 +799,26 @@ By comparing the implemented system with the formal requirements described in Ch
 \end{center}
 
 \section{Experimental Results}
-Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train/test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up, refer to Section~\ref{sec:systemtesting}.
+\label{sec:experimenteval}
+Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train/test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up refer to Section~\ref{sec:systemtesting}, and for the full test results refer to Appendix~\ref{appendix:tests}.
+
+A number of interesting observations were drawn from the results of this test. It revealed that approximately 30\% of the time the \emph{first} hashtag suggested was correct, when using any single one of the filters (with the exception of filtering out usernames, which caused a drop of approximately 4.5\%). Unfortunately though, when the top 50 hashtag suggestions were used, it was discovered that only a maximum of 52\% of the tweets were correctly assigned a hashtag --- this is a number that was expected to be much higher. Some of this error could be attributed to hashtags that have not been seen before (as will always be the case on Twitter), but it is more likely that there is unfair biasing of some of the hashtags within the Naive Bayes classifier.
+
+Surprisingly, when all of the filters were combined together, the accuracy of the classifier took a large drop, with the accuracy of the first suggestion down to 22\%. This is likely to be due to the removal of too many tokens, resulting in fewer tokens to actually classify. Further tests are needed to clarify this hypothesis, however.
+
+An unsurprising observation is that the removal of URLs from the tweets made no impact on the accuracy of the classifications. This is accredited to the fact that most URLs within the training set would be unique, and therefore the probability of those URLs occurring would be neutral --- resulting in a negligible impact to the overall probability calculated from the other tokens.
+
+Impressively, when the test criteria is changed from the recommendation list having a single correct hashtag to containing all of the correct hashtags, the results only drop by approximately 10\%. This is proof that the general concept of the classifier is working well: when a correct hashtag is recommended, so too are the related hashtags. The reason that this figure has taken a drop at all is attributed to some tweets containing multiple unrelated hashtags, which is difficult to predict.
+
+\section{Reflection on the Project}
+\subsection{Classification Server}
+Overall, the classification and recommendation system has been a success, but there are still things which could have been done different. The results revealed by the experimental evaluation in Section~\ref{sec:experimenteval} are truly just a starting point for the potential of the classifier. More work on the filtering of the classifier and the weighting of over/under popular hashtags, for which there is no more time available in this project. The system excels at recommending hashtags for tweets about popular topics, but performs less adequately on less popular topics. More training data is required; allowing the classifier to train on more data from a longer timespan would likely result in a significant increase in accuracy. This unfortunately was outside the scope of the project, as the time and resources necessary to gather such a large dataset were not available. Despite this however, the current system is capable of correctly predicting hashtags for between 30-50\% of tweets, making it a very usable tool.
+
+\subsection{Client}
+Whilst only created for demonstration purposes, the client proved an invaluable tool during the optimisation of the classifier. It provided an environment in which tweets and query expansions could be quickly and easily evaluated, without having to delve into a console or interactive Python session. Unfortunately however, the current search functionality is unfortunately rather limited. It appears that Twitter performs their own query expansion within the API, so searching for a set of expanded query terms does not give the desired results. If this functionality was to be created again a separate tweet indexing and searching tool would be built, allowing for full control over the search process. With this improvement, it is easy to see the prototype client presented in this project being developed into a full interface, or even integrated into the Twitter platform itself.
+
+\subsection{Scalability}
+Due to the underlying server-client architecture, the system is highly scalable. Inside the classifier only counts of features are stored, and not entire tweets. This means that the system should be capable of training on millions, or potentially even billions, of tweets. The number of tweets possible to train upon is not infinite however, as eventually the integers used to store the counts will overflow. This could be combated by implemented an aging algorithm that reduces the counts on a periodical basis. As the number of unique tokens and hashtags seen by the system increases, it does unfortunately increase the time it takes to provide a classification. However, this task is currently only single-threaded, despite being a highly \todo{Is parallelisable a word?}parallelisable task. Therefore the classification can be easily scaled my making use of the many cores available on modern server machines.
 
 \pagebreak
 
