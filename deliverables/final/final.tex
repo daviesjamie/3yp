@@ -811,6 +811,7 @@ An unsurprising observation is that the removal of URLs from the tweets made no 
 Impressively, when the test criteria is changed from the recommendation list having a single correct hashtag to containing all of the correct hashtags, the results only drop by approximately 10\%. This is proof that the general concept of the classifier is working well: when a correct hashtag is recommended, so too are the related hashtags. The reason that this figure has taken a drop at all is attributed to some tweets containing multiple unrelated hashtags, which is difficult to predict.
 
 \section{Reflection on the Project}
+\label{sec:reflection}
 \subsection{Classification Server}
 Overall, the classification and recommendation system has been a success, but there are still things which could have been done different. The results revealed by the experimental evaluation in Section~\ref{sec:experimenteval} are truly just a starting point for the potential of the classifier. More work on the filtering of the classifier and the weighting of over/under popular hashtags, for which there is no more time available in this project. The system excels at recommending hashtags for tweets about popular topics, but performs less adequately on less popular topics. More training data is required; allowing the classifier to train on more data from a longer timespan would likely result in a significant increase in accuracy. This unfortunately was outside the scope of the project, as the time and resources necessary to gather such a large dataset were not available. Despite this however, the current system is capable of correctly predicting hashtags for between 30-50\% of tweets, making it a very usable tool.
 
@@ -824,7 +825,16 @@ Due to the underlying server-client architecture, the system is highly scalable.
 
 \chapter{Conclusion}
 \label{chap:conclusion}
-\todo[inline]{Conclusion}
+This project has developed and presented an intelligent hashtag recommendation system for use with Twitter, that makes it easier for users to compose tweets with relevant hashtags, as well as aiding search and navigation of Twitter as a whole. The presented technique of using a Naive Bayes classifier to predict hashtags has been shown to be a highly scalable approach, with promising results.
+
+To aid with the handling of a live stream of Twitter data, a stream processing framework in Python was created. This uses a fluent interface to present a pleasant and readable infrastructure for processing streams of data --- whether from Twitter, or read of out static files. This library has been published to the Python Package Index (PyPI), where it has been well received.
+
+\section{Future Work}
+The work presented within this project has provided a stable and scalable basis for future work to be based from. Much work still needs to done to improve the results of the classifier for it to be a fully-usable tool. The filtering of the input tweets and tokens needs to be reassessed, to improve the cases where there is the removal of too much information. Adjustments need to be made to the weighting of hashtags and tokens with very little occurrences, as well as those with massively popular counts.
+
+The client presented in this project is simply a demonstration of the features available through the classification server. To become a usable tool in the `real world,' a real client would have to be designed and developed, and real user testing would have to be performed.
+
+Lastly, the tests and experiments presented within this project have only been conducted on a dataset of 500,000 tweets. With more time and resources, this number could be increased exponentially to truly test both the scalability and accuracy of the classifier.
 
 \pagebreak
 
