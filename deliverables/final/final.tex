@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{report}
+\documentclass[11pt,a4paper]{report}
 
 \usepackage{float}
 \usepackage{amsmath}
@@ -136,6 +136,8 @@ Collaborative tagging (sometimes referred to as social tagging) systems are desi
 
 One of the most popular applications of a folksonomy is Twitter\footnote{\url{www.twitter.com}}. `Hashtags', which are simply any combination of letters or digits preceded by a hash character (\#), afford users the ability to create free-form tags to describe the content of their posts (`tweets'). Tweets can be categorized with several hashtags, thereby creating networks of tweets and users, and making it easy to find other related tweets, users and hashtags. This renders hashtags as a powerful tool in aiding the search and navigation of the billions of tweets contained within Twitter.
 
+However, despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from, often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
+
 \todo[inline]{Add description of the problem}
 
 \section{Project Goals}
@@ -180,7 +182,7 @@ One compromise to this trade-off is to use an algorithm such as Hebbian Deflatio
 
 \textcite{Niwa:2006} took a different approach to overcome the limitations of collaborative filtering. Using a modified version of the \todo{Add more TF-IDF implementation detail?}TF-IDF \parencite{Salton:1988}, they calculate the affinity level between users and tags (where affinity level is a measure of how frequently a user uses a particular tag), and then use this to calculate the similarity between tags. These similarity measures are then clustered using a custom clustering algorithm to provide a set of recommended tags for a given user and resource. This enabled them to adjust the level at which a user's preferences were taken into account when determining recommendations, as well as providing a simple solution to the tag redundancy issue found across most folksonomies.
 
-Another popular machine learning approach to the folksonomy tag recommendation problem is the use of a \todo{Add more about Naive Bayes implementation?}Naive Bayes classifier. Naive Bayes has been an accepted tool in information retrieval for a long time, with some early literature dating back over 50 years \parencite{Maron:1960}, and has recently been seeing a renaissance within the machine learning community.
+Another popular machine learning approach to the folksonomy tag recommendation problem is the use of a Naive Bayes classifier. Naive Bayes has been an accepted tool in information retrieval for a long time, with some early literature dating back over 50 years \parencite{Maron:1960}, and has recently been seeing a renaissance within the machine learning community.
 
 As shown by \textcite{DePessemier:2010}, Naive Bayes can be easily adapted and extended to work in the context of providing recommendations to match a query or a set of user preferences. In particular, their algorithm relies upon the general user preferences for cases where the classifier produced an uncertain outcome, and becomes more context specific on a sliding scale as the classifer gives more certain probabilities.
 
@@ -236,8 +238,6 @@ Through the use of some trivial Python scripts, it is easy to find evidence of p
 \end{table}
 
 Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\ref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\ref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
-
-This data has shown that despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from, often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
 
 \begin{figure}[htpb]
     \centering
@@ -491,7 +491,7 @@ The client interface itself was written with a combination of HTML, CSS and Java
 
 \todo{Move to deployment section}Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but also made it more secure and accessible.
 
-\section{Spout: A Stream Processing Framework}
+\section{Spout: A Data Stream Processing Framework}
 \label{sec:spout}
 To give the possibility of using either the live Twitter stream or a static file of tweets as the data source for the classifier, it was decided that the input data should be operated on as a stream. Doing so would allow identical processing of the tweet data, regardless of where the data came from.
 
@@ -624,7 +624,7 @@ To enable asynchronous training and classification function calls within the cla
 
 Unfortunately, this approach revealed a fundamental flaw with the Python thread execution model: regardless of how many threads are declared and executed within a piece of code, there will always be only a single thread executing at any given time. Python will automatically share execution time between active threads, and protects threads from interfering with each other through the global interpreter lock (GIL). In the case of the server system presented in this project, the GIL becomes a bottleneck that prevents the system from taking full advantage of multiprocessor systems.
 
-The solution to this issue was to use operating system level processes in the place of threads. This gives each process a separate interpreter, and therefore a separate GIL and a separate thread of execution --- achieving true parallel processing. However, this raised a new issue: each process has its own protected memory space, which therefore makes the exchange of data between processes difficult.
+The solution to this issue was to use operating system level processes in the place of threads. This gives each process a separate interpreter, and therefore a separate GIL and a separate thread of execution --- achieving true parallel processing. However, this raised a new issue: each process has its own protected memory space, which therefore makes sharing complex data structures between processes difficult.
 
 To successfully share the classifier object between processes, and not have each process operating on a separate object, a proxy object is used. Extending the \texttt{BaseManager} class from the \texttt{multiprocessing}\footnote{\url{http://docs.python.org/2/library/multiprocessing.html}} library, the proxy object exposes a selection of the classifier methods to all of the processes in a virtual classifier object. The manager itself runs a server process, with which the other processes communicate via the virtual classifier object. The manager then relays the function calls upon the proxy object to a concrete instantiation of the classifier.
 
