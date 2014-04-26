@@ -660,7 +660,7 @@ White-box testing was performed whilst creating every function, class and module
 
 \section{Unit Testing}
 
-The Python tool Nose\footnote{\url{https://pypi.python.org/pypi/nose/}} was used to create and execute unit tests for each of the separate units within the classifier server and Spout. These unit tests were written using black-box testing techniques to examine the functionality of the units without examining their internal structures and workings. For a full list of unit tests performed, please see Appendix~\ref{appendix:tests}.
+The Python tool Nose\footnote{\url{https://pypi.python.org/pypi/nose/}} was used to create and execute unit tests for each of the separate units within the classifier server and Spout. These unit tests were written using black-box testing techniques to examine the functionality of the units without examining their internal structures and workings. For a full list of unit tests performed, please see Appendix~\ref{appendix:unittests}.
 
 \section{Integration Testing}
 Integration testing techniques were used to ensure that when the individual units were combined, they gave the expected results.
@@ -673,7 +673,7 @@ Testing the integration of the classifier components was a more involved task, r
 \label{sec:systemtesting}
 To test the entire classification server system as a whole, there are two areas that need testing: the hashtag recommendation and the search query expansion.
 
-To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:tests}, and are discussed in detail in Chapter~\ref{chap:evaluation}.
+To test the hashtag recommendation, 500,000 English, non-retweeted tweets with hashtags were collected from the live Twitter sample stream and stored as separate JSON objects in a static file (using the output tools in Spout). 5,000 of those tweets were then randomly selected as the testing set, leaving 495,000 tweets as training data. The training data was then fed into the training function for the classifier, and then the classifier was asked to suggest hashtags for each of the tweets in the training data (with their actual hashtags stripped out). The suggested hashtags from the classifier were then compared with the actual hashtags present in the tweets, to give an impression of the accuracy of the classifier. These results can be viewed in Appendix~\ref{appendix:testresults}, and are discussed in detail in Chapter~\ref{chap:evaluation}.
 
 As the search query expansion makes use of the Twitter API, statistically evaluating the system becomes very difficult (as the Twitter Search API returns the latest tweets). Overcoming this would require either a higher level of access to the Twitter API, or the construction of a local search engine that can operate over a static set of tweets --- both of which are unfortunately outside the scope of this project.
 
@@ -805,7 +805,7 @@ By comparing the implemented system with the formal requirements described in Ch
 
 \section{Experimental Results}
 \label{sec:experimenteval}
-Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train and test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up refer to Section~\ref{sec:systemtesting}, and for the full test results refer to Appendix~\ref{appendix:tests}.
+Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train and test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up refer to Section~\ref{sec:systemtesting}, and for the full test results refer to Appendix~\ref{appendix:testresults}.
 
 A number of interesting observations were drawn from the results of this test. It revealed that approximately 30\% of the time the \emph{first} hashtag suggested was correct, when using any single one of the filters (with the exception of filtering out usernames, which caused a drop of approximately 4.5\%). Unfortunately though, when the top 50 hashtag suggestions were used, it was discovered that only a maximum of 52\% of the tweets were correctly assigned a hashtag --- this is a number that was expected to be much higher. Some of this error could be attributed to hashtags that have not been seen before (as will always be the case on Twitter), but it is more likely that there is unfair biasing of some of the hashtags within the Naive Bayes classifier.
 
@@ -855,8 +855,7 @@ Lastly, the tests and experiments presented within this project have only been c
 \addcontentsline{toc}{chapter}{Appendices}
 
 \section{Test Results}
-\label{appendix:tests}
-\todo[inline]{Add unit test descriptions here}
+\label{appendix:testresults}
 \pagebreak
 
 \renewcommand{\arraystretch}{1.2}
@@ -914,6 +913,10 @@ Lastly, the tests and experiments presented within this project have only been c
 \end{small}\end{center}
 \end{landscape}
 \pagebreak
+
+\section{Unit Tests}
+\label{appendix:unittests}
+\todo[inline]{Add unit test descriptions here}
 
 \section{Stop Word List}
 \label{appendix:stopwords}
