@@ -534,11 +534,11 @@ The creation of this programming interface enabled a tweet processing pipeline t
 twitter = TweetStream(QueueBufferedQueue(3)))
 twiter.connect()
 
-twitter \
-    .filter(TweetsWithHashtagsPredicate()) \
-    .filter(TweetsInEnglishPredicate()) \
-    .filter(NoRetweetsPredicate()) \
-    .map(TokeniseTweetFunction()) \
+twitter
+    .filter(TweetsWithHashtagsPredicate())
+    .filter(TweetsInEnglishPredicate())
+    .filter(NoRetweetsPredicate())
+    .map(TokeniseTweetFunction())
     .for_each(TrainOperation(classifier)
     \end{minted}
     \caption{Code snippet demonstrating classifier training using Spout stream processing.}
@@ -661,7 +661,40 @@ To achieve instant hashtag suggestions as the user types a tweet, a custom JQuer
 \todo[inline]{Add stuff about tag cloud generation}
 
 \subsection{Authentication}
-A custom extension of the Django authentication module was created to use the Twitter OAuth API authenticate users. This enabled use of the user library from within Django, but also provided the necessary integration with Twitter.
+Twitter uses OAuth to handle the authentication of users through third-party applications. OAuth is an open authentication protocol that allows users to approve applications to act on their behalf without sharing their password.\footnote{\url{http://dev.twitter.com/docs/auth/oauth/faq}}
+
+A custom extension of the Django authentication module was created to use the Twitter OAuth API authenticate users. Using the appropriate authentication methods exposed through the Twython library, users were created in Django that stored the OAuth tokens for each user after they had approved the client application to access their account. This then enabled use of the useful user library from within Django, but also stored the OAuth tokens necessary for communication with Twitter.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[
+        node distance=7mm,
+        title/.style={anchor=west,font=\fontsize{9}{9}\color{black}\ttfamily},
+        typetag/.style={rectangle, draw=black!50, anchor=west}
+    ]
+        \node (user) [title] {User};
+            \node (django) at ($(user.west)+(0,-28pt)$) [title,xshift=2mm] {Django Fields};
+                \node (username) [below=of django.west,typetag] {Username};
+                \node (password) [below=of username.west,typetag] {Password};
+            \node (custom) at ($(password.west)+(0,-32pt)$) [title] {Custom Fields};
+                \node (oauth) [below=of custom.west,typetag] {OAuth Token};
+                \node (oauthsecret) [below=of oauth.west,typetag] {OAuth Secret Token};
+
+        \node (djangobox) [draw,fit={(django) (username) (password)},dashed] {};
+        \node (custombox) [draw,fit={(custom) (oauth) (oauthsecret)},dashed] {};
+        \node (userbox) [draw,fit={(user) (djangobox) (custombox)}] {};
+
+        % Twitter
+        \node (twitter) at (8cm, -2.5cm) [cloud,draw,cloud puffs=10,cloud puff arc=120,aspect=2,inner ysep=1em] {Twitter};
+
+        % Arrows
+        \draw[->] (twitter) -- (oauth.east);
+        \draw[->] (twitter) -- (oauthsecret.east);
+        \draw[->] (twitter) -- (username.east);
+    \end{tikzpicture}
+    \caption{The components of a client \texttt{user} object.}
+    \label{fig:clientuser}
+\end{figure}
 
 \section{Deployment}
 Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but also made it more secure and accessible.
