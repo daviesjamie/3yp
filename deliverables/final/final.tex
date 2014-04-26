@@ -477,9 +477,9 @@ The first decision to make when implementing the system was to decide upon the p
 Python 2.7 was chosen as the language of choice for the majority of the project, including both the server and the content management system for the client. Python is a widely used high-level programming language whose syntax emphasises code readability and maintainability. Most importantly, it has a strong developer community behind it, resulting in a large collection of excellent third-party libraries, including the following:
 
 \begin{description}
-    \item[Django\footnote{\url{www.djangoproject.com}}] offers a simple and flexible way of following the traditional MVC (Model-View-Controller) programming paradigm. This made it easy to develop the client system, by providing a structured way to keep the authentication and page generation separate from the layout and design of the page. Django also offers a pleasant interface to handling web requests.
-    \item[Flask\footnote{\url{http://flask.pocoo.org}} and Tornado\footnote{\url{www.tornadoweb.org}}] are a web application frameworks made with Python, that make it simple to create efficient and scalable web APIs and WSGI applications. They are used to create and handle the HTTP endpoints for the server.
-    \item[Twython\footnote{\url{http://github.com/ryanmcgrath/twython}}], a thin but functional Python wrapper around the Twitter API, makes API calls easily available within Python. It also provides a set of methods that handle \todo{Add authentication section}authentication with Twitter.
+    \item[Django\footnotemark]\footnotetext{\url{www.djangoproject.com}} offers a simple and flexible way of following the traditional MVC (Model-View-Controller) programming paradigm. This made it easy to develop the client system, by providing a structured way to keep the authentication and page generation separate from the layout and design of the page. Django also offers a pleasant interface to handling web requests.
+    \item[Flask\footnotemark]\footnotetext{\url{http://flask.pocoo.org}} and \textbf{Tornado\footnote{\url{www.tornadoweb.org}}} are a web application frameworks made with Python, that make it simple to create efficient and scalable web APIs and WSGI applications. They are used to create and handle the HTTP endpoints for the server.
+    \item[Twython\footnotemark]\footnotetext{\url{http://github.com/ryanmcgrath/twython}}, a thin but functional Python wrapper around the Twitter API, makes API calls easily available within Python. It also provides a set of methods that handle authentication with Twitter.
 \end{description}
 
 Python 3 was not chosen for the project as it is still in its infancy. Many existing libraries written for Python have not yet been adapted for Python 3, and most operating systems or installers default to Python 2.7. To be successful, the system in this project has to be as easy to integrate and set up as possible --- and therefore Python 2.7 was chosen.
@@ -487,11 +487,9 @@ Python 3 was not chosen for the project as it is still in its infancy. Many exis
 The client interface itself was written with a combination of HTML, CSS and Javascript. In particular, the following tools and libraries were used:
 
 \begin{description}
-    \item[Twitter Bootstrap\footnote{\url{http://getbootstrap.com}}], a front-end framework that enables sleek and interactive interfaces with minimal customisation, allowing for easier and faster web development. It also has the bonus of being the UI toolkit that Twitter itself uses, and gives the client interface a look and feel similar to that of Twitter. Lastly, Bootstrap makes use of CSS3 to provide a full responsive interface, allowing the same web page to be viewed across all devices, regardless of the screen size --- which helps to fulfil non-functional requirement \ref{nfunc:mobile}.
-    \item[JQuery\footnote{\url{www.jquery.com}}], a Javascript library that contains a huge set of predefined functions and classes. It is designed to simplify client-side Javascript, and makes it much easier to manipulate the document object model (DOM) from within Javascript --- it is used specifically within the client to perform asynchronous Javascript and XML requests (AJAX requests) to the server, and provide live hashtag suggestions.
+    \item[Twitter Bootstrap\footnotemark]\footnotetext{\url{http://getbootstrap.com}}, a front-end framework that enables sleek and interactive interfaces with minimal customisation, allowing for easier and faster web development. It also has the bonus of being the UI toolkit that Twitter itself uses, and gives the client interface a look and feel similar to that of Twitter. Lastly, Bootstrap makes use of CSS3 to provide a full responsive interface, allowing the same web page to be viewed across all devices, regardless of the screen size --- which helps to fulfil non-functional requirement \ref{nfunc:mobile}.
+    \item[JQuery\footnotemark]\footnotetext{\url{www.jquery.com}}, a Javascript library that contains a huge set of predefined functions and classes. It is designed to simplify client-side Javascript, and makes it much easier to manipulate the document object model (DOM) from within Javascript --- it is used specifically within the client to perform asynchronous Javascript and XML requests (AJAX requests) to the server, and provide live hashtag suggestions.
 \end{description}
-
-\todo{Move to deployment section}Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but also made it more secure and accessible.
 
 \section{Spout: A Data Stream Processing Framework}
 \label{sec:spout}
@@ -648,6 +646,9 @@ To achieve instant hashtag suggestions as the user types a tweet, a custom JQuer
 
 \subsection{Authentication}
 A custom extension of the Django authentication module was created to use the Twitter OAuth API authenticate users. This enabled use of the user library from within Django, but also provided the necessary integration with Twitter.
+
+\section{Deployment}
+Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but also made it more secure and accessible.
 
 \pagebreak
 
