@@ -24,6 +24,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,arrows,fit,calc}
+\usepackage{pgf-umlcd}
 
 \usepackage{todonotes}
 
@@ -673,7 +674,7 @@ A custom extension of the Django authentication module was created to use the Tw
         typetag/.style={rectangle, draw=black!50, anchor=west}
     ]
         \node (user) [title] {User};
-            \node (django) at ($(user.west)+(0,-28pt)$) [title,xshift=2mm] {Django Fields};
+            \node (django) at ($(user.west)+(0,-28pt)$) [title,xshift=2mm] {Default Django Fields};
                 \node (username) [below=of django.west,typetag] {Username};
                 \node (password) [below=of username.west,typetag] {Password};
             \node (custom) at ($(password.west)+(0,-32pt)$) [title] {Custom Fields};
@@ -1159,6 +1160,113 @@ Shown below is the stop word list that was used to filter out high-frequency wor
     \end{itemize}
 \end{multicols}
 }}
+\pagebreak
+
+\section{Class Diagrams}
+\label{appendix:classdiagrams}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{abstractclass}[text width=8cm]{Stream}{0,0}
+            \operation{+ for\_each(operation : Operation, limit : int, verbose : boolean)}
+            \operation{+ filter(predicate : Predicate) : FilterStream}
+            \operation{+ map(function : Function) : MapStream}
+            \operation[0]{+ has\_next() : boolean}
+            \operation[0]{+ next() : Object}
+        \end{abstractclass}
+
+        \begin{class}[text width=5cm]{BufferedStream}{-2.8cm, -10cm}
+            \inherit{Stream}
+            \attribute{- buf : Queue}
+            \attribute{- connected : boolean}
+            \operation{+ \_\_init\_\_(buf : Queue)}
+            \operation{+ connect()}
+            \operation{+ disconnect()}
+            \operation{+ has\_next() : boolean}
+            \operation{+ next() : Object}
+            \operation{+ register(item : Object)}
+        \end{class}
+
+        \begin{class}[text width=5cm]{FilterStream}{-4.4cm, -5.3cm}
+            \inherit{Stream}
+            \attribute{- source : Stream}
+            \attribute{- predicate : Predicate}
+            \operation{+ \_\_init\_\_(source : Stream, predicate : Predicate)}
+            \operation{+ has\_next() : boolean}
+            \operation{+ next() : Object}
+        \end{class}
+
+        \begin{class}[text width=5cm]{MapStream}{4.5cm, -5.3cm}
+            \inherit{Stream}
+            \attribute{- source : Stream}
+            \attribute{- function : Function}
+            \operation{+ \_\_init\_\_(source : Stream, function : Function)}
+            \operation{+ has\_next() : boolean}
+            \operation{+ next() : Object}
+        \end{class}
+
+        \begin{class}[text width=5cm]{FileInputStream}{2.8cm, -10cm}
+            \inherit{Stream}
+            \attribute{- input : File}
+            \attribute{- next\_line: string}
+            \operation{+ has\_next() : boolean}
+            \operation{+ next() : Object}
+        \end{class}
+
+        \begin{abstractclass}[text width=4.7cm]{Function}{-3cm, -16cm}
+            \operation[0]{+ apply(input : Object)}
+        \end{abstractclass}
+
+        \begin{abstractclass}[text width=4.7cm]{Predicate}{3cm, -16cm}
+            \operation[0]{+ test(obj : Object)}
+        \end{abstractclass}
+
+        \begin{abstractclass}[text width=4.7cm]{Operation}{0cm, -18.5cm}
+            \operation[0]{+ perform(obj : Object)}
+        \end{abstractclass}
+    \end{tikzpicture}
+    \caption*{The \textbf{core} classes that make up the Spout library.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \begin{class}[text width=8.5cm]{Classifier}{0,0}
+            \attribute{-- hashtag\_total : int}
+            \attribute{-- hc : dict}
+            \attribute{-- htc : dict}
+            \attribute{-- lock : multiprocessing.Lock}
+            \attribute{-- start\_time: int}
+            \attribute{-- tc : dict}
+            \attribute{-- thc : dict}
+            \attribute{-- tweet\_total : int}
+            \attribute{-- use\_hashtag\_text : boolean}
+
+            \operation{+ \_\_init\_\_(use\_hashtag\_text : boolean)}
+            \operation{+ classify(tweet : string, results : int) : list}
+            \operation{+ get\_hashtags(num : int) : list}
+            \operation{+ get\_hashtag\_tokens(num : int) : list}
+            \operation{+ get\_memory\_usage() : list}
+            \operation{+ get\_tokens(num : int) : list}
+            \operation{+ get\_token\_hashtags(num : int) : list}
+            \operation{+ get\_totals() : list}
+            \operation{+ get\_unique\_counts() : list}
+            \operation{+ get\_uptime() : datetime.timedelta}
+            \operation{+ state\_dump(fileprefix : string)}
+            \operation{+ state\_load(filename : string)}
+            \operation{+ train(tweet\_tokens : list)}
+            \operation{-- \_catcount(hashtag : string) : int}
+            \operation{-- \_docprob(tokens : list, hashtag : string) : float}
+            \operation{-- \_fcount(token : string, hashtag : string) : int}
+            \operation{-- \_fprob(token : string, hashtag : string) : float}
+            \operation{-- \_hashtags() : list}
+            \operation{-- \_prob(tokens : list, hashtag : string) : float}
+            \operation{-- \_totalcount() : int}
+        \end{class}
+    \end{tikzpicture}
+    \caption*{\texttt{Classifier} class, used within the server to provide all recommendations.}
+\end{figure}
 \pagebreak
 
 \section{REST API Interface}
