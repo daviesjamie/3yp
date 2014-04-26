@@ -282,6 +282,7 @@ Lastly, Twitter is available through its web platform on practically every inter
 From these broad requirements, a complete set of formal requirements can be inferred:
 
 \subsection{Functional Requirements}
+\label{ssec:funcreqs}
 \begin{enumerate}
     \item \label{func:publish} The system must allow the user to log in and publish tweets using their Twitter account.
     \item \label{func:suggest} The system must provide hashtag recommendations as the user is writing a tweet.
@@ -294,6 +295,7 @@ From these broad requirements, a complete set of formal requirements can be infe
 \end{enumerate}
 
 \subsection{Non-Functional Requirements}
+\label{ssec:nfuncreqs}
 \begin{enumerate}
     \item \label{nfunc:web} The system must be accessible via a web interface.
     \item \label{nfunc:easy} The system must be responsive and easy to use.
@@ -725,13 +727,11 @@ In addition to a local repository, the project is also hosted remotely on GitHub
 
 \chapter{Evaluation}
 \label{chap:evaluation}
-A critical evaluation was conducted on the system by testing against the formal requirements presented in Chapter~\ref{chap:analysis}, as well as performing some experiments with a large dataset of tweets. Finally, the structure and progression of the project as a whole is discussed and evaluated.
 
 \section{Requirements Verification}
 By comparing the implemented system with the formal requirements described in Chapter~\ref{chap:analysis}, it is possible to verify that the system meets the original goals of the project.
 
 \subsection{Functional Requirements}
-\todo[inline]{Move tables to appendix?}
 \begin{center}
     \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
         \hline
@@ -739,11 +739,18 @@ By comparing the implemented system with the formal requirements described in Ch
         \hline
         \hline
         \endfirsthead
+        \multicolumn{4}{c}{\textit{Continued from previous page}} \\
         \hline
         \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
         \hline
         \hline
         \endhead
+        \hline
+        \multicolumn{4}{r}{\textit{Continued on next page}} \\
+        \endfoot
+        \hline
+        \caption{Verification of Functional Requirements from Section~\ref{ssec:funcreqs}.}
+        \endlastfoot
         \textbf{1} & The system must allow the user to log in and publish their tweets using their Twitter account. & Pass & The client authenticates with Twitter to allow the user to post tweets. \\
         \hline
         \textbf{2} & The system must provide hashtag recommendations as the user is writing a tweet. & Pass & The client displays hashtag suggestions as the user types. \\
@@ -759,7 +766,6 @@ By comparing the implemented system with the formal requirements described in Ch
         \textbf{7} & \emph{Optional:} In place of a large dataset, the system must be able to use information from the live Twitter stream. & Pass & A stream processing library was created to enable use of the live Twitter stream. The final system constantly trains on the live stream, dealing with classification requests asynchronously. \\
         \hline
         \textbf{8} & \emph{Optional:} The system must provide probabilities for how likely a hashtag is to be related to a tweet. & Partial & The system provides probabilities, but they are not accurate due to the optimisations made to the classifier. \\
-        \hline
     \end{longtable}
 \end{center}
 
@@ -771,11 +777,18 @@ By comparing the implemented system with the formal requirements described in Ch
         \hline
         \hline
         \endfirsthead
+        \multicolumn{4}{c}{\textit{Continued from previous page}} \\
         \hline
         \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
         \hline
         \hline
         \endhead
+        \hline
+        \multicolumn{4}{r}{\textit{Continued on next page}} \\
+        \endfoot
+        \hline
+        \caption{Verification of Non-Functional Requirements from Section~\ref{ssec:nfuncreqs}.}
+        \endlastfoot
         \textbf{1} & The system must be accessible via a web interface. & Pass & The classifier server is accessible through a REST API, enabling any web-based client to connect (including the prototype client developed in this project). \\
         \hline
         \textbf{2} & The system must be responsive and easy to use. & Pass & The classifier server is quick to respond to all requests, enabling a responsive client. \\
@@ -787,7 +800,6 @@ By comparing the implemented system with the formal requirements described in Ch
         \textbf{5} & \emph{Optional:} The system must be able to produce visualisations to provide an easy way to interpret the hashtag recommendations/assignments. & Partial & The system is capable of producing tag-clouds for hashtags and tokens, but other visualisations could be implemented. \\
         \hline
         \textbf{6} & \emph{Optional:} The system must be accessible via mobile web browsers. & Pass & All major processing is done on the classification server, enabling any client to connect to the system --- including ones optimised for mobiles. The included client interface is mobile-friendly. \\
-        \hline
     \end{longtable}
 \end{center}
 
