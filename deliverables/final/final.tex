@@ -24,6 +24,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,arrows,fit,calc}
+\usepackage{pgf-umlcd}
 
 \usepackage{todonotes}
 
@@ -673,7 +674,7 @@ A custom extension of the Django authentication module was created to use the Tw
         typetag/.style={rectangle, draw=black!50, anchor=west}
     ]
         \node (user) [title] {User};
-            \node (django) at ($(user.west)+(0,-28pt)$) [title,xshift=2mm] {Django Fields};
+            \node (django) at ($(user.west)+(0,-28pt)$) [title,xshift=2mm] {Default Django Fields};
                 \node (username) [below=of django.west,typetag] {Username};
                 \node (password) [below=of username.west,typetag] {Password};
             \node (custom) at ($(password.west)+(0,-32pt)$) [title] {Custom Fields};
@@ -1159,6 +1160,49 @@ Shown below is the stop word list that was used to filter out high-frequency wor
     \end{itemize}
 \end{multicols}
 }}
+\pagebreak
+
+\section{Class Diagrams}
+\label{appendix:classdiagrams}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}
+        \begin{class}[text width=8.5cm]{Classifier}{0,0}
+            \attribute{-- hashtag\_total : int}
+            \attribute{-- hc : dict}
+            \attribute{-- htc : dict}
+            \attribute{-- lock : multiprocessing.Lock}
+            \attribute{-- start\_time: int}
+            \attribute{-- tc : dict}
+            \attribute{-- thc : dict}
+            \attribute{-- tweet\_total : int}
+            \attribute{-- use\_hashtag\_text : boolean}
+
+            \operation{+ \_\_init\_\_(use\_hashtag\_text : boolean)}
+            \operation{+ classify(tweet : string, results : int) : list}
+            \operation{+ get\_hashtags(num : int) : list}
+            \operation{+ get\_hashtag\_tokens(num : int) : list}
+            \operation{+ get\_memory\_usage() : list}
+            \operation{+ get\_tokens(num : int) : list}
+            \operation{+ get\_token\_hashtags(num : int) : list}
+            \operation{+ get\_totals() : list}
+            \operation{+ get\_unique\_counts() : list}
+            \operation{+ get\_uptime() : datetime.timedelta}
+            \operation{+ state\_dump(fileprefix : string)}
+            \operation{+ state\_load(filename : string)}
+            \operation{+ train(tweet\_tokens : list)}
+            \operation{-- \_catcount(hashtag : string) : int}
+            \operation{-- \_docprob(tokens : list, hashtag : string) : float}
+            \operation{-- \_fcount(token : string, hashtag : string) : int}
+            \operation{-- \_fprob(token : string, hashtag : string) : float}
+            \operation{-- \_hashtags() : list}
+            \operation{-- \_prob(tokens : list, hashtag : string) : float}
+            \operation{-- \_totalcount() : int}
+        \end{class}
+    \end{tikzpicture}
+    \caption*{\texttt{Classifier} class, used within the server to provide all recommendations.}
+\end{figure}
 \pagebreak
 
 \section{REST API Interface}
