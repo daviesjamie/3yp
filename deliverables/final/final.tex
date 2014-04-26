@@ -160,7 +160,20 @@ Such a recommendation system would also need to aid users in the navigational an
 The motivation behind hashtags is to categorise tweets and allow them to show up more easily in searches\footnote{\url{https://support.twitter.com/articles/49309-using-hashtags-on-twitter}}. Whilst the task that this project is aiming to complete is novel and fairly unexplored, it is well connected with other experiments, systems and projects within the research community.
 
 \section{Traditional Recommendation Systems}
-Traditional recommendation systems are in place all over the web today. From music discovery services \todo{Add screenshots of existing recommendation services?}(such as Last.fm\footnote{\url{www.last.fm}}) to suggested purchases on retail sites (like on the front page of Amazon\footnote{\url{www.amazon.co.uk}}), these systems are all personalised recommendation engines that take an individual user's preferences and use them to provide suggestions tailored to that user.
+Traditional recommendation systems are in place all over the web today. From music discovery services (such as Last.fm\footnote{\url{www.last.fm}}, shown in Figure~\ref{fig:lastfmrec}) to suggested purchases on retail sites (like on the front page of Amazon\footnote{\url{www.amazon.co.uk}}, shown in Figure~\ref{fig:amazonrec}), these systems are all personalised recommendation engines that take an individual user's preferences and use them to provide suggestions tailored to that user.
+
+\begin{figure}[htpb]
+    \centering
+    \subfigure[Music recommendation on Last.fm]{
+        \includegraphics[width=0.4\linewidth]{lastfm.png}
+        \label{fig:lastfmrec}
+    }
+    \subfigure[Suggested purchases on Amazon]{
+        \includegraphics[width=0.5\linewidth]{amazon.png}
+        \label{fig:amazonrec}
+    }
+    \caption{Examples of traditional recommendation systems.}
+\end{figure}
 
 Most personalised recommendation systems employ a set of techniques known as collaborative filtering. These techniques were first coined by \textcite{Goldberg:1992}, where a system named \emph{Tapestry} was created that allowed people to attach annotations to documents, and then use that information to filter the documents for other users.
 
