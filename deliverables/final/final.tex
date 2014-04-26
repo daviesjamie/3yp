@@ -138,17 +138,20 @@ One of the most popular applications of a folksonomy is Twitter\footnote{\url{ww
 
 However, despite its numerous benefits, the hashtag system presents new challenges to overcome before it can become truly useful. Due to the open nature of folksonomies, it is important that users have the freedom to create and use exactly the tags they wish to use. However, this unsupervised tagging can result in vast numbers of hashtags for users to choose from, often including redundant or ambiguous hashtags. When posting a tweet, there is nothing stopping a user from creating an entirely new hashtag to describe something with exactly the same meaning as a collection of other hashtags. This redundancy can confuse users and fragment the true meaning behind the synonymous hashtags.
 
-\todo[inline]{Add description of the problem}
+Evidence of this problem can be easily found through a casual navigation of popular hashtags or topics on Twitter. It is commonplace for users to use a collection of tags in one tweet that are all synonymous. An example of this can be seen from an arbitrarily chosen tweet (with the author's personal details removed) in Figure~\ref{fig:badtagging}.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.65\linewidth]{badtagging.png}
+    \caption{An example showing the poor tagging practices used on Twitter.}
+    \label{fig:badtagging}
+\end{figure}
 
 \section{Project Goals}
 
-The goal of this project is to develop an intelligent hashtag recommendation system for use with Twitter. For example, when a user writes a tweet such as: ``\emph{The golden gate bridge looks so nice today! I LOVE SF in this weather!}'', the system should recommend hashtags such as \texttt{\#SanFrancisco}, \texttt{\#California} or even \texttt{\#sohappy}, but should not recommend hashtags such as \texttt{\#ScienceFiction}, \texttt{\#amreading} or \texttt{\#fantasy}.
+The goal of this project is to develop an intelligent hashtag recommendation system for use with Twitter. The objective is to make it easier for users to select appropriate meaningful hashtags for their tweets, and in doing so, begin to tackle the problems presented by the sheer quantity and redundancy of hashtags in Twitter. The aim is that the user will be able to see hashtag suggestions in real-time as they are typing a tweet, thus making them more likely to publish tweets with accurate hashtag data.
 
-The objective is to make it easier for users to select appropriate meaningful hashtags for their tweets, and in doing so, begin to tackle the problems presented by the sheer quantity and redundancy of hashtags in Twitter. The aim is that the user will be able to see hashtag suggestions in real-time as they are typing a tweet, thus making them more likely to publish tweets with accurate hashtag data.
-
-Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. For example, when a user performs a search on Twitter for the hashtag \texttt{\#BGT}, the system should display not only those tweets that contain \texttt{\#BGT}, but also tweets that are relevant to `Britain's Got Talent' but do not contain \texttt{\#BGT}.
-
-Therefore, another objective for this project is to make it easier for users to navigate and search the content available on Twitter, thus making the fragmented hashtag data already published easier to search and navigate. The aim is that the same recommendation system used to suggest hashtags for content a user is creating could also be applied to create enhanced search queries to retrieve tweets from Twitter.
+Such a recommendation system would also need to aid users in the navigational and exploratory aspects of folksonomies. Therefore, another objective for this project is to make it easier for users to navigate and search the content available on Twitter, thus making the fragmented hashtag data already published easier to search and navigate. The aim is that the same recommendation system used to suggest hashtags for content a user is creating could also be applied to create enhanced search queries to retrieve tweets from Twitter.
 
 \pagebreak
 
@@ -698,7 +701,7 @@ The work involved in the completion of the project was carefully scheduled to ma
     \item There was a light workload scheduled for the Easter holiday, allowing for any over-runs the project schedule may have had. This also provided time for revision and preparation for the exams at the end of the second semester.
 \end{itemize}
 
-By comparing the Gantt charts for the proposed progression of the project, and the reflection of the actual time spent on the areas within the project (also found in Appendix~\ref{appendix:gantt}), it can be seen that the plan for the project was relatively accurate. \todo{Add more detail about differences between Gantt charts}
+By comparing the Gantt charts for the proposed progression of the project, and the reflection of the actual time spent on the areas within the project (also found in Appendix~\ref{appendix:gantt}), it can be seen that the plan for the project was relatively accurate. There were, however, a few deviations from the plan. Firstly, the amount of coursework set by other University modules in the first semester was underestimated resulting in the implementation for the project not starting until after the January exams. In addition to this, the January exam period was a week longer than originally accounted for, and therefore the project schedule was further pushed back.
 
 \section{Risk Analysis}
 Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. It is important to identify risks at the start of a project and take any steps necessary to reduce the likelihood or impact of those risks. Listed below are some of the issues that could have occurred during the project, and the steps taken to deal with them.
