@@ -133,7 +133,7 @@ This project presents an intelligent hashtag recommendation tool for use with Tw
 \pagebreak
 
 \subsection*{Acknowledgements}
-Thank you to everyone involved in the creation of this project. Most importantly, thank you to Nick Gibbins for providing the inspiration for this project. Thank you to Jon and Sina for giving up their time to give me the advice and enthusiasm I needed. Thanks to Katie for having the patience to be optimistic when I couldn't remember how. Thank you to Hayden and Miles, for making the \LaTeX\ styling of this document a constant competition. Thanks to Mum and Dad for their support and proofreading. Finally, thanks to everyone who downloaded and used Spout, the response to the package was overwhelming.
+Thank you to everyone involved in the creation of this project. Most importantly, thank you to Nick Gibbins for providing the inspiration for this project. Thank you to Jon and Sina for giving up their time to give me the advice and enthusiasm I needed. Thanks to Katie for having the patience to be optimistic when I couldn't remember how. Thank you to Hayden and Miles, for making the \LaTeX\ styling of this document a constant competition. Thanks to Mum and Dad for their support and proofreading skills. Finally, thanks to everyone who downloaded and used Spout, the response to the package was overwhelming.
 
 \subsection*{Statement of Originality}
 
@@ -713,7 +713,7 @@ A custom extension of the Django authentication module was created to use the Tw
 \end{figure}
 
 \section{Deployment}
-Due to the limited resources available for this project, the client and the server were both hosted on a virtual machine (VM) on the University of Southampton network. Separate instances of Tornado were used to serve the client and server on different ports to the local host only. Nginx\footnote{\url{www.nginx.org}} was then used to proxy outside requests from port 80 (the default HTTP port) to the correct ports on the local machine for the client and server. Nginx also used to serve all static files, such as CSS or Javascript files. This approach not only significantly boosted the performance of the system, but also made it more secure and accessible.
+Due to the limited resources available for this project, the client and the server were both hosted on a virtual machine (VM) on the University of Southampton network. Separate instances of Tornado were used to serve the client and server on different ports to the local host only. Nginx\footnote{\url{www.nginx.org}} was then used to proxy outside requests from port 80 (the default HTTP port) to the correct ports on the local machine for the client and server. Additionally, Nginx was used to serve all static files, such as CSS or Javascript files. This approach not only significantly boosted the performance of the system, but also made it more secure and accessible.
 
 It is intended, however, that in a real deployment scenario the client and server would be hosted on separate machines.
 
@@ -1510,19 +1510,19 @@ Shown below is the stop word list that was used to filter out high-frequency wor
             \operation{+ next() : Object}
         \end{class}
 
-        \begin{abstractclass}[text width=4.7cm]{Function}{-3cm, -16cm}
+        \begin{abstractclass}[text width=4.7cm]{Function}{-3cm, -15.5cm}
             \operation[0]{+ apply(input : Object)}
         \end{abstractclass}
 
-        \begin{abstractclass}[text width=4.7cm]{Predicate}{3cm, -16cm}
+        \begin{abstractclass}[text width=4.7cm]{Predicate}{3cm, -15.5cm}
             \operation[0]{+ test(obj : Object)}
         \end{abstractclass}
 
-        \begin{abstractclass}[text width=4.7cm]{Operation}{0cm, -18.5cm}
+        \begin{abstractclass}[text width=4.7cm]{Operation}{0cm, -18cm}
             \operation[0]{+ perform(obj : Object)}
         \end{abstractclass}
     \end{tikzpicture}
-    \caption*{The \textbf{core} classes that make up the Spout library.}
+    \caption*{The \textbf{core} classes that make up the Spout library. The full code and all classes can be found at \url{http://github.com/daviesjamie/spout}.}
 \end{figure}
 
 \begin{figure}[H]
@@ -1561,7 +1561,7 @@ Shown below is the stop word list that was used to filter out high-frequency wor
             \operation{-- \_totalcount() : int}
         \end{class}
     \end{tikzpicture}
-    \caption*{\texttt{Classifier} class, used within the server to provide all recommendations.}
+    \caption*{The \texttt{Classifier} class, used within the server to provide all recommendations.}
 \end{figure}
 \pagebreak
 
