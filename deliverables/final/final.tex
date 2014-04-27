@@ -526,7 +526,7 @@ Taking inspiration from a section of OpenIMAJ \parencite{Hare:2011}, a library w
         \mint{python}+stream.for_each(Operation)+
 \end{description}
 
-The source of the stream could be easily changed from the live Twitter Stream to a JSON file, or even to a plain text file. The interface is easily extendable, allowing for custom stream implementations to be created --- all that is required is for the stream to output data items sequentially.
+The source of the stream could be easily changed from the live Twitter Stream to a JSON file, or even to a plain text file. The interface is easily extendable, allowing for custom stream implementations to be created --- all that is required is for the stream to output data items sequentially. A detailed class diagram of the core classes in Spout can be found in Appendix~\ref{appendix:classdiagrams}.
 
 The creation of this programming interface enabled a tweet processing pipeline to be constructed. The use of Spout has reduced the complexity of the pipeline, and makes the code much more readable, as seen in the code snippet in Listing~\ref{lst:trainingstream} taken from the training code for the classifier.
 
@@ -590,6 +590,8 @@ It is important to note here that the dictionaries simply store the count of eac
 In addition to this, the classifier also stores the total number of tweets and the total number of hashtag instances it has been trained on.
 
 To update these internal models, the training function takes in a collection of features (tokens) and ensures that both hashtags and non-hashtag tokens are present. If this is the case, the models are incremented by looping through the tokens and adjusting the dictionaries.
+
+A detailed class diagram of the \texttt{Classifier} class can be found in Appendix~\ref{appendix:classdiagrams}.
 
 \subsection{Providing Recommendations}
 To classify a tweet, the Naive Bayes probability model is used to calculate the probability of every hashtag known to the classifier applying to the tweet. These probabilities are then sorted, and the top $M$ probabilities (and their respective hashtags) are supplied as recommendations for the tweet.
