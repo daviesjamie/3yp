@@ -1,0 +1,22 @@
+This data file was too large to be submitted with the rest of the project.
+
+Instead, you can collect tweets for yourself using Spout:
+
+
+
+from spout.sources import TweetStream
+from spout.queues import QueueBufferedQueue
+from spout.outputs import JSONFileOutputOperation
+from filters import TweetsWithHashtagsPredicate, TweetsInEnglishPredicate, NoRetweetsPredicate
+from oauth import credentials
+
+twitter = TweetStream(QueueBufferedQueue(3), *credentials('oauth.json'))
+twitter.connect()
+
+twitter
+    .filter(TweetsWithHashtagsPredicate())
+    .filter(TweetsInEnglishPredicate())
+    .filter(NoRetweetsPredicate())
+    .for_each(JSONFileOutputOperation('tweets.json'), 500000, verbose=True)
+
+print 'Scraping complete.'
