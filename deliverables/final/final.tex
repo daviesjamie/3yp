@@ -29,6 +29,7 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
+\usetikzlibrary{plotmarks}
 
 \usepackage{todonotes}
 
@@ -872,34 +873,34 @@ Besides arbitrarily entering strings of text and looking at the recommendations 
             ylabel=Percentage Correct,
             enlargelimits=0.15,
             legend style={
-                at={(0.5,-0.15)},
+                at={(0.44,-0.15)},
                 anchor=north,
                 legend columns=4
             },
             width=11cm
         ]
-            \addplot[yellow,line width=1pt,mark=*]
+            \addplot[yellow,line width=1pt,mark=+]
             coordinates {(1,30.20) (5,40.24) (10,43.54) (15,45.44) (20,47.18) (30,49.30) (50,51.80)};
 
-            \addplot[orange,line width=1pt,mark=*]
+            \addplot[orange,line width=1pt,mark=diamond]
             coordinates {(1,30.22) (5,40.70) (10,43.90) (15,45.78) (20,47.66) (30,49.66) (50,52.18)};
 
             \addplot[red,line width=1pt,mark=*]
             coordinates {(1,31.30) (5,41.10) (10,44.44) (15,46.90) (20,48.04) (30,49.96) (50,52.44)};
 
-            \addplot[green,line width=1pt,mark=*]
+            \addplot[green,line width=1pt,mark=asterisk]
             coordinates {(1,30.20) (5,40.24) (10,43.54) (15,45.44) (20,47.18) (30,49.30) (50,51.80)};
 
-            \addplot[pink,line width=1pt,mark=*]
+            \addplot[pink,line width=1pt,mark=triangle*]
             coordinates {(1,29.76) (5,39.70) (10,43.54) (15,45.36) (20,47.10) (30,49.02) (50,51.42)};
 
-            \addplot[violet,line width=1pt,mark=*]
+            \addplot[violet,line width=1pt,mark=square*]
             coordinates {(1,26.56) (5,37.08) (10,40.48) (15,42.60) (20,44.42) (30,46.92) (50,49.58)};
 
-            \addplot[cyan,line width=1pt,mark=*]
+            \addplot[cyan,line width=1pt,mark=|]
             coordinates {(1,22.66) (5,32.16) (10,35.58) (15,37.82) (20,39.54) (30,41.82) (50,44.76)};
-            
-            \addplot[gray,line width=1pt,mark=*]
+
+            \addplot[gray,line width=1pt,mark=x]
             coordinates {(1,27.78) (5,37.58) (10,41.74) (15,43.86) (20,45.20) (30,47.26) (50,49.64)};
 
             \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters,\small{Hashtag Text + Stop Words}};
@@ -925,34 +926,34 @@ Impressively, when the test criteria is changed from the recommendation list hav
             ylabel=Percentage Correct,
             enlargelimits=0.15,
             legend style={
-                at={(0.5,-0.15)},
+                at={(0.44,-0.15)},
                 anchor=north,
                 legend columns=4
             },
             width=11cm
         ]
-            \addplot[yellow,line width=1pt,mark=*]
+            \addplot[yellow,line width=1pt,mark=+]
             coordinates {((5,30.24) (10,35.42) (15,37.20) (20,38.94) (30,41.42) (50,43.42)};
 
-            \addplot[orange,line width=1pt,mark=*]
+            \addplot[orange,line width=1pt,mark=diamond]
             coordinates {(5,30.34) (10,35.66) (15,37.44) (20,39.10) (30,41.54) (50,43.70)};
 
             \addplot[red,line width=1pt,mark=*]
             coordinates {(5,31.58) (10,36.20) (15,38.44) (20,39.86) (30,42.04) (50,44.28)};
 
-            \addplot[green,line width=1pt,mark=*]
+            \addplot[green,line width=1pt,mark=asterisk]
             coordinates {((5,30.24) (10,35.42) (15,37.20) (20,38.94) (30,41.42) (50,43.42)};
 
-            \addplot[pink,line width=1pt,mark=*]
+            \addplot[pink,line width=1pt,mark=triangle*]
             coordinates {(5,30.10) (10,34.98) (15,36.90) (20,38.60) (30,41.12) (50,43.08)};
 
-            \addplot[violet,line width=1pt,mark=*]
+            \addplot[violet,line width=1pt,mark=square*]
             coordinates {(5,27.28) (10,31.94) (15,34.22) (20,36.12) (30,38.66) (50,40.92)};
 
-            \addplot[cyan,line width=1pt,mark=*]
+            \addplot[cyan,line width=1pt,mark=|]
             coordinates {(5,22.78) (10,27.32) (15,29.72) (20,31.12) (30,33.80) (50,36.42)};
 
-            \addplot[gray,line width=1pt,mark=*]
+            \addplot[gray,line width=1pt,mark=x]
             coordinates{(5,27.94) (10,33.44) (15,35.66) (20,37.14) (30,39.16) (50,41.62)};
 
             \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters, \small{Hashtag Text + Stop Words}};
@@ -961,6 +962,34 @@ Impressively, when the test criteria is changed from the recommendation list hav
     \caption{Percentage of \textbf{all} correct hashtags being present in $N$ recommended hashtags.}
     \label{fig:graph}
 \end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel=$N$,
+            ylabel=Percentage Correct,
+            enlargelimits=0.15,
+            legend style={
+                at={(0.5,-0.15)},
+                anchor=north,
+                legend columns=1
+            },
+            width=11cm
+        ]
+            \addplot[red,line width=1pt,mark=*]
+            coordinates {(5,31.58) (10,36.20) (15,38.44) (20,39.86) (30,42.04) (50,44.28)};
+
+            \addplot[black,line width=1pt,mark=o]
+            coordinates {(1,31.30) (5,41.10) (10,44.44) (15,46.90) (20,48.04) (30,49.96) (50,52.44)};
+
+            \legend{\textbf{All} correct hashtags being present, \textbf{One or more} correct hashtags being present}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Percentage of hashtags correct when using the \textbf{Stop Words} filter.}
+    \label{fig:graph}
+\end{figure}
+
 \pagebreak
 
 \chapter{Conclusion}
@@ -1005,7 +1034,7 @@ Lastly, the tests and experiments presented within this project have only been c
 \todo[inline]{Add unit test descriptions/results here}
 \pagebreak
 
-\renewcommand{\arraystretch}{1.3}
+\renewcommand{\arraystretch}{1.1}
 \begin{landscape}
 \section{Test Results}
 \label{appendix:testresults}
