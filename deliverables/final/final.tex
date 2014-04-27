@@ -195,9 +195,9 @@ Although there exists a long history of research into traditional recommendation
 
 In order to facilitate the comparison of resources, tags and users, aggregate projections of the data can be constructed. This reduces the dimensionality of the data by sacrificing some information \parencite{Schmitz:2006}. There are two main classes of algorithms that perform this task: feature \emph{selection}, which reduces the size of a dataset by selecting a subset of the data, and feature \emph{extraction}, which uses the existing data to generate entirely new features. Despite the improved results that feature extraction can provide, their computational cost and memory requirements can often make them impractical for use on the extremely large datasets common with folksonomies \parencite{Gemmell:2009}.
 
-One compromise to this trade-off is to use an algorithm such as Hebbian Deflation, which approximates the outputs of the intensive feature extraction techniques, but with lower computational cost and memory requirements \parencite{Oja:1985}. \textcite{Gemmell:2009} used this approach coupled with a \todo{Add more about K-Nearest Neighbour implementation?}$k$-Nearest Neighbour classifier to find appropriate tags for a given resource. This was done by finding `neighbouring' users: ``Neighbours are selected only if they have tagged the query resource and tags are selected for the recommendation set only if they have been applied by the neighbour to the resource'' \parencite{Gemmell:2009}. It was tested on data from the popular bookmarking site Delicious\footnote{\url{http://delicious.com/}} and from Citeulike\footnote{\url{http://www.citeulike.com/}}, a tool that enables researchers to manage and discover scholarly references, and it was found to be a successful approach with giving results.
+One compromise to this trade-off is to use an algorithm such as Hebbian Deflation, which approximates the outputs of the intensive feature extraction techniques, but with lower computational cost and memory requirements \parencite{Oja:1985}. \textcite{Gemmell:2009} used this approach coupled with a $k$-Nearest Neighbour classifier to find appropriate tags for a given resource. This was done by finding `neighbouring' users: ``Neighbours are selected only if they have tagged the query resource and tags are selected for the recommendation set only if they have been applied by the neighbour to the resource'' \parencite{Gemmell:2009}. It was tested on data from the popular bookmarking site Delicious\footnote{\url{http://delicious.com/}} and from Citeulike\footnote{\url{http://www.citeulike.com/}}, a tool that enables researchers to manage and discover scholarly references, and it was found to be a successful approach with giving results.
 
-\textcite{Niwa:2006} took a different approach to overcome the limitations of collaborative filtering. Using a modified version of the \todo{Add more TF-IDF implementation detail?}TF-IDF \parencite{Salton:1988}, they calculate the affinity level between users and tags (where affinity level is a measure of how frequently a user uses a particular tag), and then use this to calculate the similarity between tags. These similarity measures are then clustered using a custom clustering algorithm to provide a set of recommended tags for a given user and resource. This enabled them to adjust the level at which a user's preferences were taken into account when determining recommendations, as well as providing a simple solution to the tag redundancy issue found across most folksonomies.
+\textcite{Niwa:2006} took a different approach to overcome the limitations of collaborative filtering. Using a modified version of the TF-IDF \parencite{Salton:1988}, they calculate the affinity level between users and tags (where affinity level is a measure of how frequently a user uses a particular tag), and then use this to calculate the similarity between tags. These similarity measures are then clustered using a custom clustering algorithm to provide a set of recommended tags for a given user and resource. This enabled them to adjust the level at which a user's preferences were taken into account when determining recommendations, as well as providing a simple solution to the tag redundancy issue found across most folksonomies.
 
 Another popular machine learning approach to the folksonomy tag recommendation problem is the use of a Naive Bayes classifier. Naive Bayes has been an accepted tool in information retrieval for a long time, with some early literature dating back over 50 years \parencite{Maron:1960}, and has recently been seeing a renaissance within the machine learning community.
 
@@ -370,10 +370,6 @@ Another benefit of using a centralised server to encapsulate the hashtag recomme
 
 When using a client-server execution model, it is important to correctly balance the tasks that need to be executed between the clients, the server and the users. Placing a high computational load on the users' machines can limit the accessibility of the system, whilst placing a high computational load on the server can cause a slow-down or even interrupted service for all clients using the system.
 
-The server encapsulates the hashtag classifier system. It will have the ability to train the classifier on tweet data independently and asynchronously to the other tasks that the classifier may need to perform. The training will perform as many of the computationally intensive operations on the classifier model as it feasibly can, to ensure that any requests from a client to classify a tweet or expand a query are performed as quickly as possible (fulfilling non-functional requirements \ref{nfunc:qsearch} and \ref{nfunc:qsuggest}). Asynchronous training will also provide the opportunity to integrate training data from the live Twitter stream (as described in functional requirement~\ref{func:stream}).
-
-The client's primary focus will be delivering the interface to the users. It will provide a way for the user to interact with the recommendations and search tools available on the server, as well as handling the users' authentication with Twitter and calling appropriate tweet or search functions in the Twitter API.
-
 \begin{figure}[htpb]
     \centering
     \begin{tikzpicture}[
@@ -423,11 +419,15 @@ The client's primary focus will be delivering the interface to the users. It wil
         \draw[<->] (c) -- (interface);
         \path[<->] (clientbox) edge node[sloped, anchor=center, above] {\footnotesize HTTP} (swebserverbox);
         \draw[<->] (clientbox) -- (twitter);
-        \draw[->,dashed] (twitter) -- (train);
+        \draw[->,dashed] (twitter) -- (train.east);
     \end{tikzpicture}
     \caption{An abstract view of the implementation of the system.}
     \label{fig:abstractdetail}
 \end{figure}
+
+The server encapsulates the hashtag classifier system. It will have the ability to train the classifier on tweet data independently and asynchronously to the other tasks that the classifier may need to perform. The training will perform as many of the computationally intensive operations on the classifier model as it feasibly can, to ensure that any requests from a client to classify a tweet or expand a query are performed as quickly as possible (fulfilling non-functional requirements \ref{nfunc:qsearch} and \ref{nfunc:qsuggest}). Asynchronous training will also provide the opportunity to integrate training data from the live Twitter stream (as described in functional requirement~\ref{func:stream}).
+
+The client's primary focus will be delivering the interface to the users. It will provide a way for the user to interact with the recommendations and search tools available on the server, as well as handling the users' authentication with Twitter and calling appropriate tweet or search functions in the Twitter API.
 
 \section{Classification Algorithm}
 To choose an appropriate classification algorithm, two main factors were considered. One factor was that the classifier had to be capable of being trained incrementally. This is so that the classifier can be trained upon a stream, and simultaneously still provide valid classifications. This is essential, as some classifiers require parsing the entire data set before they are able to provide classifications, making them unsuitable for working with data stream. The other factor to consider was that of probabilities: it was decided that it would be suitable for the classifier to return the probabilities of the hashtag recommendations it suggests (as seen in functional requirement~\ref{func:probabilities}).
@@ -657,7 +657,7 @@ The classification server is designed with an open REST API, which creates the o
 
 The interface itself was built using Twitter Bootstrap to implement the wireframe designs in Section~\ref{sec:wireframes}.
 
-Django was used to handle the structure of the pages within the client. Query expansion and search results are acquired through a Django view that sends a \texttt{POST} request to the classification server, and a \texttt{GET} request to the Twitter Search API, respectively. \todo[noline]{Add more model/view stuff}
+Django was used to handle the structure of the pages within the client, with each separate page being defined in its own \texttt{View}. Query expansions are acquired through a Django \texttt{View} that sends a \texttt{POST} request to the classification server, and search results through a \texttt{GET} request to the Twitter Search API.
 
 To achieve instant hashtag suggestions as the user types a tweet, a custom JQuery function was used. This monitors the input form field for any changes, and sends an AJAX request to the classifier server when any changes are detected. The JSON object that is returned from the AJAX request is then parsed and displayed appropriately in the suggestions area on the page. When the user has completed and submitted the tweet, another Django view is used to process the input and send it to the Twitter API, thus posting the tweet.
 
@@ -859,6 +859,8 @@ By comparing the implemented system with the formal requirements described in Ch
 \section{Experimental Results}
 \label{sec:experimenteval}
 Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train and test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up refer to Section~\ref{sec:systemtesting}, and for the full test results refer to Appendix~\ref{appendix:testresults}.
+
+\todo[inline]{Add a graph!}
 
 A number of interesting observations were drawn from the results of this test. It revealed that approximately 30\% of the time the \emph{first} hashtag suggested was correct, when using any single one of the filters (with the exception of filtering out usernames, which caused a drop of approximately 4.5\%). Unfortunately though, when the top 50 hashtag suggestions were used, it was discovered that only a maximum of 52\% of the tweets were correctly assigned a hashtag --- this is a number that was expected to be much higher. Some of this error could be attributed to hashtags that have not been seen before (as will always be the case on Twitter), but it is more likely that there is unfair biasing of some of the hashtags within the Naive Bayes classifier.
 
