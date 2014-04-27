@@ -65,11 +65,3 @@ class TestTokeniseFunctions:
         assert_equal(t.apply('@this @there @his @hers'), [])
         assert_not_equal(t.apply("Hey! Check this out: www.google.com, it's awesome!"), [])
         assert_not_in('www.google.com', t.apply("Hey! Check this out: www.google.com, it's awesome!"))
-
-    def test_tweet_json_handling(self):
-        t = TokeniseTweetFunction(stop_tokens=True, punctuation=True, usernames=True, urls=True)
-        assert_equal(t.apply({'text': 'http://images.cheezburger.com/completestore/2011/2/20/a4ea536d-4b21-4517-b498-a3491437d224.jpg'}), [])
-        assert_equal(t.apply({'text': '@hello, @user!'}), [])
-        assert_equal(t.apply({'text': 'this, is! the; .that?'}), [])
-        assert_equal(t.apply({'text': '@this @there @his @hers'}), [])
-        assert_not_in('www.google.com', t.apply({'text': "Hey! Check this out: www.google.com, it's awesome!"}))
