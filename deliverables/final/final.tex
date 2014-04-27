@@ -15,9 +15,15 @@
 \usepackage[font={small}]{caption}
 \usepackage{multicol}
 \usepackage{enumitem}
+\usepackage{afterpage}
 
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \usepackage{minted}
 \usemintedstyle{manni}
@@ -786,20 +792,34 @@ The work involved in the completion of the project was carefully scheduled to ma
 By comparing the Gantt charts for the proposed progression of the project, and the reflection of the actual time spent on the areas within the project (also found in Appendix~\ref{appendix:gantt}), it can be seen that the plan for the project was relatively accurate. There were, however, a few deviations from the plan. Firstly, the amount of coursework set by other University modules in the first semester was underestimated resulting in the implementation for the project not starting until after the January exams. In addition to this, the January exam period was a week longer than originally accounted for, and therefore the project schedule was further pushed back.
 
 \section{Risk Analysis}
-Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. It is important to identify risks at the start of a project and take any steps necessary to reduce the likelihood or impact of those risks. Listed below are some of the issues that could have occurred during the project, and the steps taken to deal with them.
+Every large-scale project has to face a number of uncertain factors that could impact the progress or functionality of the final result. It is important to identify risks at the start of a project and take any steps necessary to reduce the likelihood or impact of those risks. By estimating the likelihood (a probability) of a risk occurring and the impact (on a scale of 1-4) that it would have, it is possible to calculate risk priority. This is a useful metric, as it enables realisation of the biggest threats to the project. Listed in Table~\ref{tbl:riskanalysis} are some of the risks that could have occurred during the project, the impact they would have had, and how they would have been dealt with.
 
-\todo[inline]{Change to table layout?}
-\subsection{Health Issues}
-It is possible that throughout the duration of the project serious illness or health problems could have arisen, meaning no work could have been done on the project for an extended period of time. This risk is unpredictable, and it's difficult to take measures to prevent it from happening. If this situation had arisen, then the only solution would have been to catch up on the work missed after recovering from the problem. However, to reduce the impact of any potential illness, the project schedule was followed closely, and therefore the amount of work to catch-up on was minimised.
-
-\subsection{Technical Issues}
-The project was completed using an arsenal of digital tools and programming languages, all of which could have produced unexpected technical issues. To protect against this, all work was stored in a cloud-based Git repository (Section~\ref{sec:git}). Further to this, development took place on a number of different machines throughout the course of the project. Due to the decentralised nature of the Git version control tool, this meant that each individual machine also held a separate copy of the work.
-
-\subsection{Scheduling Issues}
-Throughout the duration of the project, other University modules took place and set their own coursework, exams and deadlines. This could have placed additional strain upon the project, and resulted in falling behind on the project schedule. To combat this, the project schedule was carefully planned to balance the workload between the project and other modules throughout the academic year. As the project progressed, the Gantt chart (Appendix~\ref{appendix:gantt}) was updated frequently to monitor the progress and to ensure that the project remained on track.
-
-\subsection{Unrealistic Goals}
-Due to the long-term planning and foresight required for a large-scale project, it was possible that the goals and functionality of the project may have been more difficult to achieve than originally thought. In this case, the functionality of the project could have been simplified to ensure that a core subset of the goals and features could still have been achieved, in coordination with the project supervisor.
+\afterpage{
+    \clearpage
+    \begin{landscape}
+        \centering
+        \begin{tabular}{|L{3.5cm}|C{2.1cm}|C{2cm}|L{3.8cm}|L{6.5cm}||C{1.7cm}|}
+            \hline
+            \textbf{Risk} & \textbf{Likelihood ($L$)} & \textbf{Impact ($I$)} & \textbf{Consequence of Occurence} & \textbf{Mitigation Measures} & \textbf{Priority ($L\times I$)} \\
+            \hline
+            \hline
+            Unrealistic goals & 0.6 & 4 & Unable to complete work required to fulfil original project goals & Simplify functionality of project to ensure that a core subset of the goals and features could still be achieved, in coordination with the project supervisor & \textbf{2.4} \\
+            \hline
+            Unexpected workload from other University modules & 0.7 & 3 & Unable to continue following project schedule & Carefully planned schedule to balance workload. Frequently update project Gantt chart to monitor the progress and ensure project remains on track & \textbf{2.1} \\
+            \hline
+            Hardware failure, loss or theft & 0.3 & 4 & Loss of all completed work & Push all work in a cloud-based Git repository, therefore creating an off-site backup & \textbf{1.2} \\
+            \hline
+            Falling ill, or other health issues & 0.5 & 2 & Reduced productivity for an extended period of time & Follow project schedule closely, minimising the work to catch-up on. Also allow `buffer' periods in schedule to allow time for catching-up & \textbf{1.0} \\
+            \hline
+            Twitter API becoming unavailable or charging for access & 0.1 & 4 & Unable to use Twitter streaming, searching or authentication facilities & Use static data from an alternative source, such as the University of Southampton Twitter Archiver\footnotemark, and adjust functionality accordingly & \textbf{0.4} \\
+            \hline
+        \end{tabular}
+        \captionof{table}{Project risk analysis, in descending order of priority.}
+        \label{tbl:riskanalysis}
+        \footnotetext{\url{http://tweets.soton.ac.uk/}}
+    \end{landscape}
+    \clearpage
+}
 
 \section{Version Control}
 \label{sec:git}
@@ -935,7 +955,7 @@ Besides arbitrarily entering strings of text and looking at the recommendations 
         \end{axis}
     \end{tikzpicture}
     \caption{Percentage of \textbf{one or more} of $N$ recommended hashtags being correct.}
-    \label{fig:graph}
+    \label{fig:onegraph}
 \end{figure}
 
 A number of interesting observations were drawn from the results of this test. It revealed that approximately 30\% of the time the \emph{first} hashtag suggested was correct, when using any single one of the filters (with the exception of filtering out usernames, which caused a drop of approximately 4.5\%). Unfortunately though, when the top 50 hashtag suggestions were used, it was discovered that only a maximum of 52\% of the tweets were correctly assigned a hashtag --- this is a number that was expected to be much higher. Some of this error could be attributed to hashtags that have not been seen before (as will always be the case on Twitter), but it is more likely that there is unfair biasing of some of the hashtags within the Naive Bayes classifier.
@@ -988,7 +1008,7 @@ Impressively, when the test criteria is changed from the recommendation list hav
         \end{axis}
     \end{tikzpicture}
     \caption{Percentage of \textbf{all} correct hashtags being present in $N$ recommended hashtags.}
-    \label{fig:graph}
+    \label{fig:allgraph}
 \end{figure}
 
 \begin{figure}[htpb]
@@ -1015,7 +1035,7 @@ Impressively, when the test criteria is changed from the recommendation list hav
         \end{axis}
     \end{tikzpicture}
     \caption{Percentage of hashtags correct when using the \textbf{Stop Words} filter.}
-    \label{fig:graph}
+    \label{fig:stopgraph}
 \end{figure}
 
 \pagebreak
