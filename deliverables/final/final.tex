@@ -914,6 +914,47 @@ An unsurprising observation is that the removal of URLs from the tweets made no 
 
 Impressively, when the test criteria is changed from the recommendation list having a single correct hashtag to containing all of the correct hashtags, the results only drop by approximately 10\%. This is proof that the general concept of the classifier is working well: when a correct hashtag is recommended, so too are the related hashtags. The reason that this figure has taken a drop at all is attributed to some tweets containing multiple unrelated hashtags, which is difficult to predict.
 
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel=$N$,
+            ylabel=Percentage Correct,
+            enlargelimits=0.15,
+            legend style={
+                at={(0.5,-0.15)},
+                anchor=north,
+                legend columns=4
+            },
+            width=11cm
+        ]
+            \addplot[yellow,line width=1pt,mark=*]
+            coordinates {((5,30.24) (10,35.42) (15,37.20) (20,38.94) (30,41.42) (50,43.42)};
+
+            \addplot[orange,line width=1pt,mark=*]
+            coordinates {(5,30.34) (10,35.66) (15,37.44) (20,39.10) (30,41.54) (50,43.70)};
+
+            \addplot[red,line width=1pt,mark=*]
+            coordinates {(5,31.58) (10,36.20) (15,38.44) (20,39.86) (30,42.04) (50,44.28)};
+
+            \addplot[green,line width=1pt,mark=*]
+            coordinates {((5,30.24) (10,35.42) (15,37.20) (20,38.94) (30,41.42) (50,43.42)};
+
+            \addplot[pink,line width=1pt,mark=*]
+            coordinates {(5,30.10) (10,34.98) (15,36.90) (20,38.60) (30,41.12) (50,43.08)};
+
+            \addplot[violet,line width=1pt,mark=*]
+            coordinates {(5,27.28) (10,31.94) (15,34.22) (20,36.12) (30,38.66) (50,40.92)};
+
+            \addplot[cyan,line width=1pt,mark=*]
+            coordinates {(5,22.78) (10,27.32) (15,29.72) (20,31.12) (30,33.80) (50,36.42)};
+
+            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Percentage of \textbf{all} correct hashtags being present in $N$ recommended hashtags.}
+    \label{fig:graph}
+\end{figure}
 \pagebreak
 
 \chapter{Conclusion}
