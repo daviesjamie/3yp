@@ -705,7 +705,35 @@ A custom extension of the Django authentication module was created to use the Tw
 \end{figure}
 
 \section{Deployment}
-Nginx\footnote{\url{www.nginx.org}} was used to proxy the requests to the client and server, as well as serving all static files. This not only significantly boosted the performance of the system, but also made it more secure and accessible.
+Due to the limited resources available for this project, the client and the server were both hosted on a virtual machine (VM) on the University of Southampton network. Separate instances of Tornado were used to serve the client and server on different ports to the local host only. Nginx\footnote{\url{www.nginx.org}} was then used to proxy outside requests from port 80 (the default HTTP port) to the correct ports on the local machine for the client and server. Nginx also used to serve all static files, such as CSS or Javascript files. This approach not only significantly boosted the performance of the system, but also made it more secure and accessible.
+
+It is intended, however, that in a real deployment scenario the client and server would be hosted on separate machines.
+
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}[
+            every node/.style={draw,rectangle,node distance=2.8cm,inner sep=5pt,text width=1.6cm,minimum height=1.2cm,text badly centered}
+    ]
+        \node (classserver) {Classifier Server};
+        \node [left of=classserver] (flask) {Flask REST API};
+        \node [below of=flask] (django) {Django Client Interface};
+        \node [left of=flask] (tornados) {Tornado};
+        \node [left of=django] (tornadoc) {Tornado};
+        \node (nginx) at ($(tornados.west)+(-2cm,-1.4cm)$) [minimum height=4cm] {Nginx};
+        \node (twitter) at ($(nginx.west)+(-2cm,1.4cm)$) [cloud,cloud puffs=10,cloud puff arc=120,aspect=2] {Twitter};
+        \node [below of=twitter,ellipse] (users) {Users};
+
+        \draw[<->,line width=1.5pt] (classserver) -- (flask);
+        \draw[<->,line width=1.5pt] (flask) -- (tornados);
+        \draw[<->,line width=1.5pt] (tornados) -- ($(nginx.east)+(0,1.4cm)$);
+        \draw[<->,line width=1.5pt] (django) -- (tornadoc);
+        \draw[<->,line width=1.5pt] (tornadoc) -- ($(nginx.east)+(0,-1.4cm)$);
+        \draw[<->,line width=1.5pt] ($(nginx.west)+(0,1.4cm)$) -- (twitter);
+        \draw[<->,line width=1.5pt] ($(nginx.west)+(0,-1.4cm)$) -- (users);
+    \end{tikzpicture}
+    \caption{The deployment configuration of the project.}
+    \label{fig:deployment}
+\end{figure}
 
 \pagebreak
 
