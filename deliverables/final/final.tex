@@ -24,6 +24,9 @@
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{B}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{M}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{E}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 
 \usepackage{minted}
 \usemintedstyle{manni}
@@ -803,7 +806,7 @@ Every large-scale project has to face a number of uncertain factors that could i
             \textbf{Risk} & \textbf{Likelihood ($L$)} & \textbf{Impact ($I$)} & \textbf{Consequence of Occurence} & \textbf{Mitigation Measures} & \textbf{Priority ($L\times I$)} \\
             \hline
             \hline
-            Unrealistic goals & 0.6 & 4 & Unable to complete work required to fulfil original project goals & Simplify functionality of project to ensure that a core subset of the goals and features could still be achieved, in coordination with the project supervisor & \textbf{2.4} \\
+            Unrealistic goals & 0.6 & 4 & Unable to complete work required to fulfil original project requirements & Simplify functionality of project to ensure that a core subset of the goals and features could still be achieved, in coordination with the project supervisor & \textbf{2.4} \\
             \hline
             Unexpected workload from other University modules & 0.7 & 3 & Unable to continue following project schedule & Carefully planned schedule to balance workload. Frequently update project Gantt chart to monitor the progress and ensure project remains on track & \textbf{2.1} \\
             \hline
@@ -839,7 +842,7 @@ By comparing the implemented system with the formal requirements described in Ch
 
 \subsection{Functional Requirements}
 \begin{center}
-    \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
+    \begin{longtable}{|M{0.4cm}|B{5.2cm}||M{1.3cm}|B{5.2cm}|}
         \hline
         \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
         \hline
@@ -877,7 +880,7 @@ By comparing the implemented system with the formal requirements described in Ch
 
 \subsection{Non-Functional Requirements}
 \begin{center}
-    \begin{longtable}{|c|p{5.5cm}||c|p{5cm}|}
+    \begin{longtable}{|M{0.4cm}|B{5.2cm}||M{1.3cm}|B{5.2cm}|}
         \hline
         \textbf{\#} & \textbf{Requirement} & \textbf{Status} & \textbf{Comments} \\
         \hline
