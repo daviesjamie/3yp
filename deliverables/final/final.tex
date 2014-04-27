@@ -16,6 +16,7 @@
 \usepackage{multicol}
 \usepackage{enumitem}
 \usepackage{afterpage}
+\usepackage[table]{xcolor}
 
 \usepackage[bottom]{footmisc}
 \usepackage{longtable}
@@ -1080,7 +1081,125 @@ Lastly, the tests and experiments presented within this project have only been c
 
 \section{Unit Tests}
 \label{appendix:unittests}
-\todo[inline]{Add unit test descriptions/results here}
+The automated unit tests conducted throughout the project can be seen in the following tables. The only failure throughout the process was the \verb+test_remaining_capacity+ test, which failed because the \verb+queue.qsize()+ function from the \verb+multiprocessing+ library has not been implemented.
+
+It is important to note that it was very difficult to write automatic tests for some of the functionality present in the project (for example, testing streaming tweets from Twitter), and therefore it was decided that these aspects would be tested manually.
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestClassifier}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_initialisation+ & \cellcolor{green!25}Pass \\
+        \verb+test_training_fails_when_all_hashtags+ & \cellcolor{green!25}Pass \\
+        \verb+test_training_fails_when_no_tokens+ & \cellcolor{green!25}Pass \\
+        \verb+test_training_updates_models+ & \cellcolor{green!25}Pass \\
+        \verb+test_training_updates_totals+ & \cellcolor{green!25}Pass \\
+        \verb+test_use_hashtag_text_option+ & \cellcolor{green!25}Pass \\
+        \verb+test_getters+ & \cellcolor{green!25}Pass \\
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestClassifierManager}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_methods_exists+ & \cellcolor{green!25}Pass \\
+        \verb+test_models_are_protected+ & \cellcolor{green!25}Pass \\
+        \hline
+    \end{tabular}
+    \caption*{The automated unit tests for the Classifier.}
+\end{table}
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestTweetsWithHashtagsPredicate}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_accept+ & \cellcolor{green!25}Pass \\
+        \verb+test_reject+ & \cellcolor{green!25}Pass \\
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestTweetsInEnglishPredicate}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_accept+ & \cellcolor{green!25}Pass \\
+        \verb+test_reject+ & \cellcolor{green!25}Pass \\
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestNoRetweetsPredicate}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_accept+ & \cellcolor{green!25}Pass \\
+        \verb+test_reject+ & \cellcolor{green!25}Pass \\
+        \hline
+    \end{tabular}
+    \caption*{The automated unit tests for the filters.}
+\end{table}
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestTokeniseFunctions}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_tokenisation+ & \cellcolor{green!25}Pass \\
+        \verb+test_case_insensitive+ & \cellcolor{green!25}Pass \\
+        \verb+test_remove_punctuation+ & \cellcolor{green!25}Pass \\
+        \verb+test_remove_stop_tokens+ & \cellcolor{green!25}Pass \\
+        \verb+test_remove_usernames+ & \cellcolor{green!25}Pass \\
+        \verb+test_remove_urls+ & \cellcolor{green!25}Pass \\
+        \verb+test_remove_all_together+ & \cellcolor{green!25}Pass \\
+        \hline
+    \end{tabular}
+    \caption*{The automated unit tests for the Tokenisation functions.}
+\end{table}
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestQueueBufferedQueue}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_adding_to_queue+ & \cellcolor{green!25}Pass \\
+        \verb+test_removing_from_queue+ & \cellcolor{green!25}Pass \\
+        \verb+test_dropping_when_full+ & \cellcolor{green!25}Pass \\
+        \verb+test_remaining_capacity+ & \cellcolor{red!25}Fail \\
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestUtils}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_true_predicate+ & \cellcolor{green!25}Pass \\
+        \verb+test_false_predicate+ & \cellcolor{green!25}Pass \\
+        \verb+test_pass_through_function+ & \cellcolor{green!25}Pass \\
+        \hline
+    \end{tabular}
+    \caption*{The automated unit tests for the Spout utilities and data structures.}
+\end{table}
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{|l|c|}
+        \hline
+        \multicolumn{2}{|c|}{\texttt{TestStream}} \\
+        \hline
+        \textbf{Test Name} & \textbf{Status} \\
+        \hline
+        \verb+test_testing_stream+ & \cellcolor{green!25}Pass \\
+        \verb+test_filter_returns_filter_stream+ & \cellcolor{green!25}Pass \\
+        \verb+test_map_returns_map_stream+ & \cellcolor{green!25}Pass \\
+        \verb+test_for_each_returns_nothing+ & \cellcolor{green!25}Pass \\
+        \verb+test_filter_is_applied+ & \cellcolor{green!25}Pass \\
+        \verb+test_map_is_applied+ & \cellcolor{green!25}Pass \\
+        \verb+test_operation_is_applied+ & \cellcolor{green!25}Pass \\
+        \hline
+    \end{tabular}
+    \caption*{The automated unit tests for the Spout streams.}
+\end{table}
 \pagebreak
 
 \renewcommand{\arraystretch}{1.1}
