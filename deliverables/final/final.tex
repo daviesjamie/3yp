@@ -24,7 +24,11 @@
 
 \usepackage{tikz}
 \usetikzlibrary{positioning,shapes,arrows,fit,calc}
+
 \usepackage{pgf-umlcd}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
 
 \usepackage{todonotes}
 
@@ -860,7 +864,49 @@ By comparing the implemented system with the formal requirements described in Ch
 \label{sec:experimenteval}
 Besides arbitrarily entering strings of text and looking at the recommendations made, it is difficult to gauge the accuracy of the classifier. For this reason, a large dataset of tweets was collected and used to train and test the classifier --- giving an idea of how good the recommendations are. For details of how this test was set up refer to Section~\ref{sec:systemtesting}, and for the full test results refer to Appendix~\ref{appendix:testresults}.
 
-\todo[inline]{Add a graph!}
+\begin{figure}[htpb]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            xlabel=$N$,
+            ylabel=Percentage Correct,
+            enlargelimits=0.15,
+            legend style={
+                at={(0.5,-0.15)},
+                anchor=north,
+                legend columns=4
+            },
+            symbolic x coords={1,5,10,15,20,30,50},
+            xtick=data,
+            width=11cm
+        ]
+            \addplot[yellow,line width=1pt,mark=*]
+            coordinates {(1,30.20) (5,40.24) (10,43.54) (15,45.44) (20,47.18) (30,49.30) (50,51.80)};
+
+            \addplot[orange,line width=1pt,mark=*]
+            coordinates {(1,30.22) (5,40.70) (10,43.90) (15,45.78) (20,47.66) (30,49.66) (50,52.18)};
+
+            \addplot[red,line width=1pt,mark=*]
+            coordinates {(1,31.30) (5,41.10) (10,44.44) (15,46.90) (20,48.04) (30,49.96) (50,52.44)};
+
+            \addplot[green,line width=1pt,mark=*]
+            coordinates {(1,30.20) (5,40.24) (10,43.54) (15,45.44) (20,47.18) (30,49.30) (50,51.80)};
+
+            \addplot[pink,line width=1pt,mark=*]
+            coordinates {(1,29.76) (5,39.70) (10,43.54) (15,45.36) (20,47.10) (30,49.02) (50,51.42)};
+
+            \addplot[violet,line width=1pt,mark=*]
+            coordinates {(1,26.56) (5,37.08) (10,40.48) (15,42.60) (20,44.42) (30,46.92) (50,49.58)};
+
+            \addplot[cyan,line width=1pt,mark=*]
+            coordinates {(1,22.66) (5,32.16) (10,35.58) (15,37.82) (20,39.54) (30,41.82) (50,44.76)};
+
+            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Percentage of \textbf{one or more} of $N$ recommended hashtags being correct.}
+    \label{fig:graph}
+\end{figure}
 
 A number of interesting observations were drawn from the results of this test. It revealed that approximately 30\% of the time the \emph{first} hashtag suggested was correct, when using any single one of the filters (with the exception of filtering out usernames, which caused a drop of approximately 4.5\%). Unfortunately though, when the top 50 hashtag suggestions were used, it was discovered that only a maximum of 52\% of the tweets were correctly assigned a hashtag --- this is a number that was expected to be much higher. Some of this error could be attributed to hashtags that have not been seen before (as will always be the case on Twitter), but it is more likely that there is unfair biasing of some of the hashtags within the Naive Bayes classifier.
 
