@@ -404,7 +404,6 @@ When using a client-server execution model, it is important to correctly balance
         \node (classifierbox) [draw,fit={(classifier) (workerbox) (swebserverbox)}] {};
         \node (serverbox) [draw,fit={(server) (classifierbox)},line width=1.5pt] {};
 
-
         % Client
         \node (client) at (7.5cm, 0) [title] {Client};
         \node (cwebserver) at ($(client.west)+(0,-28pt)$) [title,xshift=2mm] {Web Server};
@@ -415,24 +414,21 @@ When using a client-server execution model, it is important to correctly balance
         \node (cwebserverbox) [draw,fit={(cwebserver) (auth) (api) (interface)}] {};
         \node (clientbox) [draw,fit={(client) (cwebserverbox)},line width=1.5pt] {};
 
-
         % Users
         \node (a) at (8.3cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
         \node (b) at (9.8cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
         \node (c) at (11.3cm, -5.3cm) [draw,circle,minimum width=1cm] {User};
 
-
         % Twitter
         \node (twitter) at (6.4cm, 2.5cm) [cloud,draw,cloud puffs=10,cloud puff arc=120,aspect=2,inner ysep=1em] {Twitter};
 
-
         % Arrows
-        \draw[<->] (a) -- (interface);
-        \draw[<->] (b) -- (interface);
-        \draw[<->] (c) -- (interface);
-        \path[<->] (clientbox) edge node[sloped, anchor=center, above] {\footnotesize HTTP} (swebserverbox);
-        \draw[<->] (clientbox) -- (twitter);
-        \draw[->,dashed] (twitter) -- (train.east);
+        \draw[<->,line width=1.2pt] (a) -- (interface);
+        \draw[<->,line width=1.2pt] (b) -- (interface);
+        \draw[<->,line width=1.2pt] (c) -- (interface);
+        \path[<->,line width=1.2pt] (clientbox) edge node[sloped, anchor=center, above] {\footnotesize HTTP} (swebserverbox);
+        \draw[<->,line width=1.2pt] (clientbox) -- (twitter);
+        \draw[->,dashed,line width=1.2pt] (twitter) -- (train.east);
     \end{tikzpicture}
     \caption{An abstract view of the implementation of the system.}
     \label{fig:abstractdetail}
