@@ -3,5 +3,11 @@
 {% block title %}Clever Twit{% endblock %}
 
 {% block content %}
-<h1>Signed in.</h1>
+<h1>Clever Twit</h1>
+
+<p>Clever Twit is an intelligent hashtag recommendation tool for use with Twitter, that makes it easier for <b>you</b> to compose tweets with relevant hashtags, as well as aiding your search and navigation of Twitter as a whole.</p>
+
+<p>Clicking the <a href="{% url 'tweet' %}">compose button</a> next to your username in the top right will allow you to write tweets using intelligent hashtag suggestions.</p>
+
+<p>You can use the <a href="{% url 'search' %}">search button</a> on the navbar at the top to perform a context-aware hashtag search of Twitter.</p>
 {% endblock %}
