@@ -50,5 +50,13 @@ body {
     margin-top: 15px;
 }
 
+#results {
+    max-width: 800px;
+}
+
+.username {
+    color: #aaaaaa;
+}
+
 .grey { color: #aaaaaa; }
 .red { color: #ca332f; }
