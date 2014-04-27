@@ -898,8 +898,11 @@ Besides arbitrarily entering strings of text and looking at the recommendations 
 
             \addplot[cyan,line width=1pt,mark=*]
             coordinates {(1,22.66) (5,32.16) (10,35.58) (15,37.82) (20,39.54) (30,41.82) (50,44.76)};
+            
+            \addplot[gray,line width=1pt,mark=*]
+            coordinates {(1,27.78) (5,37.58) (10,41.74) (15,43.86) (20,45.20) (30,47.26) (50,49.64)};
 
-            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters};
+            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters,\small{Hashtag Text + Stop Words}};
         \end{axis}
     \end{tikzpicture}
     \caption{Percentage of \textbf{one or more} of $N$ recommended hashtags being correct.}
@@ -949,7 +952,10 @@ Impressively, when the test criteria is changed from the recommendation list hav
             \addplot[cyan,line width=1pt,mark=*]
             coordinates {(5,22.78) (10,27.32) (15,29.72) (20,31.12) (30,33.80) (50,36.42)};
 
-            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters};
+            \addplot[gray,line width=1pt,mark=*]
+            coordinates{(5,27.94) (10,33.44) (15,35.66) (20,37.14) (30,39.16) (50,41.62)};
+
+            \legend{No Filters, Hashtag Text,Stop Words, URLs, Punctuation, Usernames, All Filters, \small{Hashtag Text + Stop Words}};
         \end{axis}
     \end{tikzpicture}
     \caption{Percentage of \textbf{all} correct hashtags being present in $N$ recommended hashtags.}
@@ -1027,6 +1033,8 @@ Lastly, the tests and experiments presented within this project have only been c
         \hline
         $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 22.66 & 32.16 & 35.58 & 37.82 & 39.54 & 41.82 & 44.76 \\
         \hline
+        $\bullet$ & $\bullet$ & & & & 27.78 & 37.58 & 41.74 & 43.86 & 45.20 & 47.26 & 49.64 \\
+        \hline
     \end{tabular}
     \caption*{Test results showing the percentage of \textbf{one or more} of $N$ recommended hashtags being correct.}
 \end{table}
@@ -1054,6 +1062,8 @@ Lastly, the tests and experiments presented within this project have only been c
         & & & & $\bullet$ & 27.28 & 31.94 & 34.22 & 36.12 & 38.66 & 40.92 \\
         \hline
         $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & 22.78 & 27.32 & 29.42 & 31.12 & 33.80 & 36.42 \\
+        \hline
+        $\bullet$ & $\bullet$ & & & & 27.94 & 33.44 & 35.66 & 37.14 & 39.16 & 41.62 \\
         \hline
     \end{tabular}
     \caption*{Test results showing the percentage of \textbf{all} of the correct hashtags being present in $N$ recommended hashtags.}
