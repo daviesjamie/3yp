@@ -49,14 +49,26 @@ def hashtags(request):
     f = opener.open(req)
     tagjson = simplejson.load(f)
     div = tagjson[0][1]
-    tags = [(u'#{0}'.format(t[0]),t[1]/div) for t in tagjson]
+    tags = [(t[0],t[1]/div) for t in tagjson]
     shuffle(tags)
 
     return render(request, 'hashtags.html', { 'hashtags': tags })
 
 @login_required
 def hashtag(request):
-    return render(request, 'hashtag.html')
+    query = request.GET.get('q')
+    if query.startswith('#'):
+        query = query[1:]
+
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtag/{0}?num={1}'.format(query,50))
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    tokenjson = simplejson.load(f)
+    div = tokenjson[0][1]
+    tokens = [(t[0],t[1]/div) for t in tokenjson]
+    shuffle(tokens)
+
+    return render(request, 'hashtag.html', { 'hashtag': query, 'tokens': tokens })
 
 @login_required
 def tokens(request):
@@ -72,7 +84,19 @@ def tokens(request):
 
 @login_required
 def token(request):
-    return render(request, 'token.html')
+    query = request.GET.get('q')
+    if query.startswith('#'):
+        query = query[1:]
+
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/token/{0}?num={1}'.format(query,50))
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    tagjson = simplejson.load(f)
+    div = tagjson[0][1]
+    tags = [(t[0],t[1]/div) for t in tagjson]
+    shuffle(tags)
+
+    return render(request, 'token.html', { 'token': query, 'hashtags': tags })
 
 @login_required
 def stats(request):

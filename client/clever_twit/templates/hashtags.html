@@ -7,7 +7,7 @@
 
     <div class="tagcloud">
     {% for tag in hashtags %}
-        <a href="{% url 'hashtag' %}?q={{ tag.0 }}" rel="{{ tag.1 }}">{{ tag.0 }}</a>
+        <a href="{% url 'hashtag' %}?q={{ tag.0 }}" rel="{{ tag.1 }}">#{{ tag.0 }}</a>
     {% endfor %}
     </div>
 {% endblock %}
