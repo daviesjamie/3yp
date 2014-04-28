@@ -670,7 +670,7 @@ Django was used to handle the structure of the pages within the client, with eac
 
 To achieve instant hashtag suggestions as the user types a tweet, a custom JQuery function was used. This monitors the input form field for any changes, and sends an AJAX request to the classifier server when any changes are detected. The JSON object that is returned from the AJAX request is then parsed and displayed appropriately in the suggestions area on the page. When the user has completed and submitted the tweet, another Django view is used to process the input and send it to the Twitter API, thus posting the tweet.
 
-\todo[inline]{Add stuff about tag cloud generation}
+Django views for both the hashtags and tokens use the \verb+urllib+\footnote{\url{http://docs.python.org/2.7/library/urllib2.html}} library to fetch the relevant information from the classifier REST API (see Appendix~\ref{appendix:restapi}), before embedding this data in a HTML page. The tag clouds were then generated using the \verb+jquery.tagcloud.js+\footnote{\url{http://github.com/addywaddy/jquery.tagcloud.js/}} JQuery plugin.
 
 \subsection{Authentication}
 Twitter uses OAuth to handle the authentication of users through third-party applications. OAuth is an open authentication protocol that allows users to approve applications to act on their behalf without sharing their password.\footnote{\url{http://dev.twitter.com/docs/auth/oauth/faq}}
