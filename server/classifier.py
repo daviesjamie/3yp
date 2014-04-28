@@ -43,7 +43,7 @@ class Classifier(object):
     simulatenous training and classification, or simultaneous training from different sources.
     """
 
-    def __init__(self, use_hashtag_text=False):
+    def __init__(self):
         """
         Initialises the internal models and counts, and creates the mutex lock.
         """
@@ -57,7 +57,7 @@ class Classifier(object):
 
         self.lock = Lock()
 
-        self.use_hashtag_text = use_hashtag_text
+        self.use_hashtag_text = False
 
     def train(self, tweet_tokens):
         """
@@ -226,7 +226,9 @@ class Classifier(object):
         num is none, returns ALL tokens and their counts for that hashtag.
         """
         with self.lock:
-            return sorted(self.htc[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+            if hashtag in self.htc:
+                return sorted(self.htc[hashtag].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+            return []
 
     def get_memory_usage(self):
         """
@@ -250,7 +252,9 @@ class Classifier(object):
         num is none, returns ALL hashtags and their counts for that token.
         """
         with self.lock:
-            return sorted(self.thc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+            if token in self.thc:
+                return sorted(self.thc[token].iteritems(), key=lambda t: t[1], reverse=True)[:num]
+            return []
 
     def get_totals(self):
         """
