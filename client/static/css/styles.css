@@ -62,6 +62,17 @@ div#home {
     max-width: 500px;
 }
 
+.tagcloud {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    text-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
 .username {
     color: #aaaaaa;
 }

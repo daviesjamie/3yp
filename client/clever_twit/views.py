@@ -1,7 +1,9 @@
+from __future__ import division
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
+from random import shuffle
 from twython import Twython
 import simplejson
 import urllib2
@@ -42,12 +44,13 @@ def search(request):
 
 @login_required
 def hashtags(request):
-    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(10))
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(50))
     opener = urllib2.build_opener()
     f = opener.open(req)
     tagjson = simplejson.load(f)
     div = tagjson[0][1]
-    tags = [(t[0],t[1]/div) for t in tagjson]
+    tags = [(u'#{0}'.format(t[0]),t[1]/div) for t in tagjson]
+    shuffle(tags)
 
     return render(request, 'hashtags.html', { 'hashtags': tags })
 
@@ -57,12 +60,13 @@ def hashtag(request):
 
 @login_required
 def tokens(request):
-    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(10))
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(50))
     opener = urllib2.build_opener()
     f = opener.open(req)
     tokenjson = simplejson.load(f)
     div = tokenjson[0][1]
-    tags = [(t[0],t[1]/div) for t in tokenjson]
+    tokens = [(t[0],t[1]/div) for t in tokenjson]
+    shuffle(tokens)
 
     return render(request, 'tokens.html', { 'tokens': tokens })
 
