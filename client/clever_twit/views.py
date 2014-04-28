@@ -118,12 +118,12 @@ def results(request):
     expjson = simplejson.load(f)
 
     expansions = [e[0] for e in expjson]
-    expansion = ' '.join(expansions)
+    expansion = ' OR '.join(expansions)
 
     if expjson:
-        results = twitter.search(q=u'{0}'.format(expansion), count=25)
+        results = twitter.search(q=u'{0} OR '.format(query, expansion), count=25, result_type='mixed')
     else:
-        results = twitter.search(q=u'#{0}'.format(query), count=25)
+        results = twitter.search(q=u'{0}'.format(query), count=25, result_type='mixed')
 
     return render(request, 'results.html', { 'query': query, 'expansions': expansions, 'results': results['statuses'] })
 
