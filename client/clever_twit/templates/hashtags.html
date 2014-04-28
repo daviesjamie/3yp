@@ -3,11 +3,11 @@
 {% block title %}Hashtags - Clever Twit{% endblock %}
 
 {% block content %}
-    <h1 class="center">Hashtags</h1>
+    <h1 class="center">Popular Hashtags</h1>
 
     <div class="tagcloud">
     {% for tag in hashtags %}
-        <a href="{% url 'hashtag' %}?q={{ tag.0 }}" rel="{{ tag.1 }}">#{{ tag.0 }}</a>
+        <a href="{% url 'hashtag' %}?q={{ tag.0|urlencode:'' }}" rel="{{ tag.1 }}">#{{ tag.0 }}</a>
     {% endfor %}
     </div>
 {% endblock %}

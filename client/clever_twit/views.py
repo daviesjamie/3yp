@@ -56,7 +56,7 @@ def hashtags(request):
 
 @login_required
 def hashtag(request):
-    query = request.GET.get('q')
+    query = urllib2.unquote(request.GET.get('q'))
     if query.startswith('#'):
         query = query[1:]
 
@@ -84,7 +84,7 @@ def tokens(request):
 
 @login_required
 def token(request):
-    query = request.GET.get('q')
+    query = urllib2.unquote(request.GET.get('q'))
     if query.startswith('#'):
         query = query[1:]
 

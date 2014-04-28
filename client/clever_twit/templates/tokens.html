@@ -3,11 +3,11 @@
 {% block title %}Tokens - Clever Twit{% endblock %}
 
 {% block content %}
-    <h1 class="center">Tokens</h1>
+    <h1 class="center">Popular Tokens</h1>
 
     <div class="tagcloud">
         {% for token in tokens %}
-            <a href="{% url 'token' %}?q={{ token.0 }}" rel="{{ token.1 }}">{{ token.0 }}</a>
+            <a href="{% url 'token' %}?q={{ token.0|urlencode:'' }}" rel="{{ token.1 }}">{{ token.0 }}</a>
         {% endfor %}
     </div>
 {% endblock %}
