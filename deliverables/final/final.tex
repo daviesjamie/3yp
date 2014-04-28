@@ -1563,7 +1563,53 @@ Shown below is the stop word list that was used to filter out high-frequency wor
 
 \section{REST API Interface}
 \label{appendix:restapi}
-\todo[inline]{Add RESTful API Interface/Endpoints}
+Listed in the following table are the endpoints (URLs) used for the for RESTful server API.
+
+\renewcommand{\arraystretch}{1.5}
+\begin{center}
+    \begin{longtable}{|L{3cm}|C{1.5cm}|L{3.7cm}|L{3.7cm}|}
+        \hline
+        \textbf{Endpoint} & \textbf{Method} & \textbf{Functionality} & \textbf{Parameters} \\
+        \hline
+        \hline
+        \endfirsthead
+        \multicolumn{4}{c}{\textit{Continued from previous page}} \\
+        \hline
+        \textbf{Endpoint} & \textbf{Method} & \textbf{Functionality} & \textbf{Parameters} \\
+        \hline
+        \hline
+        \endhead
+        \hline
+        \multicolumn{4}{r}{\textit{Continued on next page}} \\
+        \endfoot
+        \hline
+        \caption*{A list of the endpoints available through the RESTful API.}
+        \endlastfoot
+
+        \verb+/api/classify+ & \verb+POST+ & Classify a tweet to provide a list of hashtag suggestions & \verb+text+ --- The text of the tweet to classify\newline\verb+results+ --- The number of classifications (recommendations) to provide (\emph{optional}) \\
+
+        \hline
+
+        \verb+/api/status+ & \verb+GET+ & Return a JSON object with useful information and statistics about the server & \\
+
+        \hline
+
+        \verb+/api/hashtags+ & \verb+GET+ & Returns an ordered list of all hashtags and their counts & \verb+num+ --- The number of hashtags to return (\emph{optional}) \\
+
+        \hline
+
+        \verb+/api/tokens+ & \verb+GET+ & Returns an ordered list of all tokens and their counts & \verb+num+ --- The number of tokens to return (\emph{optional}) \\
+
+        \hline
+
+        \verb+/api/hashtag+\newline\verb+  /<string:hashtag>+ & \verb+GET+ & Returns an ordered list of all tokens and their counts that have been seen with the given hashtag & \verb+num+ --- The number of tokens to return (\emph{optional}) \\
+
+        \hline
+
+        \verb+/api/token+\newline\verb+  /<string:token>+ & \verb+GET+ & Returns an ordered list of all hashtags and their counts that have been seen with the given token & \verb+num+ --- The number of hashtags to return (\emph{optional})\\
+
+    \end{longtable}
+\end{center}
 \pagebreak
 
 \section{Client Interface Screenshots}
