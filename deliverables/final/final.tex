@@ -41,6 +41,8 @@
 \pgfplotsset{compat=newest}
 \usetikzlibrary{plotmarks}
 
+\usepackage{dirtree}
+
 \usepackage{todonotes}
 
 % Stretch table cell height
@@ -1671,7 +1673,102 @@ Listed in the following table are the endpoints (URLs) used for the for RESTful 
 
 \section{Project Directory Listing}
 \label{appendix:directorytree}
-\todo[inline]{Add directory tree}
+\begin{multicols}{2}
+\dirtree{%
+    .1 client. 
+    .2 bower.json. 
+    .2 clever\_twit. 
+    .3 \_\_init\_\_.py. 
+    .3 admin.py. 
+    .3 models.py. 
+    .3 templates. 
+    .4 base.html. 
+    .4 cover.html. 
+    .4 default.html. 
+    .4 hashtag.html. 
+    .4 hashtags.html. 
+    .4 index.html. 
+    .4 results.html. 
+    .4 search.html. 
+    .4 stats.html. 
+    .4 token.html. 
+    .4 tokens.html. 
+    .4 tweet.html. 
+    .3 tests.py. 
+    .3 urls.py. 
+    .3 views.py. 
+    .2 client. 
+    .3 \_\_init\_\_.py. 
+    .3 oauth.py. 
+    .3 settings.py. 
+    .3 urls.py. 
+    .3 wsgi.py. 
+    .2 manage.py. 
+    .2 oauth.json. 
+    .2 server.py. 
+    .2 static. 
+    .3 css. 
+    .4 styles.css. 
+    .2 twython\_django. 
+    .3 \_\_init\_\_.py. 
+    .3 models.py. 
+    .3 templates. 
+    .4 tweets.html. 
+    .3 urls.py. 
+    .3 views.py. 
+}
+\columnbreak
+\dirtree{%
+    .1 server. 
+    .2 \_\_init\_\_.py. 
+    .2 classifier.py. 
+    .2 classifier\_manager.py. 
+    .2 experiments. 
+    .3 experiment\_harness.py. 
+    .3 tweets.json. 
+    .2 filters.py. 
+    .2 oauth.json. 
+    .2 oauth.py. 
+    .2 output.py. 
+    .2 server.py. 
+    .2 stoptokens.txt. 
+    .2 tests. 
+    .3 \_\_init\_\_.py. 
+    .3 test\_classifier.py. 
+    .3 test\_filters.py. 
+    .3 test\_tokeniser.py. 
+    .2 tokeniser.py. 
+    .2 twokenize. 
+    .3 \_\_init\_\_.py. 
+    .3 emoticons.py. 
+    .3 twokenize.py. 
+}
+\dirtree{%
+    .1 spout. 
+    .2 LICENSE.txt. 
+    .2 README.md. 
+    .2 setup.py. 
+    .2 spout. 
+    .3 \_\_init\_\_.py. 
+    .3 outputs.py. 
+    .3 queues.py. 
+    .3 sources.py. 
+    .3 streams.py. 
+    .3 structs.py. 
+    .3 utils.py. 
+    .2 tests. 
+    .3 \_\_init\_\_.py. 
+    .3 test\_queues.py. 
+    .3 test\_streams.py. 
+    .3 test\_utils.py. 
+}
+\dirtree{%
+    .1 nginx.conf. 
+}
+\dirtree{%
+    .1 requirements.txt. 
+}
+\end{multicols}
 \pagebreak
 
 \section{Original Project Brief}
