@@ -7,9 +7,13 @@
         <h1>Results for #{{ query }}:</h1>
 
         <p id="expansions">
-        {% for exp in expansions %}
-            <span class="label label-default">{{ exp }}</span>
-        {% endfor %}
+        {% if expansions %}
+            {% for exp in expansions %}
+                <span class="label label-default">{{ exp }}</span>
+            {% endfor %}
+        {% else %}
+        Query expansion unavailable, hashtag not seen by classifier.
+        {% endif %}
         </p>
 
         <ul class="list-group">

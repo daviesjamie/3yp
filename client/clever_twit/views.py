@@ -116,9 +116,14 @@ def results(request):
     opener = urllib2.build_opener()
     f = opener.open(req)
     expjson = simplejson.load(f)
+
     expansions = [e[0] for e in expjson]
     expansion = ' '.join(expansions)
 
-    results = twitter.search(q=u'{0}'.format(expansion), count=25)
+    if expjson:
+        results = twitter.search(q=u'{0}'.format(expansion), count=25)
+    else:
+        results = twitter.search(q=u'#{0}'.format(query), count=25)
 
     return render(request, 'results.html', { 'query': query, 'expansions': expansions, 'results': results['statuses'] })
+
