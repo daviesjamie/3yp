@@ -203,7 +203,7 @@ A key issue with content-based filtering is that the recommendations can only be
 
 Instead of limiting recommendation systems to the accuracy of their classifiers, a common approach is to incorporate relevance feedback techniques. Relevance feedback is a process that was originally designed for information retrieval, and works on the assumption that a user cannot always correctly encapsulate into a query what it is they are searching for. It works by allowing a user to create a query to which an initial set of results is returned. From these, the user can then mark certain results as relevant or irrelevant. This information is then submitted and used to refine the original query and return more relevant results to the user \parencite{Salton:1990}.
 
-\textcite{Utiyama:2006} showed that it is possible to combine collaborative filtering, content-based filtering and relevance feedback techniques into one system to provide better recommendations.
+\textcite{Utiyama:2006} showed it is possible to combine collaborative filtering, content-based filtering and relevance feedback techniques into one system to provide better recommendations.
 
 \section{Assigning Labels with Machine Learning Techniques}
 Although there exists a long history of research into traditional recommendation algorithms, the data structure of a folksonomy is distinct from those found in traditional problems. This has led to a new generation of supervised learning classification algorithms which can be applied to the problem of assigning labels to resources.
@@ -464,7 +464,7 @@ Or, in plain English terminology:
 \section{Data Features}
 As seen in the equations above, to predict hashtags for a tweet it is necessary to transform that tweet into a set of features. There are a number of approaches to this, and not all are limited to the text of the tweet. For instance, it could be possible to extract features from other information that is available with each tweet, such as date and time, or the location that the tweet was posted from. However, these are continuous variables and therefore present the extra challenge of discretisation before they can be used in a Naive Bayes classifier.
 
-To reduce complexity the feature extraction in this project will be based solely upon the actual text that makes up the tweets themselves.
+To reduce complexity, the feature extraction in this project will be based solely upon the actual text that makes up the tweets themselves.
 
 \section{User Interface}
 \label{sec:wireframes}
@@ -827,7 +827,7 @@ Git\footnote{\url{www.git-scm.com}} is a distributed version control system that
 
 This entire project, including all source code and documentation, has been stored in a Git repository since its creation. This means that if a change is made to the project that is later decided to be unwanted, it is possible to use the Git tool to revert the file (or the whole working directory) back to a previous version. This also provides a form of protection against accidental modifications or deletion of files.
 
-In addition to a local repository, the project is also hosted remotely on GitHub\footnote{\url{www.github.com}}, meaning that it is possible to clone the project repository on to any machine with Git installed. This helped to synchronise the project across multiple development machines, in addition providing an off-site backup of all completed work. This means that in case of a hardware failure or other unexpected issues, a fully up-to-date copy of the project is easily accessible.
+In addition to a local repository, the project is also hosted remotely on GitHub\footnote{\url{www.github.com}}, meaning that it is possible to clone the project repository onto any machine with Git installed. This helped to synchronise the project across multiple development machines, in addition providing an off-site backup of all completed work. This means that in case of a hardware failure or other unexpected issues, a fully up-to-date copy of the project is easily accessible.
 
 \pagebreak
 
