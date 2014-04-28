@@ -72,7 +72,7 @@ def hashtag(request):
 
 @login_required
 def tokens(request):
-    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(50))
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/tokens?num={0}'.format(50))
     opener = urllib2.build_opener()
     f = opener.open(req)
     tokenjson = simplejson.load(f)
