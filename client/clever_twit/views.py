@@ -41,8 +41,34 @@ def search(request):
     return render(request, 'search.html')
 
 @login_required
-def graphs(request):
-    return render(request, 'graphs.html')
+def hashtags(request):
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(10))
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    tagjson = simplejson.load(f)
+    div = tagjson[0][1]
+    tags = [(t[0],t[1]/div) for t in tagjson]
+
+    return render(request, 'hashtags.html', { 'hashtags': tags })
+
+@login_required
+def hashtag(request):
+    return render(request, 'hashtag.html')
+
+@login_required
+def tokens(request):
+    req = urllib2.Request('http://kanga-jagd1g11.ecs.soton.ac.uk/api/hashtags?num={0}'.format(10))
+    opener = urllib2.build_opener()
+    f = opener.open(req)
+    tokenjson = simplejson.load(f)
+    div = tokenjson[0][1]
+    tags = [(t[0],t[1]/div) for t in tokenjson]
+
+    return render(request, 'tokens.html', { 'tokens': tokens })
+
+@login_required
+def token(request):
+    return render(request, 'token.html')
 
 @login_required
 def stats(request):

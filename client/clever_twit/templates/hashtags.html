@@ -1,0 +1,28 @@
+{% extends "default.html" %}
+
+{% block title %}Hashtags - Clever Twit{% endblock %}
+
+{% block content %}
+    <h1>Hashtags</h1>
+
+    <div class="tagcloud">
+    {% for tag in hashtags %}
+        <a href="{% url 'hashtag' %}?q={{ tag.0 }}" rel="{{ tag.1 }}">{{ tag.0 }}</a>
+    {% endfor %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {% load static %}
+    <script src="{% static "jquery.tagcloud.js/jquery.tagcloud.js" %}"></script>
+    <script>
+        $.fn.tagcloud.defaults = {
+            size: {start: 12, end: 30, unit: 'pt'},
+            color: {start: '#cde', end: '#f52'}
+        };
+
+        $(document).ready(function() {
+            $('.tagcloud a').tagcloud();
+        });
+    </script>
+{% endblock %}
