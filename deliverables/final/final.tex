@@ -135,7 +135,7 @@ This project presents an intelligent hashtag recommendation tool for use with Tw
 \pagebreak
 
 \subsection*{Acknowledgements}
-Thank you to everyone involved in the creation of this project. Most importantly, thank you to Nick Gibbins for providing the inspiration for this project. Thank you to Jon and Sina for giving up their time to give me the advice and enthusiasm I needed. Thanks to Katie for having the patience to be optimistic when I couldn't remember how. Thank you to Hayden and Miles, for making the \LaTeX\ styling of this document a constant competition. Thanks to Mum and Dad for their support and proofreading skills. Finally, thanks to everyone who downloaded and used Spout, the response to the package was overwhelming.
+Thank you to everyone involved. Most importantly, thank you to Nick Gibbins for providing the inspiration for this project. Thank you to Jon and Sina for giving up their time to give me the advice and enthusiasm I needed. Thanks to Katie for having the patience to be optimistic when I couldn't remember how. Thank you to Hayden and Miles, for making the \LaTeX\ styling of this document a constant competition. Thanks to Mum and Dad for their support and proofreading skills. Finally, thanks to everyone who downloaded and used Spout, the response to the package was overwhelming.
 
 \subsection*{Statement of Originality}
 
@@ -201,7 +201,7 @@ A key issue with content-based filtering is that the recommendations can only be
 
 \textcite{Cantador:2010} studied and evaluated a number of content-based recommendation models based upon the premise of user and item profiles being described in terms of weighted lists and tags. Through their experiments they found that models that focused on user profiles outperformed the models oriented towards item profiles in nearly every test. They go on to suggest that a better way of profiling users would be through the use of tag clustering.
 
-Instead of limiting recommendation systems to the accuracy of their classifiers, a common approach is to incorporate relevance feedback techniques. Relevance feedback is a process that was originally designed for information retrieval, and works on the assumption that a user can not always correctly encapsulate into a query what it is they are searching for. It works by allowing a user to create a query to which an initial set of results is returned. From these, the user can then mark certain results as relevant or irrelevant. This information is then submitted and used to refine the original query and return more relevant results to the user \parencite{Salton:1990}.
+Instead of limiting recommendation systems to the accuracy of their classifiers, a common approach is to incorporate relevance feedback techniques. Relevance feedback is a process that was originally designed for information retrieval, and works on the assumption that a user cannot always correctly encapsulate into a query what it is they are searching for. It works by allowing a user to create a query to which an initial set of results is returned. From these, the user can then mark certain results as relevant or irrelevant. This information is then submitted and used to refine the original query and return more relevant results to the user \parencite{Salton:1990}.
 
 \textcite{Utiyama:2006} showed that it is possible to combine collaborative filtering, content-based filtering and relevance feedback techniques into one system to provide better recommendations.
 
@@ -269,7 +269,7 @@ Through the use of some trivial Python scripts, it is easy to find evidence of p
 \label{tbl:redundancy}
 \end{table}
 
-Another interesting observation is that of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\ref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\ref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
+Another interesting observation is of the times that different hashtags are used, which varies greatly from hashtag to hashtag. Some tags are used in tweets at a fairly uniform rate (Fig.~\ref{fig:android}), whilst others feature large spikes of usage over a short period of time (Fig.~\ref{fig:blackfriday}). This demonstrates the communities behind the hashtags --- rather than a hashtag being used at a particular time for a particular event, some hashtags are used consistently by users to join in on a large-scale conversation.
 
 \begin{figure}[htpb]
     \centering
@@ -379,7 +379,7 @@ Using a client-server software model will allow for a distinct separation betwee
 
 This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
 
-Another benefit of using a centralised server to encapsulate the hashtag recommendation system is the clear separation of functionality between the client and server. This means that the interface that the user sees and interacts with is distinct from the technical functionality --- enabling multiple differently styled interfaces to connect to the recommendation server. It even presents the possibility of one day integrating with the Twitter web platform itself.
+Another benefit of using a centralised server to encapsulate the hashtag recommendation system is the clear separation of functionality between the client and server. This means that the interface which the user sees and interacts with is distinct from the technical functionality --- enabling multiple differently styled interfaces to connect to the recommendation server. It even presents the possibility of one day integrating with the Twitter web platform itself.
 
 \section{Abstract Implementation}
 
@@ -623,7 +623,7 @@ Where:
 
 \subsection{Optimisation}
 \label{ssec:optimisation}
-It can be seen in Equation~\ref{eqn:prob} that the denominator of the equation is not related to the probability of the hashtag, and can thus can be seen as a constant. This means that the denominator can be safely ignored to reduce the computational complexity of the equation:
+It can be seen in Equation~\ref{eqn:prob} that the denominator of the equation is not related to the probability of the hashtag, and thus can be seen as a constant. This means that the denominator can be safely ignored to reduce the computational complexity of the equation:
 
 \begin{equation}
     P(\text{Hashtag}|\text{Tokens}) = \left(\prod\limits_{i=1}^{N} \frac{\mathtt{thc}[\text{Token}_i][\text{Hashtag}]}{\mathtt{hc}[\text{Hashtag}]}\right) \cdot \frac{\mathtt{hc}[\text{Hashtag}]}{\mathtt{hashtag\_total}}\label{eqn:oprob}
@@ -748,7 +748,7 @@ It is intended, however, that in a real deployment scenario the client and serve
 
 The system presented in this project was tested throughout the development process, as well as after the implementation was complete.
 
-White-box testing was performed whilst creating every function, class and module in the system. This ensured that the inner structures and workings of the functions and objects were correct and performed as they should. Differing inputs were chosen for each test to exercise different paths through the code and ensure full code coverage. Maximising test code coverage is especially important within Python, as unlike a traditional compiled languages, errors in the interpreted code are not found until the particular lines they are on are executed.
+White-box testing was performed whilst creating every function, class and module in the system. This ensured that the inner structures and workings of the functions and objects were correct and performed as they should. Differing inputs were chosen for each test to exercise different paths through the code and ensure full code coverage. Maximising test code coverage is especially important within Python, as unlike other traditional compiled languages, errors in the interpreted code are not found until the particular lines they are on are executed.
 
 \section{Unit Testing}
 
@@ -825,7 +825,7 @@ Every large-scale project has to face a number of uncertain factors that could i
 \label{sec:git}
 Git\footnote{\url{www.git-scm.com}} is a distributed version control system that allows the user to create a repository that stores a complete history and full version tracking, and is not dependent on network access or a central server (unlike the once popular alternative, Subversion\footnote{\url{http://subversion.apache.org}}).
 
-This entire project, including all source code and documentation, has been stored in a Git repository since its creation. This means that if a change is made to the project that is later decided to be unwanted, it is possible to use the Git tool to revert the file (or the whole working directory) back to a previous version. This is also provides a form of protection against accidental modifications or deletion of files.
+This entire project, including all source code and documentation, has been stored in a Git repository since its creation. This means that if a change is made to the project that is later decided to be unwanted, it is possible to use the Git tool to revert the file (or the whole working directory) back to a previous version. This also provides a form of protection against accidental modifications or deletion of files.
 
 In addition to a local repository, the project is also hosted remotely on GitHub\footnote{\url{www.github.com}}, meaning that it is possible to clone the project repository on to any machine with Git installed. This helped to synchronise the project across multiple development machines, in addition providing an off-site backup of all completed work. This means that in case of a hardware failure or other unexpected issues, a fully up-to-date copy of the project is easily accessible.
 
@@ -1052,7 +1052,7 @@ Overall, the classification and recommendation system has been a success, but th
 Whilst only created for demonstration purposes, the client proved an invaluable tool during the optimisation of the classifier. It provided an environment in which tweets and query expansions could be quickly and easily evaluated, without having to delve into a console or interactive Python session. However, the current search functionality is unfortunately rather limited. It appears that Twitter performs their own query expansion within the API, so searching for a set of expanded query terms does not give the desired results. If this functionality was to be created again a separate tweet indexing and searching tool would be built, allowing for full control over the search process. With this improvement, it is easy to see the prototype client presented in this project being developed into a full interface, or even integrated into the Twitter platform itself.
 
 \subsection{Scalability}
-Due to the underlying client-server architecture, the system is highly scalable. Inside the classifier only counts of features are stored, and not entire tweets. This means that the system should be capable of training on millions, or potentially even billions, of tweets. The number of tweets possible to train upon is not infinite however, as eventually the integers used to store the counts will overflow. This could be combated by implemented an aging algorithm that reduces the counts on a periodical basis. As the number of unique tokens and hashtags seen by the system increases, it does unfortunately increase the time it takes to provide a classification. However, this task is currently only single-threaded, despite being highly parallelisable. Therefore the classification can be easily scaled by making use of the many cores available on modern server machines.
+Due to the underlying client-server architecture, the system is highly scalable. Inside the classifier only counts of features are stored, and not entire tweets. This means that the system should be capable of training on millions, or potentially even billions, of tweets. The number of tweets possible to train upon is not infinite however, as eventually the integers used to store the counts will overflow. This could be combated by implementing an aging algorithm that reduces the counts on a periodical basis. As the number of unique tokens and hashtags seen by the system increases, it does unfortunately increase the time it takes to provide a classification. However, this task is currently only single-threaded, despite being highly parallelisable. Therefore the classification can be easily scaled by making use of the many cores available on modern server machines.
 
 \section{Achievement}
 This project has developed and presented an intelligent hashtag recommendation system for use with Twitter, that makes it easier for users to compose tweets with relevant hashtags, as well as aiding search and navigation of Twitter as a whole. The presented technique of using a Naive Bayes classifier to predict hashtags has been shown to be a highly scalable approach, with promising results.
