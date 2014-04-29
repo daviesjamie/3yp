@@ -295,7 +295,7 @@ As demonstrated above, there is a need for a hashtag recommendation system to im
 
 As seen from the research and discussion presented in Chapter~\ref{chap:litreview}, most existing approaches to providing recommendations within a folksonomy make extensive use of user preferences in their algorithms. From calculating a `neighbourhood' of similar users to falling back on a set of users' preferences when the data is unclear, most current approaches provide a personalised recommendation system.
 
-This raises the question of whether hashtags are clearly defined, or whether their meanings (and therefore the tweets they apply to) are dependent upon user opinion. Through the preliminary examination of a sample Twitter dataset conducted in Chapter~\ref{sec:preliminaryanalysis}, this project is inclined to believe that the correct usage of a hashtag is independent of how frequently a particular user uses that hashtag. Indeed, it could be argued that a user's preference towards a particular hashtag can result in incorrect hashtags being used --- which is the very problem this project is aiming to tackle.
+This raises the question of whether hashtags are clearly defined, or whether their meanings (and therefore the tweets they apply to) are dependent upon user opinion. Through the preliminary examination of a sample Twitter dataset conducted in Section~\ref{sec:preliminaryanalysis}, this project is inclined to believe that the correct usage of a hashtag is independent of how frequently a particular user uses that hashtag. Indeed, it could be argued that a user's preference towards a particular hashtag can result in incorrect hashtags being used --- which is the very problem this project is aiming to tackle.
 
 This indicates another requirement of the recommendation system:
 \begin{itemize}
@@ -378,7 +378,7 @@ Using a client-server software model will allow for a distinct separation betwee
     \caption{Functional overviews of the server and client.}
 \end{figure}
 
-This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (non-functional requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
+This design ensures that there is a very light load on the clients using the tool, which is an ideal solution to enabling usage of the system from all internet-connected devices (Non-Functional Requirements \ref{nfunc:web} and \ref{nfunc:mobile}).
 
 Another benefit of using a centralised server to encapsulate the hashtag recommendation system is the clear separation of functionality between the client and server. This means that the interface which the user sees and interacts with is distinct from the technical functionality --- enabling multiple differently styled interfaces to connect to the recommendation server. It even presents the possibility of one day integrating with the Twitter web platform itself.
 
@@ -1201,13 +1201,12 @@ It is important to note that it was very difficult to write automatic tests for 
 \end{table}
 \pagebreak
 
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.05}
 \begin{landscape}
 \section{Test Results}
 \label{appendix:testresults}
 \begin{table}[H]
     \centering
-    \small
     \begin{tabular}{|c|c|c|c|c||c|c|c|c|c|c|c|}
         \hline
         \multicolumn{5}{|c||}{Filters} & \multicolumn{7}{|c|}{$N$} \\
@@ -1237,7 +1236,6 @@ It is important to note that it was very difficult to write automatic tests for 
 
 \begin{table}[H]
     \centering
-    \small
     \begin{tabular}{|c|c|c|c|c||c|c|c|c|c|c|}
         \hline
         \multicolumn{5}{|c||}{Filters} & \multicolumn{6}{|c|}{$N$} \\
