@@ -27,8 +27,6 @@ The RESTful API for the server is as follows:
 
  - `/api/classify` - `POST` <br />
    Classify a tweet to provide a list of hashtag suggestions.
-
-   *Parameters:*
     - `text` - The text of the tweet to classify
     - `results` - The number of classifications (recommendations) to provide
       (*optional*)<br />
@@ -39,28 +37,20 @@ The RESTful API for the server is as follows:
 
  - `/api/hashtags` - `GET` <br />
    Returns an ordered list of all hashtags and their counts.
-
-   *Parameters:*
     - `num` - The number of hashtags to return (*optional*)<br />
 
  - `/api/tokens` - `GET` <br />
    Returns an ordered list of all tokens and their counts.
-
-   *Parameters:*
     - `num` - The number of tokens to return (*optional*)
 
  - `/api/hashtag/<string:hashtag>` - `GET` <br />
    Returns an ordered list of all tokens and their counts that have been seen
    with the given hashtag.<br />
-
-    *Parameters:*
     - `num` - The number of tokens to return (*optional*)<br />
 
  - `/api/token/<string:token>` - `GET` <br />
    Returns an ordered list of all hashtags and their counts that have been seen
    with the given token.
-
-   *Parameters:*
     - `num` - The number of hashtags to return (*optional*)<br />
 
 
@@ -70,7 +60,7 @@ The project uses the `pip` tool to manage Python dependencies, and
 [Bower](http://bower.io/) to manage HTML/CSS/Javascript dependencies. Before the
 project can be used, the dependencies must first be installed:
 
-```sh
+```
 $ git clone https://github.com/daviesjamie/3yp hashtag_recommendation
 $ cd hashtag_recommendation
 $ pip install -r requirements.txt
