@@ -92,10 +92,10 @@ client directory.
 ## Client Screenshots
 
 ![Providing
-Recommendations](https://github.com/daviesjamie/3yp/blob/master/deliverables/final/screenshots/tweet2.png)
+Recommendations](https://github.com/daviesjamie/3yp/raw/master/deliverables/final/screenshots/tweet2.png)
 
 ![Search
-Results](https://github.com/daviesjamie/3yp/raw/master/deliverables/final/screenshots/tweet2.png)
+Results](https://github.com/daviesjamie/3yp/raw/master/deliverables/final/screenshots/results2.png)
 
 More screenshots of the client interface can be found in the [screenshots
 folder](https://github.com/daviesjamie/3yp/tree/master/deliverables/final/screenshots).
