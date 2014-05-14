@@ -453,7 +453,7 @@ These considerations have led to the choice of a Naive Bayes classifier. Naive B
 This can be expanded to give the probability of a classification based upon the presence of a set of features by making a \textbf{naive assumption}: that the presence of a particular feature is totally unrelated and unaffected by the presence (or lack) of any other feature. By making this assumption, we can derive the probabilistic model for a Naive Bayes classifier:
 
 \begin{equation}
-    P(C|F_1,\dots,F_n) = \frac{P(F_1,\dots,F_n)|C) \cdot P(C)}{P(F_1,\cdots,F_n)}
+    P(C|F_1,\dots,F_n) = \frac{P(F_1,\dots,F_n|C) \cdot P(C)}{P(F_1,\cdots,F_n)}
 \end{equation}
 
 Or, in plain English terminology:
